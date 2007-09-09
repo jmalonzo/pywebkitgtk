@@ -24,23 +24,23 @@
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
 
-extern PyMethodDef pywebkit_functions[];
+extern PyMethodDef pywebkitgtk_functions[];
 
-void pywebkit_register_classes (PyObject *d);
+void pywebkitgtk_register_classes (PyObject *d);
 
 DL_EXPORT(void)
-initwebkit(void)
+initwebkitgtk(void)
 {
     PyObject *m, *d;
 
     init_pygobject ();
 
-    m = Py_InitModule ("webkit", pywebkit_functions);
+    m = Py_InitModule ("webkitgtk", pywebkitgtk_functions);
     d = PyModule_GetDict (m);
 
-    pywebkit_register_classes (d);
+    pywebkitgtk_register_classes (d);
 
     if (PyErr_Occurred ()) {
-        Py_FatalError ("can't initialise module webkit");
+        Py_FatalError ("can't initialise module webkitgtk");
     }
 }
