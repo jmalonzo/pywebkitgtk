@@ -1,0 +1,19 @@
+/* -*- Mode: C; c-basic-offset: 4 -*- */
+%%
+headers
+#include <Python.h>
+
+#include "pygobject.h"
+#include "webkitgtkpage.h"
+
+#include <pygtk/pygtk.h>
+
+%%
+modulename webkitgtk
+%%
+import gtk.Container as PyGtkContainer_Type
+%%
+ignore-glob
+  *_get_type
+  _*
+%%

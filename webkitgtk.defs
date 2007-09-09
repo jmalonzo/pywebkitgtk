@@ -1,0 +1,34 @@
+;; -*- scheme -*-
+; object definitions ...
+(define-object Page
+  (in-module "GtkWebKit")
+  (parent "GtkContainer")
+  (c-name "WebKitGtkPage")
+  (gtype-id "WEB_TYPE_KIT_GTK_PAGE")
+)
+
+;; Enumerations and flags ...
+
+
+;; From webkitgtkpage.h
+
+(define-method open
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_open")
+  (return-type "none")
+  (parameters
+   '("const-char*" "url")
+  )
+)
+
+(define-method can_go_backward
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_can_go_backward")
+  (return-type "gboolean")
+)
+
+(define-method go_backward
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_go_backward")
+  (return-type "none")
+)
