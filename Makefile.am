@@ -4,13 +4,13 @@ INCLUDES =					\
 	$(PYGTK_CFLAGS)				\
 	-I$(top_srcdir)/webkitgtk
 
-pkglib_LTLIBRARIES = webkit.la
+pkglib_LTLIBRARIES = webkitgtk.la
 
-webkit_la_LDFLAGS = -module -avoid-version
-webkit_la_LIBADD = 				\
+webkitgtk_la_LDFLAGS = -module -avoid-version
+webkitgtk_la_LIBADD = 				\
 	-L. -lWebKitGdk
 
-webkit_la_SOURCES = 			\
+webkitgtk_la_SOURCES = 			\
 	webkitgtk.c			\
 	webkitgtkmodule.c
 

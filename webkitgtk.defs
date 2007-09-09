@@ -4,7 +4,7 @@
   (in-module "GtkWebKit")
   (parent "GtkContainer")
   (c-name "WebKitGtkPage")
-  (gtype-id "WEB_TYPE_KIT_GTK_PAGE")
+  (gtype-id "WEBKIT_GTK_TYPE_PAGE")
 )
 
 ;; Enumerations and flags ...
