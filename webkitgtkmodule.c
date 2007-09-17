@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
+#include <Python.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -24,9 +24,9 @@
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
 
-extern PyMethodDef webkitgtk_functions[];
+extern PyMethodDef pywebkitgtk_functions[];
 
-void webkitgtk_register_classes (PyObject *d);
+void pywebkitgtk_register_classes (PyObject *d);
 
 DL_EXPORT(void)
 initwebkitgtk(void)
@@ -35,10 +35,10 @@ initwebkitgtk(void)
 
     init_pygobject ();
 
-    m = Py_InitModule ("webkitgtk", webkitgtk_functions);
+    m = Py_InitModule ("webkitgtk", pywebkitgtk_functions);
     d = PyModule_GetDict (m);
 
-    webkitgtk_register_classes (d);
+    pywebkitgtk_register_classes (d);
 
     if (PyErr_Occurred ()) {
         Py_FatalError ("can't initialise module webkitgtk");

@@ -9,8 +9,7 @@ defs_DATA = webkitgtk.defs
 pkgpythondir = $(pyexecdir)/gtk-2.0
 pkgpyexecdir = $(pyexecdir)/gtk-2.0
 
-webkitgtkdir = $(pkgpythondir)/webkitgtk
-webkitgtk_PYTHON = webkitgtk/__init__.py
+webkitgtkdir = $(pkgpyexecdir)/webkitgtk
 
 pkgpyexec_LTLIBRARIES = webkitgtk.la
 
