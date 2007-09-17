@@ -82,7 +82,7 @@ class WebToolbar(gtk.Toolbar):
         can_go_back = self._browser.can_go_backward()
         self._back.props.sensitive = can_go_back
 
-        can_go_forward = True # FIXME self._browser.can_go_forward()
+        can_go_forward = self._browser.can_go_forward()
         self._forward.props.sensitive = can_go_forward
 
     def _entry_activate_cb(self, entry):
@@ -167,10 +167,15 @@ class WebBrowser(gtk.Window):
         self._browser.connect('load-progress-changed', self._loading_progress_cb)
         self._browser.connect('load-finished', self._loading_stop_cb)
         self._browser.connect("title-changed", self._title_changed_cb)
+        self._browser.connect("hovering-over-link", self._hover_link_cb)
+        self._browser.connect("status-bar-text-changed", self._statusbar_text_changed_cb)
+        self._browser.connect("icon-loaded", self._icon_loaded_cb)
+        self._browser.connect("selection-changed", self._selection_changed_cb)
+        self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
 
-        scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.add(self._browser)
-        scrolled_window.show_all()
+        self._scrolled_window = gtk.ScrolledWindow()
+        self._scrolled_window.add(self._browser)
+        self._scrolled_window.show_all()
 
         self._toolbar = WebToolbar(self._browser)
 
@@ -178,13 +183,18 @@ class WebBrowser(gtk.Window):
 
         vbox = gtk.VBox(spacing=4)
         vbox.pack_start(self._toolbar, expand=False, fill=False)
-        vbox.pack_start(scrolled_window)
+        vbox.pack_start(self._scrolled_window)
         vbox.pack_end(self._statusbar, expand=False, fill=False)
 
         self.add(vbox)
         self.set_default_size(600, 480)
 
+        self.connect('destroy', gtk.main_quit)
+
         self.show_all()
+
+    def _set_title(self, title):
+        self.props.title = title
 
     def _loading_start_cb(self, page, frame):
         # FIXME: check if frame is the main frame
@@ -204,8 +214,21 @@ class WebBrowser(gtk.Window):
     def _title_changed_cb(self, widget, title, uri):
         self._set_title(title)
 
-    def _set_title(self, title):
-        self.props.title = title
+    def _hover_link_cb(self, url, base_url):
+        print url, ' ', base_url
+
+    def _statusbar_text_changed_cb(self, page, text):
+        print text
+
+    def _icon_loaded_cb(self):
+        print "icon loaded"
+
+    def _selection_changed_cb(self):
+        print "selection changed"
+
+    def _set_scroll_adjustments_cb(self, page, hadjustment, vadjustment):
+        self._scrolled_window.props.hadjustment = hadjustment
+        self._scrolled_window.props.vadjustment = vadjustment
 
 
 if __name__ == "__main__":

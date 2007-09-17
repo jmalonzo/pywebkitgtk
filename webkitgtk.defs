@@ -32,3 +32,45 @@
   (c-name "webkit_gtk_page_go_backward")
   (return-type "none")
 )
+
+(define-method can_go_forward
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_can_go_forward")
+  (return-type "gboolean")
+)
+
+(define-method go_forward
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_go_forward")
+  (return-type "none")
+)
+
+(define-method stop_loading
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_stop_loading")
+  (return-type "none")
+)
+
+(define-method load_html_string
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_load_html_string")
+  (return-type "none")
+  (parameters
+   '(("const-char*" "content")
+     ("const-char*" "base_url")
+     )
+   )
+)
+
+(define-method load_string
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_load_string")
+  (return-type "none")
+  (parameters
+   '(("const-char*" "content")
+     ("const-char*" "content_mime_type")
+     ("const-char*" "content_encoding")
+     ("const-char*" "base_url")
+     )
+   )
+)
