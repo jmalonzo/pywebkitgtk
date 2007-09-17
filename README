@@ -1,0 +1,31 @@
+Python WebKit GTK+
+----
+
+
+This project aims to provide Python bindings to the WebKit GTK+ port for use by
+Python programs.
+
+
+Project Goals
+----
+
+ - Provide an alternative renderer to Gecko (only better ;)
+ - Provide a usable binding to the WebKit GTK+ Api
+ - Provide 100% coverage of the WebKit GTK+ Api
+
+
+If you found any issue(s) regarding the binding or the way objects are
+rendered or just wanna bug me, please let me know at jmalonzo@gmail.com
+
+
+(I'll get the bug tracker and website sorted soon! promise!)
+
+
+References
+----
+
+WebKit - http://www.webkit.org
+
+GTK+ - http://www.gtk.org
+
+Python - http://www.python.org
