@@ -1,4 +1,4 @@
-AC_INIT([webkitgtk],[0.2],[jmalonzo@unpluggable.com])
+AC_INIT([pywebkitgtk],[0.2],[jmalonzo@unpluggable.com])
 
 AC_PREREQ([2.59])
 AC_CONFIG_MACRO_DIR([m4])
