@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (C) 2006, Red Hat, Inc.
 # Copyright (C) 2007, One Laptop Per Child
 # Copyright (C) 2007 Jan Alonzo <jmalonzo@unpluggable.com>
