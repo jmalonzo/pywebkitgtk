@@ -104,7 +104,7 @@ class WebToolbar(gtk.Toolbar):
         if self._loading:
             self._browser.stop_loading()
         else:
-            self._browser.open(self._current_uri)
+            self._browser.reload()
 
     def _show_stop_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_MEDIA_STOP)
@@ -207,12 +207,12 @@ class WebBrowser(gtk.Window):
         self.props.title = title
 
     def _loading_start_cb(self, page, frame):
-        # FIXME: check if frame is the main frame
-        self._set_title(_("Loading"))
+        if frame is self._browser.get_main_frame():
+            self._set_title(_("Loading"))
         self._toolbar.set_loading(True)
 
     def _loading_stop_cb(self, page, frame):
-        # FIXME: check if frame is the main frame(?)
+        # FIXME: another frame may still be loading?
         self._toolbar.set_loading(False)
 
     def _loading_progress_cb(self, page, progress):

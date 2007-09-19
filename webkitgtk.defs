@@ -7,6 +7,14 @@
   (gtype-id "WEBKIT_GTK_TYPE_PAGE")
 )
 
+;; waiting for upstream header fix
+;(define-object Frame
+;  (in-module "GtkWebKit")
+;  (parent "GObject")
+;  (c-name "WebKitGtkFrame")
+;  (gtype-id "WEBKIT_GTK_TYPE_FRAME")
+;)
+
 ;; Enumerations and flags ...
 
 
@@ -51,6 +59,12 @@
   (return-type "none")
 )
 
+(define-method reload
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_reload")
+  (return-type "none")
+)
+
 (define-method load_html_string
   (of-object "WebKitGtkPage")
   (c-name "webkit_gtk_page_load_html_string")
@@ -71,4 +85,12 @@
    '("const-char*" "content_encoding")
    '("const-char*" "base_url")
   )
+)
+
+(define-method get_main_frame
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_get_main_frame")
+;; waiting for upstream header fix
+;  (return-type "WebKitGtkFrame*")
+  (return-type "GObject*")
 )

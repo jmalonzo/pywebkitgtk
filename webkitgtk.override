@@ -5,6 +5,7 @@ headers
 
 #include "pygobject.h"
 #include "webkitgtkpage.h"
+// waiting for upstream header fix: #include "webkitgtkframe.h"
 
 #include <pygtk/pygtk.h>
 
@@ -12,6 +13,7 @@ headers
 modulename webkitgtk
 %%
 import gtk.Container as PyGtkContainer_Type
+import gobject.GObject as PyGObject_Type
 %%
 ignore-glob
   *_get_type
