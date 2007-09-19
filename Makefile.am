@@ -28,7 +28,8 @@ webkitgtk.c: webkitgtk.defs webkitgtk.override
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
 	    --override $*.override \
-	    --prefix py$* $*.defs) > gen-$*.c \
+	    --prefix py$* $*.defs) 2>&1 >gen-$*.c | tee $*.errors \
+	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $*.errors \
 	&& cp gen-$*.c $*.c \
 	&& rm -f gen-$*.c
 
