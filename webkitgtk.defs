@@ -99,10 +99,7 @@
 (define-method get_main_frame
   (of-object "WebKitGtkPage")
   (c-name "webkit_gtk_page_get_main_frame")
-  (return-type "WebKitGtkFrame")
-  (parameters
-   '("WebKitGtkPage" "page")
-   )
+  (return-type "GObject")
 )
 
 ;; From webkitgtkframe.h
