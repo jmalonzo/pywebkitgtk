@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (C) 2006, Red Hat, Inc.
 # Copyright (C) 2007, One Laptop Per Child
 # Copyright (C) 2007 Jan Alonzo <jmalonzo@unpluggable.com>
@@ -48,6 +49,7 @@ class WebToolbar(gtk.Toolbar):
         self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
         self.insert(self._stop_and_reload, -1)
         self._stop_and_reload.show()
+        self._loading = False
 
         self._entry = gtk.Entry()
         self._entry.connect('activate', self._entry_activate_cb)
@@ -103,7 +105,7 @@ class WebToolbar(gtk.Toolbar):
         if self._loading:
             self._browser.stop_loading()
         else:
-            self._browser.open(self._current_uri)
+            self._browser.reload()
 
     def _show_stop_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_MEDIA_STOP)
@@ -194,18 +196,26 @@ class WebBrowser(gtk.Window):
 
         self.connect('destroy', gtk.main_quit)
 
+        about = """
+<html><head><title>About</title></head><body>
+<h1>Welcome to <code>webbrowser.py</code></h1>
+<p><a href="http://live.gnome.org/PyWebKitGtk">Homepage</a></p>
+</body></html>
+"""
+        self._browser.load_string(about, "text/html", "iso-8859-15", "about:")
+
         self.show_all()
 
     def _set_title(self, title):
         self.props.title = title
 
     def _loading_start_cb(self, page, frame):
-        # FIXME: check if frame is the main frame
-        self._set_title(_("Loading"))
+        if frame is self._browser.get_main_frame():
+            self._set_title(_("Loading"))
         self._toolbar.set_loading(True)
 
     def _loading_stop_cb(self, page, frame):
-        # FIXME: check if frame is the main frame(?)
+        # FIXME: another frame may still be loading?
         self._toolbar.set_loading(False)
 
     def _loading_progress_cb(self, page, progress):
@@ -218,10 +228,10 @@ class WebBrowser(gtk.Window):
         self._set_title(title)
 
     def _hover_link_cb(self, url, base_url):
-        print url, ' ', base_url
+        print "link ", url, ' ', base_url
 
     def _statusbar_text_changed_cb(self, page, text):
-        print "statusbar text changed"
+        print "status ", text
 
     def _icon_loaded_cb(self):
         print "icon loaded"
