@@ -56,10 +56,9 @@
   (c-name "webkit_gtk_page_load_html_string")
   (return-type "none")
   (parameters
-   '(("const-char*" "content")
-     ("const-char*" "base_url")
-     )
-   )
+   '("const-char*" "content")
+   '("const-char*" "base_url")
+  )
 )
 
 (define-method load_string
@@ -67,10 +66,9 @@
   (c-name "webkit_gtk_page_load_string")
   (return-type "none")
   (parameters
-   '(("const-char*" "content")
-     ("const-char*" "content_mime_type")
-     ("const-char*" "content_encoding")
-     ("const-char*" "base_url")
-     )
-   )
+   '("const-char*" "content")
+   '("const-char*" "content_mime_type")
+   '("const-char*" "content_encoding")
+   '("const-char*" "base_url")
+  )
 )

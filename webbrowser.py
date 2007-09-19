@@ -49,6 +49,7 @@ class WebToolbar(gtk.Toolbar):
         self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
         self.insert(self._stop_and_reload, -1)
         self._stop_and_reload.show()
+        self._loading = False
 
         self._entry = gtk.Entry()
         self._entry.connect('activate', self._entry_activate_cb)
@@ -192,6 +193,14 @@ class WebBrowser(gtk.Window):
 
         self.connect('destroy', gtk.main_quit)
 
+        about = """
+<html><head><title>About</title></head><body>
+<h1>Welcome to <code>webbrowser.py</code></h1>
+<p><a href="http://live.gnome.org/PyWebKitGtk">Homepage</a></p>
+</body></html>
+"""
+        self._browser.load_string(about, "text/html", "iso-8859-15", "about:")
+
         self.show_all()
 
     def _set_title(self, title):
@@ -216,10 +225,10 @@ class WebBrowser(gtk.Window):
         self._set_title(title)
 
     def _hover_link_cb(self, url, base_url):
-        print url, ' ', base_url
+        print "link ", url, ' ', base_url
 
     def _statusbar_text_changed_cb(self, page, text):
-        print text
+        print "status ", text
 
     def _icon_loaded_cb(self):
         print "icon loaded"
