@@ -7,10 +7,26 @@
   (gtype-id "WEBKIT_GTK_TYPE_PAGE")
 )
 
+(define-object Frame
+  (in-module "GtkWebKit")
+  (parent "GObject")
+  (c-name "WebKitGtkFrame")
+  (gtype-id "WEBKIT_GTK_TYPE_FRAME")
+)
+
 ;; Enumerations and flags ...
 
 
 ;; From webkitgtkpage.h
+
+;; TODO webkit_gtk_page_set_settings, webkit_gtk_page_get_settings
+
+(define-function webkit_gtk_page_new
+  (is-constructor-of "WebKitGtkPage")
+  (c-name "webkit_gtk_page_new")
+  (caller-owns-return #t)
+  (return-type "WebKitGtkPage")
+)
 
 (define-method open
   (of-object "WebKitGtkPage")
@@ -56,9 +72,53 @@
   (c-name "webkit_gtk_page_load_html_string")
   (return-type "none")
   (parameters
-   '(("const-char*" "content")
-     ("const-char*" "base_url")
-     )
+   '("const-char*" "content")
+   '("const-char*" "base_url")
+   )
+)
+
+(define-method can_cut
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_can_cut")
+  (return-type "gboolean")
+  (parameters
+   '("WebKitGtkPage" "page")
+   )
+)
+
+(define-method can_copy
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_can_copy")
+  (return-type "gboolean")
+  (parameters
+   '("WebKitGtkPage" "page")
+   )
+)
+
+(define-method cut
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_cut")
+  (return-type "none")
+  (parameters
+   '("WebKitGtkPage" "page")
+   )
+)
+
+(define-method copy
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_copy")
+  (return-type "none")
+  (parameters 
+   '("WebKitGtkPage" "page")
+   )
+)
+
+(define-method paste
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_paste")
+  (return-type "none")
+  (parameters
+   '("WebKitGtkPage" "page")
    )
 )
 
@@ -67,10 +127,92 @@
   (c-name "webkit_gtk_page_load_string")
   (return-type "none")
   (parameters
-   '(("const-char*" "content")
-     ("const-char*" "content_mime_type")
-     ("const-char*" "content_encoding")
-     ("const-char*" "base_url")
-     )
+   '("const-char*" "content")
+   '("const-char*" "content_mime_type")
+   '("const-char*" "content_encoding")
+   '("const-char*" "base_url")
+   )
+)
+
+(define-method get_main_frame
+  (of-object "WebKitGtkPage")
+  (c-name "webkit_gtk_page_get_main_frame")
+  (return-type "WebKitGtkFrame")
+  (parameters
+   '("WebKitGtkPage" "page")
+   )
+)
+
+;; From webkitgtkframe.h
+
+(define-method get_page
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_type")
+  (return-type "WebKitGtkPage")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_markup
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_markup")
+  (return-type "gchar*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_inner_text
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_inner_text")
+  (return-type "gchar*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_selected_text
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_selected_text")
+  (return-type "gchar*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_title
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_title")
+  (return-type "gchar*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_child_frames
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_child_frames")
+  (return-type "GSList*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_position
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_position")
+  (return-type "GdkPoint*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
+   )
+)
+
+(define-method get_rectangle
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_rectangle")
+  (return-type "GdkRectangle*")
+  (parameters
+   '("WebKitGtkFrame" "frame")
    )
 )

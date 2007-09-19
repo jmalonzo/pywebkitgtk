@@ -62,6 +62,7 @@ class WebToolbar(gtk.Toolbar):
         entry_item.show()
 
         self._browser.connect("title-changed", self._title_changed_cb)
+        self._entry.grab_focus()
 
     def set_loading(self, loading):
         self._loading = loading
@@ -174,6 +175,8 @@ class WebBrowser(gtk.Window):
         self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
 
         self._scrolled_window = gtk.ScrolledWindow()
+        self._scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
+        self._scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
         self._scrolled_window.add(self._browser)
         self._scrolled_window.show_all()
 
@@ -206,10 +209,10 @@ class WebBrowser(gtk.Window):
         self._toolbar.set_loading(False)
 
     def _loading_progress_cb(self, page, progress):
-        self._set_progress(progress / 100.0)
+        self._set_progress(progress)
 
     def _set_progress(self, progress):
-        self._statusbar.display(progress)
+        self._statusbar.display(_("%s%s loaded") % (progress, '%'))
 
     def _title_changed_cb(self, widget, title, uri):
         self._set_title(title)
@@ -218,7 +221,7 @@ class WebBrowser(gtk.Window):
         print url, ' ', base_url
 
     def _statusbar_text_changed_cb(self, page, text):
-        print text
+        print "statusbar text changed"
 
     def _icon_loaded_cb(self):
         print "icon loaded"
