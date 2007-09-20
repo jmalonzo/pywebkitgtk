@@ -1,4 +1,8 @@
 ;; -*- scheme -*-
+
+;; TODO 
+;; webkit_gtk_page_set_settings, webkit_gtk_page_get_settings
+
 ; object definitions ...
 (define-object Page
   (in-module "GtkWebKit")
@@ -8,19 +12,17 @@
 )
 
 ;; waiting for upstream header fix
-;(define-object Frame
-;  (in-module "GtkWebKit")
-;  (parent "GObject")
-;  (c-name "WebKitGtkFrame")
-;  (gtype-id "WEBKIT_GTK_TYPE_FRAME")
-;)
+(define-object Frame
+  (in-module "GtkWebKit")
+  (parent "GObject")
+  (c-name "WebKitGtkFrame")
+  (gtype-id "WEBKIT_GTK_TYPE_FRAME")
+)
 
 ;; Enumerations and flags ...
 
 
 ;; From webkitgtkpage.h
-
-;; TODO webkit_gtk_page_set_settings, webkit_gtk_page_get_settings
 
 (define-function webkit_gtk_page_new
   (is-constructor-of "WebKitGtkPage")
@@ -99,7 +101,7 @@
 (define-method get_main_frame
   (of-object "WebKitGtkPage")
   (c-name "webkit_gtk_page_get_main_frame")
-  (return-type "GObject")
+  (return-type "WebKitGtkFrame*")
 )
 
 ;; From webkitgtkframe.h
@@ -111,7 +113,6 @@
   (return-type "WebKitGtkFrame")
 )
 
-
 (define-method get_page
   (of-object "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_get_type")
@@ -121,3 +122,14 @@
    )
 )
 
+(define-method get_title
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_title")
+  (return-type "gchar*")
+)
+
+(define-method get_location
+  (of-object "WebKitGtkFrame")
+  (c-name "webkit_gtk_frame_get_location")
+  (return-type "gchar*")
+)

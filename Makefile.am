@@ -36,7 +36,10 @@ webkitgtk.c: webkitgtk.defs webkitgtk.override
 uninstall-hook:
 	-rmdir $(webkitgtkdir)
 
+DISTCLEANFILES = webkitgtk.errors
+
 CLEANFILES = \
+	gen-webkitgtk.c \
 	webkitgtk.c \
 	webkitgtk_la-webkitgtk.loT	
 
