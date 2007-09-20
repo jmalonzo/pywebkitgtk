@@ -116,10 +116,7 @@
 (define-method get_page
   (of-object "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_get_type")
-  (return-type "WebKitGtkPage")
-  (parameters
-   '("WebKitGtkFrame" "frame")
-   )
+  (return-type "WebKitGtkPage*")
 )
 
 (define-method get_title
