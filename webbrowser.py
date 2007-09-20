@@ -210,9 +210,9 @@ class WebBrowser(gtk.Window):
         self.props.title = title
 
     def _loading_start_cb(self, page, frame):
-        #main_frame = self._browser.get_main_frame()
-        #if frame is main_frame:
-        #    self._set_title(_("Loading %s") % main_frame.get_title())
+        main_frame = self._browser.get_main_frame()
+        if frame is main_frame:
+            self._set_title(_("Loading %s - %s") % (frame.get_title(),frame.get_location()))
         self._toolbar.set_loading(True)
 
     def _loading_stop_cb(self, page, frame):
@@ -220,13 +220,13 @@ class WebBrowser(gtk.Window):
         self._toolbar.set_loading(False)
 
     def _loading_progress_cb(self, page, progress):
-        self._set_progress(progress)
+        self._set_progress(_("%s%s loaded") % (progress, '%'))
 
     def _set_progress(self, progress):
-        self._statusbar.display(_("%s%s loaded") % (progress, '%'))
+        self._statusbar.display(progress)
 
     def _title_changed_cb(self, widget, title, uri):
-        self._set_title(title)
+        self._set_title(_("%s - %s") % (title,uri))
 
     def _hover_link_cb(self, url, base_url):
         print "link ", url, ' ', base_url
@@ -243,7 +243,6 @@ class WebBrowser(gtk.Window):
     def _set_scroll_adjustments_cb(self, page, hadjustment, vadjustment):
         self._scrolled_window.props.hadjustment = hadjustment
         self._scrolled_window.props.vadjustment = vadjustment
-
 
 if __name__ == "__main__":
     webbrowser = WebBrowser()

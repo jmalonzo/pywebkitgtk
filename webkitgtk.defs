@@ -28,7 +28,7 @@
   (is-constructor-of "WebKitGtkPage")
   (c-name "webkit_gtk_page_new")
   (caller-owns-return #t)
-  (return-type "WebKitGtkPage")
+  (return-type "GtkWidget*")
 )
 
 (define-method open
@@ -110,23 +110,26 @@
   (is-constructor-of "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_new")
   (caller-owns-return #t)
-  (return-type "WebKitGtkFrame")
+  (return-type "GObject*")
 )
 
 (define-method get_page
   (of-object "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_get_type")
+  (caller-owns-return #t)
   (return-type "WebKitGtkPage*")
 )
 
 (define-method get_title
   (of-object "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_get_title")
+  (caller-owns-return #f)
   (return-type "gchar*")
 )
 
 (define-method get_location
   (of-object "WebKitGtkFrame")
   (c-name "webkit_gtk_frame_get_location")
+  (caller-owns-return #f)
   (return-type "gchar*")
 )
