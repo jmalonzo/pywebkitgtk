@@ -1,7 +1,7 @@
 INCLUDES = \
 	$(PYTHON_INCLUDES)	\
 	$(PYGTK_CFLAGS)		\
-	$(WEBKITGDK_CFLAGS)
+	$(WEBKITGTK_CFLAGS)
 
 defsdir = $(datadir)/pygtk/2.0/defs
 defs_DATA = webkitgtk.defs
@@ -13,10 +13,10 @@ webkitgtkdir = $(pkgpyexecdir)/webkitgtk
 
 pkgpyexec_LTLIBRARIES = webkitgtk.la
 
-webkitgtk_la_CFLAGS = $(GTK_CFLAGS) $(WEBKITGDK_CFLAGS)
+webkitgtk_la_CFLAGS = $(GTK_CFLAGS) $(WEBKITGTK_CFLAGS)
 webkitgtk_la_LDFLAGS = -module -avoid-version \
 	-export-symbols-regex initwebkitgtk
-webkitgtk_la_LIBADD = $(WEBKITGDK_LIBS)
+webkitgtk_la_LIBADD = $(WEBKITGTK_LIBS)
 webkitgtk_la_SOURCES = webkitgtkmodule.c
 nodist_webkitgtk_la_SOURCES = webkitgtk.c
 
