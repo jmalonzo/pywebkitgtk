@@ -114,37 +114,6 @@ class WebToolbar(gtk.Toolbar):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
 
-    def _reload_session_history(self, current_page_index=None):
-        if current_page_index is None:
-            current_page_index = session_history.index
-
-        for palette in (self._back.get_palette(), self._forward.get_palette()):
-            while palette.menu_item_count():
-                palette.remove_menu_item(0)
-
-        session_history = self._browser.web_navigation.sessionHistory
-        for i in range(0, session_history.count):
-            if i == current_page_index:
-                continue
-
-            entry = session_history.getEntryAtIndex(i, False)
-            menu_item = gtk.MenuItem(entry.title)
-            menu_item.connect('activate', self._history_item_activated_cb, i)
-
-            if i < current_page_index:
-                palette = self._back.get_palette()
-                palette.insert_menu_item(menu_item, 0)
-            elif i > current_page_index:
-                palette = self._forward.get_palette()
-                palette.insert_menu_item(menu_item, -1)
-
-            menu_item.show()
-
-    def _history_item_activated_cb(self, menu_item, index):
-        self._browser.web_navigation.gotoIndex(index)
-
-
-
 class BrowserPage(webkitgtk.Page):
     def __init__(self):
 	webkitgtk.Page.__init__(self)
