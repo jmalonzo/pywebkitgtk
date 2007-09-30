@@ -44,5 +44,6 @@ CLEANFILES = \
 	webkitgtk_la-webkitgtk.loT	
 
 EXTRA_DIST = \
+	webbrowser.py \
 	webkitgtk.override \
 	webkitgtk.defs
