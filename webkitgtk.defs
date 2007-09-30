@@ -115,7 +115,7 @@
 
 (define-method get_page
   (of-object "WebKitGtkFrame")
-  (c-name "webkit_gtk_frame_get_type")
+  (c-name "webkit_gtk_frame_get_page")
   (caller-owns-return #t)
   (return-type "WebKitGtkPage*")
 )
