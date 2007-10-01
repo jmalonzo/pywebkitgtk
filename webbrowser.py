@@ -197,8 +197,17 @@ class WebBrowser(gtk.Window):
     def _title_changed_cb(self, widget, title, uri):
         self._set_title(_("%s - %s") % (title,uri))
 
-    def _hover_link_cb(self, url, base_url):
-        print "link ", url, ' ', base_url
+    def _hover_link_cb(self, page, title, url):
+    	# FIXME there's a bug in current webkit gtk+ implementation of hovering-over-link that it
+	# sends the signal everytime the mouse moves in the drawing area
+	# this is bug: http://bugs.webkit.org/show_bug.cgi?id=15299
+	# specifically a bug in ChromeClient::mouseDidMoveOverElement().
+	# please fix!
+    	if page and url:
+	   self._statusbar.display(url)
+	else:
+ 	   self._statusbar.display('')
+        print title, ' ', url
 
     def _statusbar_text_changed_cb(self, page, text):
         print "status ", text
