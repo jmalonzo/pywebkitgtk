@@ -104,6 +104,15 @@
   (return-type "WebKitFrame*")
 )
 
+(define-method execute_script
+  (of-object "WebKitPage")
+  (c-name "webkit_page_execute_script")
+  (return-type "none")
+  (parameters
+   '("const-char*" "script")
+   )
+)
+
 ;; From webkitgtkframe.h
 
 (define-function webkit_frame_new
