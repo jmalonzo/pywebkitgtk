@@ -20,6 +20,6 @@ ignore-glob
   _*
 %%
 ignore
-  webkit_gtk_frame_get_type
-  webkit_gtk_page_get_type
+  webkit_frame_get_type
+  webkit_page_get_type
 %%

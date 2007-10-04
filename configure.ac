@@ -11,7 +11,7 @@ AM_MAINTAINER_MODE
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-dnl check for gtk+\
+dnl check for gtk+
 PKG_CHECK_MODULES(GTK, gtk+-2.0)
 
 dnl check for python

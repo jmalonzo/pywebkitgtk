@@ -7,16 +7,16 @@
 (define-object Page
   (in-module "GtkWebKit")
   (parent "GtkContainer")
-  (c-name "WebKitGtkPage")
-  (gtype-id "WEBKIT_GTK_TYPE_PAGE")
+  (c-name "WebKitPage")
+  (gtype-id "WEBKIT_TYPE_PAGE")
 )
 
 ;; waiting for upstream header fix
 (define-object Frame
   (in-module "GtkWebKit")
   (parent "GObject")
-  (c-name "WebKitGtkFrame")
-  (gtype-id "WEBKIT_GTK_TYPE_FRAME")
+  (c-name "WebKitFrame")
+  (gtype-id "WEBKIT_TYPE_FRAME")
 )
 
 ;; Enumerations and flags ...
@@ -24,16 +24,16 @@
 
 ;; From webkitgtkpage.h
 
-(define-function webkit_gtk_page_new
-  (is-constructor-of "WebKitGtkPage")
-  (c-name "webkit_gtk_page_new")
+(define-function webkit_page_new
+  (is-constructor-of "WebKitPage")
+  (c-name "webkit_page_new")
   (caller-owns-return #t)
   (return-type "GtkWidget*")
 )
 
 (define-method open
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_open")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_open")
   (return-type "none")
   (parameters
    '("const-char*" "url")
@@ -41,44 +41,44 @@
 )
 
 (define-method can_go_backward
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_can_go_backward")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_can_go_backward")
   (return-type "gboolean")
 )
 
 (define-method go_backward
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_go_backward")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_go_backward")
   (return-type "none")
 )
 
 (define-method can_go_forward
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_can_go_forward")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_can_go_forward")
   (return-type "gboolean")
 )
 
 (define-method go_forward
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_go_forward")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_go_forward")
   (return-type "none")
 )
 
 (define-method stop_loading
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_stop_loading")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_stop_loading")
   (return-type "none")
 )
 
 (define-method reload
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_reload")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_reload")
   (return-type "none")
 )
 
 (define-method load_html_string
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_load_html_string")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_load_html_string")
   (return-type "none")
   (parameters
    '("const-char*" "content")
@@ -87,8 +87,8 @@
 )
 
 (define-method load_string
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_load_string")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_load_string")
   (return-type "none")
   (parameters
    '("const-char*" "content")
@@ -99,37 +99,37 @@
 )
 
 (define-method get_main_frame
-  (of-object "WebKitGtkPage")
-  (c-name "webkit_gtk_page_get_main_frame")
-  (return-type "WebKitGtkFrame*")
+  (of-object "WebKitPage")
+  (c-name "webkit_page_get_main_frame")
+  (return-type "WebKitFrame*")
 )
 
 ;; From webkitgtkframe.h
 
-(define-function webkit_gtk_frame_new
-  (is-constructor-of "WebKitGtkFrame")
-  (c-name "webkit_gtk_frame_new")
+(define-function webkit_frame_new
+  (is-constructor-of "WebKitFrame")
+  (c-name "webkit_frame_new")
   (caller-owns-return #t)
   (return-type "GObject*")
 )
 
 (define-method get_page
-  (of-object "WebKitGtkFrame")
-  (c-name "webkit_gtk_frame_get_page")
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_get_page")
   (caller-owns-return #t)
-  (return-type "WebKitGtkPage*")
+  (return-type "WebKitPage*")
 )
 
 (define-method get_title
-  (of-object "WebKitGtkFrame")
-  (c-name "webkit_gtk_frame_get_title")
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_get_title")
   (caller-owns-return #f)
   (return-type "gchar*")
 )
 
 (define-method get_location
-  (of-object "WebKitGtkFrame")
-  (c-name "webkit_gtk_frame_get_location")
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_get_location")
   (caller-owns-return #f)
   (return-type "gchar*")
 )
