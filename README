@@ -37,6 +37,17 @@ I hope you find this project this useful as much as I do.
 Happy Hacking!
 
 
+Contact
+----
+
+Jan Alonzo <jmalonzo@gmail.com>
+Tuukka Hastrup <tuukka@iki.fi>
+
+Web:            http://live.gnome.org/PyWebKitGtk
+
+Source (Git):   http://repo.or.cz/w/pywebkitgtk.git
+
+
 References
 ----
 
@@ -64,13 +75,3 @@ Resources
 
  * WebKit
    http://www.webkit.org
-
-Contact
-----
-
-Jan Alonzo <jmalonzo@gmail.com>
-Tuukka Hastrup <tuukka@iki.fi>
-
-Web:            http://live.gnome.org/PyWebKitGtk
-
-Source (Git):   http://repo.or.cz/w/pywebkitgtk.git

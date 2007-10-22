@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006-2007, Red Hat, Inc.
+ * Copyright (C) 2007 Jan Michael Alonzo <jmalonzo@unpluggable.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +24,7 @@
 
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
-#include "webkitgtkglobal.h"
+#include <webkitgtkglobal.h>
 
 extern PyMethodDef pywebkitgtk_functions[];
 
