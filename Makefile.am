@@ -33,6 +33,11 @@ webkitgtk.c: webkitgtk.defs webkitgtk.override
 	&& cp gen-$*.c $*.c \
 	&& rm -f gen-$*.c
 
+dist-hook: ChangeLog
+
+ChangeLog: .git/HEAD
+	git log --stat > ChangeLog
+
 uninstall-hook:
 	-rmdir $(webkitgtkdir)
 
