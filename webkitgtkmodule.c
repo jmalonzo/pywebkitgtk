@@ -23,6 +23,7 @@
 
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
+#include "webkitgtkglobal.h"
 
 extern PyMethodDef pywebkitgtk_functions[];
 
@@ -33,7 +34,12 @@ initwebkitgtk(void)
 {
     PyObject *m, *d;
 
-    init_pygobject ();
+    if (!pygobject_init(-1, -1, -1)) {
+        PyErr_Print();
+        Py_FatalError ("can't initialise module gobject");
+    }
+
+    webkit_init();
 
     m = Py_InitModule ("webkitgtk", pywebkitgtk_functions);
     d = PyModule_GetDict (m);

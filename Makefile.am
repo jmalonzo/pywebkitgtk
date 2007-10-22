@@ -36,7 +36,18 @@ webkitgtk.c: webkitgtk.defs webkitgtk.override
 uninstall-hook:
 	-rmdir $(webkitgtkdir)
 
-DISTCLEANFILES = webkitgtk.errors
+
+MAINTAINERCLEANFILES = \
+	aclocal.m4 \
+	compile \
+	config.guess \
+	config.sub \
+	configure \
+	depcomp \
+	install-sh \
+	ltmain.sh \
+	missing \
+	Makefile.in   
 
 CLEANFILES = \
 	gen-webkitgtk.c \
