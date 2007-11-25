@@ -1,8 +1,5 @@
 ;; -*- scheme -*-
 
-;; TODO 
-;; webkit_gtk_page_set_settings, webkit_gtk_page_get_settings
-
 ; object definitions ...
 (define-object Page
   (in-module "GtkWebKit")
@@ -19,6 +16,13 @@
   (gtype-id "WEBKIT_TYPE_FRAME")
 )
 
+(define-object NetworkRequest
+  (in-module "GtkWebKit")
+  (parent "GObject")
+  (c-name "WebKitNetworkRequest")
+  (gtype-id "WEBKIT_TYPE_NETWORK_REQUEST")
+)
+
 ;; Enumerations and flags ...
 
 
@@ -31,18 +35,15 @@
   (return-type "GtkWidget*")
 )
 
-(define-method open
-  (of-object "WebKitPage")
-  (c-name "webkit_page_open")
-  (return-type "none")
-  (parameters
-   '("const-char*" "url")
-  )
-)
-
 (define-method can_go_backward
   (of-object "WebKitPage")
   (c-name "webkit_page_can_go_backward")
+  (return-type "gboolean")
+)
+
+(define-method can_go_forward
+  (of-object "WebKitPage")
+  (c-name "webkit_page_can_go_forward")
   (return-type "gboolean")
 )
 
@@ -50,12 +51,6 @@
   (of-object "WebKitPage")
   (c-name "webkit_page_go_backward")
   (return-type "none")
-)
-
-(define-method can_go_forward
-  (of-object "WebKitPage")
-  (c-name "webkit_page_can_go_forward")
-  (return-type "gboolean")
 )
 
 (define-method go_forward
@@ -70,6 +65,15 @@
   (return-type "none")
 )
 
+(define-method open
+  (of-object "WebKitPage")
+  (c-name "webkit_page_open")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "url")
+  )
+)
+
 (define-method reload
   (of-object "WebKitPage")
   (c-name "webkit_page_reload")
@@ -81,8 +85,8 @@
   (c-name "webkit_page_load_html_string")
   (return-type "none")
   (parameters
-   '("const-char*" "content")
-   '("const-char*" "base_url")
+   '("const-gchar*" "content")
+   '("const-gchar*" "base_url")
    )
 )
 
@@ -91,10 +95,10 @@
   (c-name "webkit_page_load_string")
   (return-type "none")
   (parameters
-   '("const-char*" "content")
-   '("const-char*" "content_mime_type")
-   '("const-char*" "content_encoding")
-   '("const-char*" "base_url")
+   '("const-gchar*" "content")
+   '("const-gchar*" "content_mime_type")
+   '("const-gchar*" "content_encoding")
+   '("const-gchar*" "base_url")
    )
 )
 
@@ -109,17 +113,34 @@
   (c-name "webkit_page_execute_script")
   (return-type "none")
   (parameters
-   '("const-char*" "script")
+   '("const-gchar*" "script")
    )
 )
 
+(define-method get_editable
+  (of-object "WebKitPage")
+  (c-name "webkit_page_get_editable")
+  (return-type "gboolean")
+)
+
+(define-method set_editable
+  (of-object "WebKitPage")
+  (c-name "webkit_page_set_editable")
+  (return-type "none")
+  (parameters
+   '("gboolean" "flag")
+   )
+)
 ;; From webkitgtkframe.h
 
 (define-function webkit_frame_new
   (is-constructor-of "WebKitFrame")
   (c-name "webkit_frame_new")
   (caller-owns-return #t)
-  (return-type "GObject*")
+  (return-type "WebKitFrame*")
+  (parameters
+   '("WebKitPage*" "page")
+   )
 )
 
 (define-method get_page
@@ -129,16 +150,92 @@
   (return-type "WebKitPage*")
 )
 
+(define-method get_name
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_get_name")
+  (caller-owns-return #f)
+  (return-type "const-gchar*")
+)
+
 (define-method get_title
   (of-object "WebKitFrame")
   (c-name "webkit_frame_get_title")
   (caller-owns-return #f)
-  (return-type "gchar*")
+  (return-type "const-gchar*")
 )
 
 (define-method get_location
   (of-object "WebKitFrame")
   (c-name "webkit_frame_get_location")
   (caller-owns-return #f)
-  (return-type "gchar*")
+  (return-type "const-gchar*")
+)
+
+(define-method get_parent
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_get_parent")
+  (caller-owns-return #f)
+  (return-type "WebKitFrame*")
+)
+
+(define-method load_request
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_load_request")
+  (return-type "none")
+  (parameters
+   '("WebKitNetworkRequest*" "request")
+   )
+)
+
+(define-method stop_loading
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_stop_loading")
+  (return-type "none")
+)
+
+(define-method reload
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_reload")
+  (return-type "none")
+)
+
+(define-method find_frame
+  (of-object "WebKitFrame")
+  (c-name "webkit_frame_find_frame")
+  (caller-owns-return #f)
+  (return-type "WebKitFrame*")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)
+
+;; TODO: wrap webkit_frame_get_global_context
+
+
+;; From webkitgtknetworkrequest.h
+
+(define-function webkit_network_request_new
+  (is-constructor-of "WebKitNetworkRequest")
+  (c-name "webkit_network_request_new")
+  (caller-owns-return #t)
+  (return-type "WebKitNetworkRequest*")
+  (parameters
+   '("const-gchar*" "url")
+   )
+)
+
+(define-method set_url
+  (of-object "WebKitNetworkRequest")
+  (c-name "webkit_network_request_set_url")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "url")
+   )
+)
+
+(define-method get_url
+  (of-object "WebKitNetworkRequest")
+  (c-name "webkit_network_request_get_url")
+  (caller-owns-return #f)
+  (return-type "const-gchar*")
 )

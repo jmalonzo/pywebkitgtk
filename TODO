@@ -1,0 +1,12 @@
+
+WebKit
+---
+
+ * make enum types glib'd
+
+PyWebKitGtk
+---
+
+ * wrap enum types
+
+ 

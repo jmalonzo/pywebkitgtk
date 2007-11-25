@@ -6,6 +6,7 @@ headers
 #include "pygobject.h"
 #include "webkitgtkpage.h"
 #include "webkitgtkframe.h"
+#include "webkitgtknetworkrequest.h"
 
 #include <pygtk/pygtk.h>
 
@@ -22,4 +23,5 @@ ignore-glob
 ignore
   webkit_frame_get_type
   webkit_page_get_type
+  webkit_network_request_get_type
 %%
