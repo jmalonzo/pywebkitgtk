@@ -108,23 +108,33 @@ class WebToolbar(gtk.Toolbar):
             self._browser.reload()
 
     def _show_stop_icon(self):
-        self._stop_and_reload.set_stock_id(gtk.STOCK_MEDIA_STOP)
+        self._stop_and_reload.set_stock_id(gtk.STOCK_CANCEL)
 
     def _show_reload_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
 
-class BrowserPage(webkitgtk.Page):
+class BrowserPage(webkitgtk.WebView):
     def __init__(self):
-	webkitgtk.Page.__init__(self)
+	webkitgtk.WebView.__init__(self)
 
 class WebStatusBar(gtk.Statusbar):
     def __init__(self):
         gtk.Statusbar.__init__(self)
+        self.iconbox = gtk.EventBox()
+        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO, 16))
+        self.pack_start(self.iconbox, False, False, 6)
+        self.iconbox.hide_all()
 
     def display(self, text, context=None):
         cid = self.get_context_id("pywebkitgtk")
         self.push(cid, str(text))
+
+    def show_javascript_info(self):
+        self.iconbox.show()
+
+    def hide_javascript_info(self):
+        self.iconbox.hide()
 
 
 class WebBrowser(gtk.Window):
@@ -144,6 +154,16 @@ class WebBrowser(gtk.Window):
         self._browser.connect("icon-loaded", self._icon_loaded_cb)
         self._browser.connect("selection-changed", self._selection_changed_cb)
         self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
+        self._browser.connect("navigation-requested", self._navigation_requested_cb)
+
+        self._browser.connect("console-message",
+                              self._javascript_console_message_cb)
+        self._browser.connect("script-alert",
+                              self._javascript_script_alert_cb)
+        self._browser.connect("script-confirm",
+                              self._javascript_script_confirm_cb)
+        self._browser.connect("script-prompt",
+                              self._javascript_script_prompt_cb)
 
         self._scrolled_window = gtk.ScrolledWindow()
         self._scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -198,19 +218,14 @@ class WebBrowser(gtk.Window):
         self._set_title(_("%s - %s") % (title,uri))
 
     def _hover_link_cb(self, page, title, url):
-    	# FIXME there's a bug in current webkit gtk+ implementation of hovering-over-link that it
-	# sends the signal everytime the mouse moves in the drawing area
-	# this is bug: http://bugs.webkit.org/show_bug.cgi?id=15299
-	# specifically a bug in ChromeClient::mouseDidMoveOverElement().
-	# please fix!
     	if page and url:
 	   self._statusbar.display(url)
 	else:
  	   self._statusbar.display('')
-        print title, ' ', url
 
     def _statusbar_text_changed_cb(self, page, text):
-        print "status ", text
+        if text:
+            self._statusbar.display(text)
 
     def _icon_loaded_cb(self):
         print "icon loaded"
@@ -221,6 +236,24 @@ class WebBrowser(gtk.Window):
     def _set_scroll_adjustments_cb(self, page, hadjustment, vadjustment):
         self._scrolled_window.props.hadjustment = hadjustment
         self._scrolled_window.props.vadjustment = vadjustment
+
+    def _navigation_requested_cb(self, page, frame, networkRequest):
+        print "navigation requested cb"
+        return 1 # fixme
+
+    def _javascript_console_message_cb(self, page, message, line, sourceid):
+        self._statusbar.show_javascript_info()
+
+    def _javascript_script_alert_cb(self, page, frame, message):
+        pass
+
+    def _javascript_script_confirm_cb(self, page, frame, message, isConfirmed):
+        pass
+
+    def _javascript_script_prompt_cb(self, page, frame, message, default, text):
+        pass
+
+
 
 if __name__ == "__main__":
     webbrowser = WebBrowser()

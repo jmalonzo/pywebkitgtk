@@ -24,7 +24,7 @@
 
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
-#include <webkitgtkglobal.h>
+#include <webkitglobal.h>
 
 extern PyMethodDef pywebkitgtk_functions[];
 

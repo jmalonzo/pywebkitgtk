@@ -2,11 +2,11 @@
 %%
 headers
 #include <Python.h>
-
+#define NO_IMPORT
 #include "pygobject.h"
-#include "webkitgtkpage.h"
-#include "webkitgtkframe.h"
-#include "webkitgtknetworkrequest.h"
+#include "webkitwebview.h"
+#include "webkitwebframe.h"
+#include "webkitnetworkrequest.h"
 
 #include <pygtk/pygtk.h>
 
@@ -21,7 +21,7 @@ ignore-glob
   _*
 %%
 ignore
-  webkit_frame_get_type
-  webkit_page_get_type
+  webkit_web_frame_get_type
+  webkit_web_view_get_type
   webkit_network_request_get_type
 %%

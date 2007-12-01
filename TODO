@@ -8,5 +8,5 @@ PyWebKitGtk
 ---
 
  * wrap enum types
-
+ * wrap the JavaScriptCore API
  
