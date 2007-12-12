@@ -218,8 +218,11 @@
    )
 )
 
-;; TODO: wrap webkit_web_frame_get_global_context
-
+(define-method get_global_context
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_get_global_context")
+  (return-type "JSGlobalContextRef")
+)
 
 ;; From webkitgtknetworkrequest.h
 

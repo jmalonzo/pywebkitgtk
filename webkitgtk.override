@@ -7,9 +7,11 @@ headers
 #include "webkitwebview.h"
 #include "webkitwebframe.h"
 #include "webkitnetworkrequest.h"
+#include "JavaScriptCore/JSContextRef.h"
+
+#include "javascriptcore-types.h"
 
 #include <pygtk/pygtk.h>
-
 %%
 modulename webkitgtk
 %%
@@ -25,3 +27,14 @@ ignore
   webkit_web_view_get_type
   webkit_network_request_get_type
 %%
+override webkit_web_frame_get_global_context noargs
+static PyObject *
+_wrap_webkit_web_frame_get_global_context (PyGObject *self)
+{
+    JSGlobalContextRef ref;
+
+    ref = webkit_web_frame_get_global_context (WEBKIT_WEB_FRAME (self->obj));
+
+    return wrap_JSGlobalContextRef (ref);
+}
+
