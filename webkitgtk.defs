@@ -140,6 +140,87 @@
    '("gboolean" "flag")
    )
 )
+
+(define-method search_text
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_search_text")
+  (return-type "gboolean")
+  (parameters
+   ("const-gchar*" "string")
+   ("gboolean" "case_sensitive")
+   ("gboolean" "forward")
+   ("gboolean" "wrap")
+   )
+)
+
+(define-method mark_text_matches
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_mark_text_matches")
+  (return-type "guint")
+  (parameters
+   ("const-gchar*" "string")
+   ("gboolean" "case_sensitive")
+   ("guint" "limit")
+   )
+)
+
+(define-method set_highlight_text_matches
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_highlight_text_matches")
+  (return-type "none")
+  (parameters
+   ("gboolean" "highlight")
+   )
+)
+
+(define-method can_cut_clipboard
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_cut_clipboard")
+  (return-type "none")
+)
+
+(define-method can_copy_clipboard
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_copy_clipboard")
+  (return-type "none")
+)
+
+(define-method can_paste_clipboard
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_paste_clipboard")
+  (return-type "none")
+)
+
+(define-method delete_selection
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_delete_selection")
+  (return-type "none")
+)
+
+(define-method has_selection
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_has_selection")
+  (return-type "gboolean")
+)
+
+(define-method select_all
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_select_all")
+  (return-type "none")
+)
+
+(define-method get_copy_target_list
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_copy_target_list")
+  (return-type "GtkTargetList*")
+)
+
+(define-method get_paste_target_list
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_paste_target_list")
+  (return-type "GtkTargetList*")
+)
+
 ;; From webkitgtkframe.h
 
 (define-function webkit_web_frame_new
@@ -173,10 +254,9 @@
   (return-type "const-gchar*")
 )
 
-(define-method get_location
+(define-method get_uri
   (of-object "WebKitWebFrame")
-  (c-name "webkit_web_frame_get_location")
-  (caller-owns-return #f)
+  (c-name "webkit_web_frame_get_uri")
   (return-type "const-gchar*")
 )
 

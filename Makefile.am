@@ -56,12 +56,13 @@ MAINTAINERCLEANFILES = \
 	install-sh \
 	ltmain.sh \
 	missing \
-	Makefile.in   
+	Makefile.in \
+	webkitgtk.errors
 
 CLEANFILES = \
 	gen-webkitgtk.c \
 	webkitgtk.c \
-	webkitgtk_la-webkitgtk.loT	
+	webkitgtk_la-webkitgtk.loT
 
 EXTRA_DIST = \
 	webbrowser.py \

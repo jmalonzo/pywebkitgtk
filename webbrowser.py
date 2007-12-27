@@ -201,7 +201,7 @@ class WebBrowser(gtk.Window):
     def _loading_start_cb(self, page, frame):
         main_frame = self._browser.get_main_frame()
         if frame is main_frame:
-            self._set_title(_("Loading %s - %s") % (frame.get_title(),frame.get_location()))
+            self._set_title(_("Loading %s - %s") % (frame.get_title(),frame.get_uri()))
         self._toolbar.set_loading(True)
 
     def _loading_stop_cb(self, page, frame):
