@@ -1,17 +1,59 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
+/*
+ Copyright (C) 2006, Red Hat, Inc.
+ Copyright (C) 2007, One Laptop Per Child
+ Copyright (C) 2007-2008 Jan Alonzo <jmalonzo@unpluggable.com>
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 %%
 headers
 #include <Python.h>
 #define NO_IMPORT
-#include "pygobject.h"
-#include "webkitwebview.h"
-#include "webkitwebframe.h"
-#include "webkitnetworkrequest.h"
-#include "JavaScriptCore/JSContextRef.h"
+#include <pygtk/pygtk.h>
+#include <pygobject.h>
+#include <webkit/webkit.h>
+#include <JavaScriptCore/JSContextRef.h>
 
 #include "javascriptcore-types.h"
+%%
+body
+static PyObject *
+_helper_wrap_gobject_glist (GList *list)
+{
+    PyObject *py_list;
+    GList *tmp;
 
-#include <pygtk/pygtk.h>
+    if ((py_list = PyList_New(0)) == NULL) {
+        return NULL;
+    }
+    for (tmp = list; tmp != NULL; tmp = tmp->next) {
+        PyObject *py_obj = pygobject_new(G_OBJECT(tmp->data));
+
+        if (py_obj == NULL) {
+            Py_DECREF(py_list);
+            return NULL;
+        }
+        
+        PyList_Append(py_list, py_obj);
+        Py_DECREF(py_obj);
+    }
+
+    return py_list;
+}
 %%
 modulename webkitgtk
 %%
@@ -23,7 +65,9 @@ ignore-glob
   _*
 %%
 ignore
+  webkit_web_back_forward_list_get_type
   webkit_web_frame_get_type
+  webkit_web_history_item_get_type
   webkit_web_view_get_type
   webkit_network_request_get_type
 %%
@@ -37,4 +81,35 @@ _wrap_webkit_web_frame_get_global_context (PyGObject *self)
 
     return wrap_JSGlobalContextRef (ref);
 }
+%%
+override webkit_web_back_forward_list_get_back_list_with_limit onearg
+static PyObject *
+_wrap_webkit_web_back_forward_list_get_back_list_with_limit (PyGObject *self, PyObject *args)
+{
+    GList *list;
+    PyObject *py_limit;
+    int limit = 10;
+    
+    if (! PyArg_ParseTuple (args, "i", &limit))
+        return NULL;
+    
+    list = webkit_web_back_forward_list_get_back_list_with_limit(WEBKIT_WEB_BACK_FORWARD_LIST(self->obj),limit);
 
+    return _helper_wrap_gobject_glist (list);
+}
+%%
+override webkit_web_back_forward_list_get_forward_list_with_limit onearg
+static PyObject *
+_wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self, PyObject *args)
+{
+    GList *list;
+    gint limit;
+    
+    if (! PyArg_ParseTuple (args, "i:WebBackForwardList.get_forward_list_with_limit",
+                            &limit))
+        return NULL;                                                                                                                         
+    
+    list = webkit_web_back_forward_list_get_forward_list_with_limit(WEBKIT_WEB_BACK_FORWARD_LIST(self->obj),limit);
+
+    return _helper_wrap_gobject_glist (list);
+}

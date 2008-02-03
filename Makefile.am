@@ -15,7 +15,7 @@ webkitgtkdir = $(pkgpyexecdir)/webkitgtk
 
 pkgpyexec_LTLIBRARIES = webkitgtk.la
 
-webkitgtk_la_CFLAGS = $(GTK_CFLAGS) $(WEBKITGTK_CFLAGS)
+webkitgtk_la_CFLAGS = $(PYGTK_CFLAGS) $(WEBKITGTK_CFLAGS)
 webkitgtk_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkitgtk
 webkitgtk_la_LIBADD = $(WEBKITGTK_LIBS) $(PYTHON_LIBS)
 webkitgtk_la_SOURCES = \

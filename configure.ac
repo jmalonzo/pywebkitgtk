@@ -19,8 +19,6 @@ dnl check for python
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
-GTK_DOC_CHECK
-
 dnl get rid of -export-dynamic stuff from the configure flags...
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
 
@@ -44,7 +42,7 @@ AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
 
 dnl check for webkitgtk
-PKG_CHECK_MODULES(WEBKITGTK, WebKitGtk)
+PKG_CHECK_MODULES(WEBKITGTK, webkit-1.0)
 AC_SUBST(WEBKITGTK_CFLAGS)
 AC_SUBST(WEBKITGTK_LIBS)
 

@@ -8,12 +8,32 @@
   (gtype-id "WEBKIT_TYPE_WEB_VIEW")
 )
 
-;; waiting for upstream header fix
-(define-object Frame
+(define-object WebFrame
   (in-module "WebKitGtk")
   (parent "GObject")
   (c-name "WebKitWebFrame")
   (gtype-id "WEBKIT_TYPE_WEB_FRAME")
+)
+
+(define-object WebHistoryItem
+  (in-module "WebKitGtk")
+  (parent "GObject")
+  (c-name "WebKitWebHistoryItem")
+  (gtype-id "WEBKIT_TYPE_WEB_HISTORY_ITEM")
+)
+
+(define-object WebBackForwardList
+  (in-module "WebKitGtk")
+  (parent "GObject")
+  (c-name "WebKitWebBackForwardList")
+  (gtype-id "WEBKIT_TYPE_WEB_BACK_FORWARD_LIST")
+)
+
+(define-object WebSettings
+  (in-module "WebKitGtk")
+  (parent "GObject")
+  (c-name "WebKitWebSettings")
+  (gtype-id "WEBKIT_TYPE_WEB_SETTINGS")
 )
 
 (define-object NetworkRequest
@@ -35,7 +55,7 @@
 ;   )
 ;)
 
-;; From webkitgtkpage.h
+;; From <webkit/webkitwebview.h>
 
 (define-function webkit_web_view_new
   (is-constructor-of "WebKitWebView")
@@ -44,9 +64,32 @@
   (return-type "GtkWidget*")
 )
 
-(define-method can_go_backward
+(define-method set_maintains_back_forward_list
   (of-object "WebKitWebView")
-  (c-name "webkit_web_view_can_go_backward")
+  (c-name "webkit_web_view_set_maintains_back_forward_list")
+  (parameters
+   '("gboolean" "flag")
+   )
+)
+
+(define-method get_back_forward_list
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_back_forward_list")
+  (return-type "WebKitWebBackForwardList*")
+)
+
+(define-method go_to_back_forward_item
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_go_to_back_forward_item")
+  (return-type "gboolean")
+  (parameters
+   '("WebKitWebHistoryItem*" "item")
+   )
+)
+
+(define-method can_go_back
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_go_back")
   (return-type "gboolean")
 )
 
@@ -56,9 +99,9 @@
   (return-type "gboolean")
 )
 
-(define-method go_backward
+(define-method go_back
   (of-object "WebKitWebView")
-  (c-name "webkit_web_view_go_backward")
+  (c-name "webkit_web_view_go_back")
   (return-type "none")
 )
 
@@ -66,6 +109,15 @@
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_go_forward")
   (return-type "none")
+)
+
+(define-method go_back_or_forward
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_go_back_or_forward")
+  (return-type "none")
+  (parameters
+   '("gint" "steps")
+   )
 )
 
 (define-method stop_loading
@@ -191,6 +243,18 @@
   (return-type "none")
 )
 
+(define-method cut_clipboard
+  (of-object "WebkitWebView")
+  (c-name "webkit_web_view_cut_clipboard")
+  (return-type "none")
+)
+
+(define-method paste_clipboard
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_paste_clipboard")
+  (return-type "none")
+)
+
 (define-method delete_selection
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_delete_selection")
@@ -221,7 +285,7 @@
   (return-type "GtkTargetList*")
 )
 
-;; From webkitgtkframe.h
+;; From <webkit/webkitwebframe.h>
 
 (define-function webkit_web_frame_new
   (is-constructor-of "WebKitWebFrame")
@@ -236,21 +300,18 @@
 (define-method get_web_view
   (of-object "WebKitWebFrame")
   (c-name "webkit_web_frame_get_web_view")
-  (caller-owns-return #t)
   (return-type "WebKitWebView*")
 )
 
 (define-method get_name
   (of-object "WebKitWebFrame")
   (c-name "webkit_web_frame_get_name")
-  (caller-owns-return #f)
   (return-type "const-gchar*")
 )
 
 (define-method get_title
   (of-object "WebKitWebFrame")
   (c-name "webkit_web_frame_get_title")
-  (caller-owns-return #f)
   (return-type "const-gchar*")
 )
 
@@ -263,7 +324,6 @@
 (define-method get_parent
   (of-object "WebKitWebFrame")
   (c-name "webkit_web_frame_get_parent")
-  (caller-owns-return #f)
   (return-type "WebKitWebFrame*")
 )
 
@@ -304,7 +364,7 @@
   (return-type "JSGlobalContextRef")
 )
 
-;; From webkitgtknetworkrequest.h
+;; From <webkit/webkitknetworkrequest.h>
 
 (define-function webkit_network_request_new
   (is-constructor-of "WebKitNetworkRequest")
@@ -328,6 +388,192 @@
 (define-method get_uri
   (of-object "WebKitNetworkRequest")
   (c-name "webkit_network_request_get_uri")
-  (caller-owns-return #f)
   (return-type "const-gchar*")
+)
+
+
+;; From <webkit/webkitwebhistoryitem.h>
+
+(define-function webkit_web_history_item_new
+  (is-constructor-of "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_new")
+  (caller-owns-return #t)
+  (return-type "WebKitWebHistoryItem*")
+)
+
+(define-function webkit_web_history_item_new_with_data
+  (is-constructor-of "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_new_with_data")
+  (caller-owns-return #t)
+  (return-type "WebKitWebHistoryItem*")
+  (properties
+   '("uri" (argname "uri"))
+   '("title" (argname "title"))
+   )
+)
+
+(define-method get_title
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_get_title")
+  (return-type "const-gchar*")
+)
+
+(define-method get_alternate_title
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_get_alternate_title")
+  (return-type "const-gchar*")
+)
+
+(define-method set_alternate_title
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_set_alternate_title")
+  (parameters
+   '("const-gchar*" "title")
+   )
+)
+
+(define-method get_uri
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_get_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method get_original_uri
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_get_original_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method get_last_visited_time
+  (of-object "WebKitWebHistoryItem")
+  (c-name "webkit_web_history_item_get_last_visited_time")
+  (return-type "gdouble")
+)
+
+
+;; From <webkit/webkitwebbackforwardlist.h>
+
+(define-function webkit_web_back_forward_list_new_with_web_view
+  (is-constructor-of "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_new_with_web_view")
+  (caller-owns-return #t)
+  (return-type "WebKitWebHistoryItem*")
+)
+
+(define-method go_forward
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_go_forward")
+  (return-type "none")
+)
+
+(define-method go_back
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_go_back")
+  (return-type "none")
+)
+
+(define-method contains_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_contains_item")
+  (return-type "gboolean")
+  (parameters
+   '("WebKitWebHistoryItem*" "history_item")
+   )
+)
+
+(define-method go_to_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_go_to_item")
+  (return-type "none")
+  (parameters
+   '("WebKitWebHistoryItem*" "history_item")
+   )
+)
+
+(define-method get_forward_list_with_limit
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_forward_list_with_limit")
+  (return-type "GList*")
+  (parameters
+   '("gint" "limit")
+   )
+)
+
+(define-method get_back_list_with_limit
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_back_list_with_limit")
+  (return-type "GList*")
+  (parameters
+   '("gint" "limit")
+   )
+)
+
+(define-method get_back_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_back_item")
+  (return-type "WebKitWebHistoryItem*")
+)
+
+(define-method get_current_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_current_item")
+  (return-type "WebKitWebHistoryItem*")
+)
+
+(define-method get_forward_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_forward_item")
+  (return-type "WebKitWebHistoryItem*")
+)
+
+(define-method get_nth_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_nth_item")
+  (return-type "WebKitWebHistoryItem*")
+  (parameters
+   '("gint" "index")
+   )
+)
+
+(define-method get_back_length
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_back_length")
+  (return-type "gint")
+)
+
+(define-method get_forward_length
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_forward_length")
+  (return-type "gint")
+)
+
+(define-method get_limit
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_get_limit")
+  (return-type "gint")
+)
+
+(define-method set_limit
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_set_limit")
+  (return-type "none")
+  (parameters
+   '("gint" "limit")
+   )
+)
+
+;; From <webkit/webkitwebsettings.h>
+
+(define-function webkit_web_settings_new
+  (is-constructor-of "WebKitWebSettings")
+  (c-name "webkit_web_settings_new")
+  (caller-owns-return #t)
+  (return-type "WebKitWebSettings*")
+)
+
+(define-method copy
+  (of-object "WebKitWebSettings")
+  (c-name "webkit_web_settings_copy")
+  (caller-owns-return #f)
+  (return-type "WebKitWebSettings*")
 )

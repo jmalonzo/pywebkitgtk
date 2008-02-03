@@ -19,6 +19,7 @@
 
 import os
 import logging
+import time
 from gettext import gettext as _
 
 import gtk
@@ -30,13 +31,13 @@ class WebToolbar(gtk.Toolbar):
         gtk.Toolbar.__init__(self)
 
         self._browser = browser
+        self._back_forward_list = self._browser.get_back_forward_list()
 
         self._back = gtk.ToolButton(gtk.STOCK_GO_BACK)
         self._back.set_tooltip(gtk.Tooltips(),_('Back'))
         self._back.props.sensitive = False
         self._back.connect('clicked', self._go_back_cb)
         self.insert(self._back, -1)
-        self._back.show()
 
         self._forward = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
         self._forward.set_tooltip(gtk.Tooltips(),_('Forward'))
@@ -51,6 +52,27 @@ class WebToolbar(gtk.Toolbar):
         self._stop_and_reload.show()
         self._loading = False
 
+        self.insert(gtk.SeparatorToolItem(), -1)
+
+        # back list
+        self._back_list_menu_item = gtk.ToolButton(gtk.STOCK_JUSTIFY_LEFT)
+        self._back_list_menu_item.connect('clicked', self._back_list_cb)
+        self._back_list_menu_item.props.sensitive = False
+        self.insert(self._back_list_menu_item, -1)
+        self._back_list_menu_item.show()
+
+        self._back_menu = gtk.Menu()
+
+        # forward list
+        self._forward_list_menu_item = gtk.ToolButton(gtk.STOCK_JUSTIFY_RIGHT)
+        self._forward_list_menu_item.connect('clicked', self._forward_list_cb)
+        self._forward_list_menu_item.sensitive = False
+        self.insert(self._forward_list_menu_item, -1)
+        self._forward_list_menu_item.show()
+
+        self._forward_menu = gtk.Menu()
+
+        # location entry
         self._entry = gtk.Entry()
         self._entry.connect('activate', self._entry_activate_cb)
         self._current_uri = None
@@ -82,30 +104,48 @@ class WebToolbar(gtk.Toolbar):
         self._current_uri = address
 
     def _update_navigation_buttons(self):
-        can_go_back = self._browser.can_go_backward()
+        can_go_back = self._browser.can_go_back()
         self._back.props.sensitive = can_go_back
+        self._back_list_menu_item.props.sensitive = can_go_back
 
         can_go_forward = self._browser.can_go_forward()
         self._forward.props.sensitive = can_go_forward
+        self._forward_list_menu_item.props.sensitive = can_go_forward
 
     def _entry_activate_cb(self, entry):
         self._browser.open(entry.props.text)
-        #self._browser.grab_focus()
 
     def _go_back_cb(self, button):
-        self._browser.go_backward()
+        self._browser.go_back()
 
     def _go_forward_cb(self, button):
         self._browser.go_forward()
 
-    def _title_changed_cb(self, widget, title, uri):
-        self._set_address(uri)
+    def _title_changed_cb(self, widget, frame, title):
+        self._set_address(frame.get_uri())
 
     def _stop_and_reload_cb(self, button):
         if self._loading:
             self._browser.stop_loading()
         else:
             self._browser.reload()
+
+    def _back_list_cb(self, button):
+        #print self._back_forward_list.get_back_length()
+        l = self._back_forward_list.get_back_list_with_limit(10)
+        for i in l:
+            item = gtk.MenuItem(i.get_title())
+            self._back_menu.append(item)
+        self._back_menu.popup(self, self._back_list_menu_item, None, 1, int(time.time()))
+
+    def _forward_list_cb(self, button):
+        print self._back_forward_list.get_forward_length()
+        l = self._back_forward_list.get_forward_list_with_limit(10)
+        for i in l:
+            item = gtk.MenuItem(i.get_title())
+            self._back_menu.append(item)
+        self._back_menu.popup(self, self._back_list_menu_item, None, 1, int(time.time()))
+
 
     def _show_stop_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_CANCEL)
@@ -154,7 +194,7 @@ class WebBrowser(gtk.Window):
         self._browser.connect("icon-loaded", self._icon_loaded_cb)
         self._browser.connect("selection-changed", self._selection_changed_cb)
         self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
-        self._browser.connect("navigation-requested", self._navigation_requested_cb)
+#        self._browser.connect("navigation-requested", self._navigation_requested_cb)
 
         self._browser.connect("console-message",
                               self._javascript_console_message_cb)
@@ -214,8 +254,8 @@ class WebBrowser(gtk.Window):
     def _set_progress(self, progress):
         self._statusbar.display(progress)
 
-    def _title_changed_cb(self, widget, title, uri):
-        self._set_title(_("%s - %s") % (title,uri))
+    def _title_changed_cb(self, widget, frame, title):
+        self._set_title(_("%s") % title)
 
     def _hover_link_cb(self, page, title, url):
     	if page and url:

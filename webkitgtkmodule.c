@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2006-2007, Red Hat, Inc.
- * Copyright (C) 2007 Jan Michael Alonzo <jmalonzo@unpluggable.com>
+ * Copyright (C) 2007-2008 Jan Michael Alonzo <jmalonzo@unpluggable.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
