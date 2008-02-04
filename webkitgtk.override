@@ -65,6 +65,7 @@ ignore-glob
   _*
 %%
 ignore
+  webkit_web_settings_get_type
   webkit_web_back_forward_list_get_type
   webkit_web_frame_get_type
   webkit_web_history_item_get_type

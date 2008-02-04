@@ -194,6 +194,7 @@ class WebBrowser(gtk.Window):
         self._browser.connect("icon-loaded", self._icon_loaded_cb)
         self._browser.connect("selection-changed", self._selection_changed_cb)
         self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
+        self._browser.connect("populate-popup", self._populate_popup)
 #        self._browser.connect("navigation-requested", self._navigation_requested_cb)
 
         self._browser.connect("console-message",
@@ -292,6 +293,11 @@ class WebBrowser(gtk.Window):
 
     def _javascript_script_prompt_cb(self, page, frame, message, default, text):
         pass
+
+    def _populate_popup(self, view, menu):
+        iampywebkitgtk = gtk.MenuItem(label="PyWebKitGtk!")
+        menu.append(iampywebkitgtk)
+        menu.show_all()
 
 
 
