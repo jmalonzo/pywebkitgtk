@@ -1,8 +1,3 @@
-INCLUDES = \
-	$(PYTHON_INCLUDES)	\
-	$(PYGTK_CFLAGS)		\
-	$(WEBKITGTK_CFLAGS)
-
 defsdir = $(datadir)/pygtk/2.0/defs
 defs_DATA = webkitgtk.defs
 
@@ -15,9 +10,10 @@ webkitgtkdir = $(pkgpyexecdir)/webkitgtk
 
 pkgpyexec_LTLIBRARIES = webkitgtk.la
 
-webkitgtk_la_CFLAGS = $(PYGTK_CFLAGS) $(WEBKITGTK_CFLAGS)
+webkitgtk_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS)
+webkitgtk_la_CFLAGS = $(DEPS_CFLAGS)
 webkitgtk_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkitgtk
-webkitgtk_la_LIBADD = $(WEBKITGTK_LIBS) $(PYTHON_LIBS)
+webkitgtk_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
 webkitgtk_la_SOURCES = \
 	webkitgtkmodule.c \
 	javascriptcore-types.c \
@@ -48,6 +44,7 @@ uninstall-hook:
 
 MAINTAINERCLEANFILES = \
 	aclocal.m4 \
+	config.h.in \
 	compile \
 	config.guess \
 	config.sub \
@@ -61,8 +58,7 @@ MAINTAINERCLEANFILES = \
 
 CLEANFILES = \
 	gen-webkitgtk.c \
-	webkitgtk.c \
-	webkitgtk_la-webkitgtk.loT
+	webkitgtk.c
 
 EXTRA_DIST = \
 	webbrowser.py \

@@ -1,7 +1,5 @@
 dnl configure script for pywebkitgtk
-dnl Copyright (C) Jan Michael Alonzo jmalonzo@unpluggable.com
-
-AC_INIT([pywebkitgtk],[0.3],[jmalonzo@unpluggable.com])
+AC_INIT([pywebkitgtk],[0.3],[http://bugzilla.gnome.org/browse.cgi?product=pywebkitgtk])
 
 AC_PREREQ([2.59])
 AC_CONFIG_MACRO_DIR([m4])
@@ -22,12 +20,13 @@ AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 dnl get rid of -export-dynamic stuff from the configure flags...
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
 
-dnl check for gtk+
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
-
-dnl check for pygtk
-PKG_CHECK_MODULES(PYGTK, pygtk-2.0)
-AC_SUBST(PYGTK_CFLAGS)
+dnl check for dependencies
+PKG_CHECK_MODULES(DEPS, 
+                  [pygtk-2.0,
+                  webkit-1.0])
+AC_SUBST(DEPS_CFLAGS)
+AC_SUBST(DEPS_LIBS)
+AC_SUBST(DEPS_CPPFLAGS)
 
 dnl python code gen
 AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
@@ -40,11 +39,6 @@ AC_MSG_CHECKING(for pygtk defs)
 PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
-
-dnl check for webkitgtk
-PKG_CHECK_MODULES(WEBKITGTK, webkit-1.0)
-AC_SUBST(WEBKITGTK_CFLAGS)
-AC_SUBST(WEBKITGTK_LIBS)
 
 dnl output
 AC_OUTPUT([
