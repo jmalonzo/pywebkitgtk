@@ -1,26 +1,26 @@
 defsdir = $(datadir)/pygtk/2.0/defs
-defs_DATA = webkitgtk.defs
+defs_DATA = webkit.defs
 
 common_ldflags = -module -avoid-version $(PYTHON_LDFLAGS)
 
 pkgpythondir = $(pyexecdir)/gtk-2.0
 pkgpyexecdir = $(pyexecdir)/gtk-2.0
 
-webkitgtkdir = $(pkgpyexecdir)/webkitgtk
+webkitdir = $(pkgpyexecdir)/webkit
 
-pkgpyexec_LTLIBRARIES = webkitgtk.la
+pkgpyexec_LTLIBRARIES = webkit.la
 
-webkitgtk_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS)
-webkitgtk_la_CFLAGS = $(DEPS_CFLAGS)
-webkitgtk_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkitgtk
-webkitgtk_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
-webkitgtk_la_SOURCES = \
-	webkitgtkmodule.c \
+webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS)
+webkit_la_CFLAGS = $(DEPS_CFLAGS)
+webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
+webkit_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
+webkit_la_SOURCES = \
+	webkitmodule.c \
 	javascriptcore-types.c \
 	javascriptcore-types.h
-nodist_webkitgtk_la_SOURCES = webkitgtk.c
+nodist_webkit_la_SOURCES = webkit.c
 
-webkitgtk.c: webkitgtk.defs webkitgtk.override
+webkit.c: webkit.defs webkit.override
 
 .defs.c:
 	(cd $(srcdir)\
@@ -39,7 +39,7 @@ ChangeLog: .git/HEAD
 	git log --stat > ChangeLog
 
 uninstall-hook:
-	-rmdir $(webkitgtkdir)
+	-rmdir $(webkitdir)
 
 
 MAINTAINERCLEANFILES = \
@@ -54,13 +54,13 @@ MAINTAINERCLEANFILES = \
 	ltmain.sh \
 	missing \
 	Makefile.in \
-	webkitgtk.errors
+	webkit.errors
 
 CLEANFILES = \
-	gen-webkitgtk.c \
-	webkitgtk.c
+	gen-webkit.c \
+	webkit.c
 
 EXTRA_DIST = \
 	webbrowser.py \
-	webkitgtk.override \
-	webkitgtk.defs
+	webkit.override \
+	webkit.defs

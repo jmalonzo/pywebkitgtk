@@ -5,6 +5,7 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
+PROJECT="pywebkitgtk"
 ORIGDIR=`pwd`
 cd $srcdir
 

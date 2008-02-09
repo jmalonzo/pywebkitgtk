@@ -2,42 +2,42 @@
 
 ; object definitions ...
 (define-object WebView
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GtkContainer")
   (c-name "WebKitWebView")
   (gtype-id "WEBKIT_TYPE_WEB_VIEW")
 )
 
 (define-object WebFrame
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitWebFrame")
   (gtype-id "WEBKIT_TYPE_WEB_FRAME")
 )
 
 (define-object WebHistoryItem
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitWebHistoryItem")
   (gtype-id "WEBKIT_TYPE_WEB_HISTORY_ITEM")
 )
 
 (define-object WebBackForwardList
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitWebBackForwardList")
   (gtype-id "WEBKIT_TYPE_WEB_BACK_FORWARD_LIST")
 )
 
 (define-object WebSettings
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitWebSettings")
   (gtype-id "WEBKIT_TYPE_WEB_SETTINGS")
 )
 
 (define-object NetworkRequest
-  (in-module "WebKitGtk")
+  (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitNetworkRequest")
   (gtype-id "WEBKIT_TYPE_NETWORK_REQUEST")

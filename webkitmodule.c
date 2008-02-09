@@ -26,12 +26,12 @@
 #include <pygobject.h>
 #include <pygtk/pygtk.h>
 
-extern PyMethodDef pywebkitgtk_functions[];
+extern PyMethodDef pywebkit_functions[];
 
-void pywebkitgtk_register_classes (PyObject *d);
+void pywebkit_register_classes (PyObject *d);
 
 DL_EXPORT(void)
-initwebkitgtk(void)
+initwebkit(void)
 {
     PyObject *m, *d;
 
@@ -42,13 +42,13 @@ initwebkitgtk(void)
 
     init_pygtk();
 
-    m = Py_InitModule ("webkitgtk", pywebkitgtk_functions);
+    m = Py_InitModule ("webkit", pywebkit_functions);
     d = PyModule_GetDict (m);
 
-    pywebkitgtk_register_classes (d);
+    pywebkit_register_classes (d);
 
     if (PyErr_Occurred ()) {
         PyErr_Print();
-        Py_FatalError ("can't initialise module webkitgtk");
+        Py_FatalError ("can't initialise module webkit");
     }
 }

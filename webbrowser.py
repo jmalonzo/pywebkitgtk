@@ -23,7 +23,7 @@ import time
 from gettext import gettext as _
 
 import gtk
-import webkitgtk
+import webkit
 
 
 class WebToolbar(gtk.Toolbar):
@@ -154,9 +154,9 @@ class WebToolbar(gtk.Toolbar):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
 
-class BrowserPage(webkitgtk.WebView):
+class BrowserPage(webkit.WebView):
     def __init__(self):
-	webkitgtk.WebView.__init__(self)
+	webkit.WebView.__init__(self)
 
 class WebStatusBar(gtk.Statusbar):
     def __init__(self):
