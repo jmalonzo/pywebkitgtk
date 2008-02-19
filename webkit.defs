@@ -169,6 +169,12 @@
   (return-type "WebKitWebFrame*")
 )
 
+(define-method get_focused_frame
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_focused_frame")
+  (return-type "WebKitWebFrame*")
+)
+
 (define-method execute_script
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_execute_script")
