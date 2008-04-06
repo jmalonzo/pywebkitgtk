@@ -35,14 +35,14 @@ webkit.c: webkit.defs webkit.override
 
 dist-hook: ChangeLog
 
-ChangeLog: .git/HEAD
+ChangeLog: 
 	git log --stat > ChangeLog
 
 uninstall-hook:
 	-rmdir $(webkitdir)
 
-
 MAINTAINERCLEANFILES = \
+	ChangeLog \
 	aclocal.m4 \
 	config.h.in \
 	compile \
@@ -52,15 +52,15 @@ MAINTAINERCLEANFILES = \
 	depcomp \
 	install-sh \
 	ltmain.sh \
-	missing \
-	Makefile.in \
-	webkit.errors
+	missing
 
 CLEANFILES = \
 	gen-webkit.c \
-	webkit.c
+	webkit.c \
+	Makefile.in \
+	webkit.errors
 
 EXTRA_DIST = \
-	webbrowser.py \
+	demos/webbrowser.py \
 	webkit.override \
 	webkit.defs
