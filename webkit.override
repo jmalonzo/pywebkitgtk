@@ -28,7 +28,7 @@ headers
 #include <webkit/webkit.h>
 #include <JavaScriptCore/JSContextRef.h>
 
-#include "javascriptcore/javascriptcore-types.h"
+#include "javascriptcore/javascriptcore_types.h"
 %%
 body
 static PyObject *

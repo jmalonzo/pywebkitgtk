@@ -16,8 +16,8 @@ webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
 webkit_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
 webkit_la_SOURCES = \
 	webkitmodule.c \
-	javascriptcore/javascriptcore-types.c \
-	javascriptcore/javascriptcore-types.h
+	javascriptcore/javascriptcore_types.c \
+	javascriptcore/javascriptcore_types.h
 nodist_webkit_la_SOURCES = webkit.c
 
 webkit.c: webkit.defs webkit.override

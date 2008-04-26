@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA  02110-1301 USA
  */
 
-#include "javascriptcore-types.h"
+#include "javascriptcore_types.h"
 
 /** functions to wrap C objects -> Python Objects */
 
@@ -34,6 +34,3 @@ PyObject* wrap_JSGlobalContextRef(JSGlobalContextRef jsglobalref)
                                         "JSGlobalContextRef", NULL);
     return (ret);
 }
-
-
- 
