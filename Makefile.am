@@ -16,14 +16,14 @@ webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
 webkit_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
 webkit_la_SOURCES = \
 	webkitmodule.c \
-	javascriptcore-types.c \
-	javascriptcore-types.h
+	javascriptcore/javascriptcore-types.c \
+	javascriptcore/javascriptcore-types.h
 nodist_webkit_la_SOURCES = webkit.c
 
 webkit.c: webkit.defs webkit.override
 
 .defs.c:
-	(cd $(srcdir)\
+	(cd $(srcdir) \
 	 && $(PYGTK_CODEGEN) \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
