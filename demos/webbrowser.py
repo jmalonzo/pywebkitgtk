@@ -54,24 +54,6 @@ class WebToolbar(gtk.Toolbar):
 
         self.insert(gtk.SeparatorToolItem(), -1)
 
-        # back list
-        self._back_list_menu_item = gtk.ToolButton(gtk.STOCK_JUSTIFY_LEFT)
-        self._back_list_menu_item.connect('clicked', self._back_list_cb)
-        self._back_list_menu_item.props.sensitive = False
-        self.insert(self._back_list_menu_item, -1)
-        self._back_list_menu_item.show()
-
-        self._back_menu = gtk.Menu()
-
-        # forward list
-        self._forward_list_menu_item = gtk.ToolButton(gtk.STOCK_JUSTIFY_RIGHT)
-        self._forward_list_menu_item.connect('clicked', self._forward_list_cb)
-        self._forward_list_menu_item.sensitive = False
-        self.insert(self._forward_list_menu_item, -1)
-        self._forward_list_menu_item.show()
-
-        self._forward_menu = gtk.Menu()
-
         # location entry
         self._entry = gtk.Entry()
         self._entry.connect('activate', self._entry_activate_cb)
@@ -106,11 +88,9 @@ class WebToolbar(gtk.Toolbar):
     def _update_navigation_buttons(self):
         can_go_back = self._browser.can_go_back()
         self._back.props.sensitive = can_go_back
-        self._back_list_menu_item.props.sensitive = can_go_back
 
         can_go_forward = self._browser.can_go_forward()
         self._forward.props.sensitive = can_go_forward
-        self._forward_list_menu_item.props.sensitive = can_go_forward
 
     def _entry_activate_cb(self, entry):
         self._browser.open(entry.props.text)
@@ -130,23 +110,6 @@ class WebToolbar(gtk.Toolbar):
         else:
             self._browser.reload()
 
-    def _back_list_cb(self, button):
-        #print self._back_forward_list.get_back_length()
-        l = self._back_forward_list.get_back_list_with_limit(10)
-        for i in l:
-            item = gtk.MenuItem(i.get_title())
-            self._back_menu.append(item)
-        self._back_menu.popup(self, self._back_list_menu_item, None, 1, int(time.time()))
-
-    def _forward_list_cb(self, button):
-        print self._back_forward_list.get_forward_length()
-        l = self._back_forward_list.get_forward_list_with_limit(10)
-        for i in l:
-            item = gtk.MenuItem(i.get_title())
-            self._back_menu.append(item)
-        self._back_menu.popup(self, self._back_list_menu_item, None, 1, int(time.time()))
-
-
     def _show_stop_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_CANCEL)
 
@@ -162,7 +125,7 @@ class WebStatusBar(gtk.Statusbar):
     def __init__(self):
         gtk.Statusbar.__init__(self)
         self.iconbox = gtk.EventBox()
-        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO, 16))
+        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO, gtk.ICON_SIZE_BUTTON))
         self.pack_start(self.iconbox, False, False, 6)
         self.iconbox.hide_all()
 
@@ -295,9 +258,13 @@ class WebBrowser(gtk.Window):
         pass
 
     def _populate_popup(self, view, menu):
-        iampywebkitgtk = gtk.MenuItem(label="PyWebKitGtk!")
-        menu.append(iampywebkitgtk)
+        aboutitem = gtk.MenuItem(label="About PyWebKit")
+        menu.append(aboutitem)
+        aboutitem.connect('activate', self._about_pywebkitgtk_cb)
         menu.show_all()
+
+    def _about_pywebkitgtk_cb(self, widget):
+        self._browser.open("http://live.gnome.org/PyWebKitGtk")
 
 
 
