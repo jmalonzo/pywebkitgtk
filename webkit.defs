@@ -291,6 +291,21 @@
   (return-type "GtkTargetList*")
 )
 
+(define-method set_settings
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_settings")
+  (return-type "none")
+  (parameters
+   '("WebKitWebSettings" "settings")
+   )
+)
+
+(define-method get_settings
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_settings")
+  (return-type "WebKitWebSettings*")
+)
+
 (define-method get_transparent
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_get_transparent")
@@ -303,6 +318,30 @@
   (return-type "none")
   (parameters
    '("gboolean" "flag")
+   )
+)
+
+(define-method set_background_color
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_background_color")
+  (return-type "none")
+  (parameters
+   '("const-GdkColor*" "color")
+   )
+)
+
+(define-method get_background_alpha
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_background_alpha")
+  (return-type "guint16")
+)
+
+(define-method set_background_alpha
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_background_alpha")
+  (return-type "none")
+  (parameters
+   '("guint16" "alpha")
    )
 )
 
