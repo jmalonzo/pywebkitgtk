@@ -321,6 +321,48 @@
    )
 )
 
+(define-method get_zoom_level
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_zoom_level")
+  (return-type "gfloat")
+)
+
+(define-method set_zoom_level
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_zoom_level")
+  (return-type "none")
+  (parameters
+   '("gfloat" "zoom_level")
+   )
+)
+
+(define-method zoom_in
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_zoom_in")
+  (return-type "none")
+)
+
+(define-method zoom_out
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_zoom_out")
+  (return-type "none")
+)
+
+(define-method get_full_content_zoom
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_full_content_zoom")
+  (return-type "gboolean")
+)
+
+(define-method set_full_content_zoom
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_full_content_zoom")
+  (return-type "none")
+  (parameters
+   '("gboolean" "full_content_zoom")
+   )
+)
+
 ;(define-method set_background_color
 ;  (of-object "WebKitWebView")
 ;  (c-name "webkit_web_view_set_background_color")

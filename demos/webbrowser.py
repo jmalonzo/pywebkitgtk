@@ -31,8 +31,8 @@ class WebToolbar(gtk.Toolbar):
         gtk.Toolbar.__init__(self)
 
         self._browser = browser
-        self._back_forward_list = self._browser.get_back_forward_list()
 
+        # navigational buttons
         self._back = gtk.ToolButton(gtk.STOCK_GO_BACK)
         self._back.set_tooltip(gtk.Tooltips(),_('Back'))
         self._back.props.sensitive = False
@@ -47,10 +47,32 @@ class WebToolbar(gtk.Toolbar):
         self._forward.show()
 
         self._stop_and_reload = gtk.ToolButton(gtk.STOCK_REFRESH)
+        self._stop_and_reload.set_tooltip(gtk.Tooltips(),_('Stop and reload current page'))
         self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
         self.insert(self._stop_and_reload, -1)
         self._stop_and_reload.show()
         self._loading = False
+
+        self.insert(gtk.SeparatorToolItem(), -1)
+
+        # zoom buttons
+        self._zoom_in = gtk.ToolButton(gtk.STOCK_ZOOM_IN)
+        self._zoom_in.set_tooltip(gtk.Tooltips(), _('Zoom in'))
+        self._zoom_in.connect('clicked', self._zoom_in_cb)
+        self.insert(self._zoom_in, -1)
+        self._zoom_in.show()
+
+        self._zoom_out = gtk.ToolButton(gtk.STOCK_ZOOM_OUT)
+        self._zoom_out.set_tooltip(gtk.Tooltips(), _('Zoom out'))
+        self._zoom_out.connect('clicked', self._zoom_out_cb)
+        self.insert(self._zoom_out, -1)
+        self._zoom_out.show()
+
+        self._zoom_hundred = gtk.ToolButton(gtk.STOCK_ZOOM_100)
+        self._zoom_hundred.set_tooltip(gtk.Tooltips(), _('100% zoom'))
+        self._zoom_hundred.connect('clicked', self._zoom_hundred_cb)
+        self.insert(self._zoom_hundred, -1)
+        self._zoom_hundred.show()
 
         self.insert(gtk.SeparatorToolItem(), -1)
 
@@ -67,8 +89,10 @@ class WebToolbar(gtk.Toolbar):
         self.insert(entry_item, -1)
         entry_item.show()
 
+        # scale other content besides from text as well
+        self._browser.set_full_content_zoom(True)
+
         self._browser.connect("title-changed", self._title_changed_cb)
-        self._entry.grab_focus()
 
     def set_loading(self, loading):
         self._loading = loading
@@ -116,6 +140,18 @@ class WebToolbar(gtk.Toolbar):
     def _show_reload_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
+    def _zoom_in_cb (self, widget):
+        """Zoom into the page"""
+        self._browser.zoom_in()
+
+    def _zoom_out_cb (self, widget):
+        """Zoom out of the page"""
+        self._browser.zoom_out()
+
+    def _zoom_hundred_cb (self, widget):
+        """Zoom 100%"""
+        if not (self._browser.get_zoom_level() == 1.0):
+            self._browser.set_zoom_level(1.0);
 
 class BrowserPage(webkit.WebView):
     def __init__(self):
@@ -228,8 +264,8 @@ class WebBrowser(gtk.Window):
  	   self._statusbar.display('')
 
     def _statusbar_text_changed_cb(self, page, text):
-        if text:
-            self._statusbar.display(text)
+        #if text:
+        self._statusbar.display(text)
 
     def _icon_loaded_cb(self):
         print "icon loaded"
