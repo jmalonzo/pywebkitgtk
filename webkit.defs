@@ -44,16 +44,26 @@
 )
 
 ;; Enumerations and flags ...
-;; TODO: http://bugs.webkit.org/show_bug.cgi?id=16119 - mapping enums to GType
-;(define-enum NavigationResponse
-;  (in-module "GtkWebKit")
-;  (c-name "WebKitNavigationResponse")
-;  (values
-;   '("accept" "WEBKIT_NAVIGATION_RESPONSE_ACCEPT")
-;   '("ignore" "WEBKIT_NAVIGATION_RESPONSE_IGNORE")
-;   '("download" "WEBKIT_NAVIGATION_RESPONSE_DOWNLOAD")
-;   )
-;)
+(define-enum NavigationResponse
+  (in-module "WebKit")
+  (c-name "WebKitNavigationResponse")
+  (gtype-id "WEBKIT_TYPE_NAVIGATION_RESPONSE")
+  (values
+   '("accept" "WEBKIT_NAVIGATION_RESPONSE_ACCEPT")
+   '("ignore" "WEBKIT_NAVIGATION_RESPONSE_IGNORE")
+   '("download" "WEBKIT_NAVIGATION_RESPONSE_DOWNLOAD")
+   )
+)
+
+(define-enum WebViewTargetInfo
+  (in-module "WebKit")
+  (c-name "WebKitWebViewTargetInfo")
+  (gtype-id "WEBKIT_TYPE_WEB_VIEW_TARGET_INFO")
+  (values
+   '("html" "WEBKIT_WEB_VIEW_TARGET_INFO_HTML")
+   '("text" "WEBKIT_WEB_VIEW_TARGET_INFO_TEXT")
+   )
+)
 
 ;; From <webkit/webkitwebview.h>
 

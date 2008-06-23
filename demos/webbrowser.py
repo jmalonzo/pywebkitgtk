@@ -279,7 +279,7 @@ class WebBrowser(gtk.Window):
 
     def _navigation_requested_cb(self, page, frame, networkRequest):
         print "navigation requested cb"
-        return 1 # fixme
+        return 1
 
     def _javascript_console_message_cb(self, page, message, line, sourceid):
         self._statusbar.show_javascript_info()
