@@ -22,7 +22,8 @@ export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec)
 
 dnl check for dependencies
 PKG_CHECK_MODULES(DEPS, 
-                  [pygtk-2.0,
+                  [libxslt,
+                  pygtk-2.0,
                   webkit-1.0])
 AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LIBS)
