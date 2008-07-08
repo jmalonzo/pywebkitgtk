@@ -238,17 +238,17 @@ class WebBrowser(gtk.Window):
     def _set_title(self, title):
         self.props.title = title
 
-    def _loading_start_cb(self, page, frame):
+    def _loading_start_cb(self, view, frame):
         main_frame = self._browser.get_main_frame()
         if frame is main_frame:
             self._set_title(_("Loading %s - %s") % (frame.get_title(),frame.get_uri()))
         self._toolbar.set_loading(True)
 
-    def _loading_stop_cb(self, page, frame):
+    def _loading_stop_cb(self, view, frame):
         # FIXME: another frame may still be loading?
         self._toolbar.set_loading(False)
 
-    def _loading_progress_cb(self, page, progress):
+    def _loading_progress_cb(self, view, progress):
         self._set_progress(_("%s%s loaded") % (progress, '%'))
 
     def _set_progress(self, progress):
@@ -257,13 +257,13 @@ class WebBrowser(gtk.Window):
     def _title_changed_cb(self, widget, frame, title):
         self._set_title(_("%s") % title)
 
-    def _hover_link_cb(self, page, title, url):
-    	if page and url:
+    def _hover_link_cb(self, view, title, url):
+    	if view and url:
 	   self._statusbar.display(url)
 	else:
  	   self._statusbar.display('')
 
-    def _statusbar_text_changed_cb(self, page, text):
+    def _statusbar_text_changed_cb(self, view, text):
         #if text:
         self._statusbar.display(text)
 
@@ -273,24 +273,23 @@ class WebBrowser(gtk.Window):
     def _selection_changed_cb(self):
         print "selection changed"
 
-    def _set_scroll_adjustments_cb(self, page, hadjustment, vadjustment):
+    def _set_scroll_adjustments_cb(self, view, hadjustment, vadjustment):
         self._scrolled_window.props.hadjustment = hadjustment
         self._scrolled_window.props.vadjustment = vadjustment
 
-    def _navigation_requested_cb(self, page, frame, networkRequest):
-        print "navigation requested cb"
+    def _navigation_requested_cb(self, view, frame, networkRequest):
         return 1
 
-    def _javascript_console_message_cb(self, page, message, line, sourceid):
+    def _javascript_console_message_cb(self, view, message, line, sourceid):
         self._statusbar.show_javascript_info()
 
-    def _javascript_script_alert_cb(self, page, frame, message):
+    def _javascript_script_alert_cb(self, view, frame, message):
         pass
 
-    def _javascript_script_confirm_cb(self, page, frame, message, isConfirmed):
+    def _javascript_script_confirm_cb(self, view, frame, message, isConfirmed):
         pass
 
-    def _javascript_script_prompt_cb(self, page, frame, message, default, text):
+    def _javascript_script_prompt_cb(self, view, frame, message, default, text):
         pass
 
     def _populate_popup(self, view, menu):
