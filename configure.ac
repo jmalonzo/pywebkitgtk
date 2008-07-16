@@ -1,5 +1,20 @@
-dnl configure script for pywebkitgtk
-AC_INIT([pywebkitgtk],[0.3],[http://bugzilla.gnome.org/browse.cgi?product=pywebkitgtk])
+# configure script for pywebkitgtk
+
+# Version numbers. This follows the upstream WebKit versioning
+# If there is a discrepancy, please file a defect report against pywebkitgtk
+m4_define([pywebkitgtk_major_version], [1])
+m4_define([pywebkitgtk_minor_version], [0])
+m4_define([pywebkitgtk_micro_version], [2])
+m4_define([pywebkitgtk_version],
+          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
+
+# Set some build info. Right now it's a string and datetime
+# format: snapshot-yymmdd
+m4_define(pywebkitgtk_build_info, [snapshot-080717])
+
+AC_INIT([pywebkitgtk],
+        [pywebkitgtk_version-pywebkitgtk_build_info],
+        [http://code.google.com/p/pywebkitgtk/issues])
 
 AC_PREREQ([2.59])
 AC_CONFIG_MACRO_DIR([m4])
