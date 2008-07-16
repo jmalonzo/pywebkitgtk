@@ -21,11 +21,18 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([1.9])
+AC_DEFINE_UNQUOTED(PYWEBKITGTK_VERSION, pywebkitgtk_version,
+                   [The release version of Python WebKit Gtk+])
+AC_DEFINE_UNQUOTED(PYWEBKITGTK_MAJOR_VERSION, pywebkitgtk_major_version,
+                   [The major version of Python WebKit Gtk+.])
+AC_DEFINE_UNQUOTED(PYWEBKITGTK_MINOR_VERSION, pywebkitgtk_minor_version,
+                   [The minor version of Python WebKit Gtk+.])
+AC_DEFINE_UNQUOTED(PYWEBKITGTK_MICRO_VERSION, pywebkitgtk_micro_version,
+                   [The micro version of Python WebKit Gtk+.])
 
-AM_MAINTAINER_MODE
+AM_INIT_AUTOMAKE([foreign subdir-objects])
 
-AC_DISABLE_STATIC
+AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
 dnl check for python
