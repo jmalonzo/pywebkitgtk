@@ -1,0 +1,9 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: PyWebKitGtk
+Description: Python bindings for WebKit's GTK port
+Requires: webkit-1.0
+Version: @VERSION@

@@ -66,6 +66,9 @@ AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
 
 dnl output
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
+pywebkitgtk-1.0.pc:pywebkitgtk.pc.in
 ])
+
+AC_OUTPUT
