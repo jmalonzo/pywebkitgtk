@@ -1,7 +1,6 @@
 Python WebKit GTK+
 ----
 
-
 The PyWebKitGtk project aims to provide Python bindings to the GTK+ port of
 WebKit, an open-source web browser engine that powers numerous applications
 such as web browsers, email clients, feed readers, web and text editors, and a
@@ -17,35 +16,17 @@ might need a web browser engine for their next application or developers
 wishing to have a better browser engine that they can access to using the
 Python programming language.
 
-
-Notes
-----
-
-The WebKit GTK+ port is constantly under development and APIs might change. On
-this note, this project WILL NOT provide any guarantees to any API stability
-let alone engine stability, at least for now. What this project guarantees, is
-that (API) changes to the binding will happen and reflect what happens upstream.
-
-And lastly, I would like to encourage everyone to submit useful bugs either to
-this project or to the upstream WebKit project[3]. One of my personal
-objective for this project is to bring WebKit to more developers and users
-alike to improve and guide the development of the upstream WebKit project, let
-alone the WebKit GTK+ port.
-
-I hope you find this project this useful as much as I do. 
-
 Happy Hacking!
 
 
 Contact
 ----
 
-Jan Alonzo <jmalonzo@gmail.com>
-Tuukka Hastrup <tuukka@iki.fi>
-
-Web:            http://live.gnome.org/PyWebKitGtk
+Web:            http://code.google.com/p/pywebkitgtk
 
 Source (Git):   http://repo.or.cz/w/pywebkitgtk.git
+
+Source (SVN):   http://code.google.com/p/pywebkitgtk/source
 
 
 References
