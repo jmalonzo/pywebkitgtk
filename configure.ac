@@ -10,7 +10,7 @@ m4_define([pywebkitgtk_version],
 
 # Set some build info. Right now it's a string and datetime
 # format: snapshot-yymmdd
-m4_define(pywebkitgtk_build_info, [snapshot-080717])
+m4_define(pywebkitgtk_build_info, [0.9])
 
 AC_INIT([pywebkitgtk],
         [pywebkitgtk_version-pywebkitgtk_build_info],
