@@ -39,10 +39,12 @@ dnl check for python
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
-dnl get rid of -export-dynamic stuff from the configure flags...
+dnl from pygtk: get rid of -export-dynamic stuff from the configure flags...
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
 
 dnl check for dependencies
+dnl Check for libxslt until upstream WebKit checks for it as this is a webkit
+dnl dep and not pywebkitgtk's.
 PKG_CHECK_MODULES(DEPS, 
                   [libxslt,
                   pygtk-2.0,
