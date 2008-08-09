@@ -61,6 +61,12 @@ CLEANFILES = \
 	webkit.errors
 
 EXTRA_DIST = \
+	AUTHORS \
+	COPYING \
+	INSTALL \
+	MAINTAINERS \
+	NEWS \
+	README \
 	demos/webbrowser.py \
 	webkit.override \
 	webkit.defs
