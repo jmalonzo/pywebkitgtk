@@ -1,7 +1,7 @@
 defsdir = $(datadir)/pygtk/2.0/defs
 defs_DATA = webkit.defs
 
-common_ldflags = -module -avoid-version $(PYTHON_LDFLAGS)
+common_ldflags = -module -avoid-version
 
 pkgpythondir = $(pyexecdir)/gtk-2.0
 pkgpyexecdir = $(pyexecdir)/gtk-2.0
@@ -13,7 +13,7 @@ pkgpyexec_LTLIBRARIES = webkit.la
 webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS)
 webkit_la_CFLAGS = $(DEPS_CFLAGS)
 webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
-webkit_la_LIBADD = $(DEPS_LIBS) $(PYTHON_LIBS)
+webkit_la_LIBADD = $(DEPS_LIBS)
 webkit_la_SOURCES = \
 	webkitmodule.c \
 	javascriptcore/javascriptcore_types.c \

@@ -40,6 +40,8 @@ AC_PROG_LIBTOOL
 dnl check for python
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
+py_prefix=`$PYTHON -c "import sys; print sys.prefix"`
+PYTHON_INCLUDES="-I${py_prefix}/include/python${PYTHON_VERSION}"
 
 dnl from pygtk: get rid of -export-dynamic stuff from the configure flags...
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
