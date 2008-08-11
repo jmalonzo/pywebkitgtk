@@ -5,15 +5,16 @@
 m4_define([pywebkitgtk_major_version], [1])
 m4_define([pywebkitgtk_minor_version], [0])
 m4_define([pywebkitgtk_micro_version], [2])
-m4_define([pywebkitgtk_version],
-          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
 # Set some build info. Right now it's a string and datetime
 # format: snapshot-yymmdd
-m4_define(pywebkitgtk_build_info, [0.9])
+m4_define(pywebkitgtk_build_info, [080812])
+
+m4_define([pywebkitgtk_version],
+          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version.pywebkitgtk_build_info])
 
 AC_INIT([pywebkitgtk],
-        [pywebkitgtk_version-pywebkitgtk_build_info],
+        [pywebkitgtk_version],
         [http://code.google.com/p/pywebkitgtk/issues])
 
 AC_PREREQ([2.59])
