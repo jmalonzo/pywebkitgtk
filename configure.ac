@@ -11,7 +11,7 @@ m4_define([pywebkitgtk_micro_version], [1])
 m4_define(pywebkitgtk_build_info, [1])
 
 m4_define([pywebkitgtk_version],
-          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version.pywebkitgtk_build_info])
+          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
 AC_INIT([pywebkitgtk],
         [pywebkitgtk_version],
