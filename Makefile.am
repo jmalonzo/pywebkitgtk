@@ -58,7 +58,8 @@ CLEANFILES = \
 	gen-webkit.c \
 	webkit.c \
 	Makefile.in \
-	webkit.errors
+	webkit.errors \
+	pywebkitgtk-1.0.pc
 
 EXTRA_DIST = \
 	AUTHORS \
