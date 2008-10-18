@@ -27,6 +27,7 @@ import webkit
 
 
 class WebToolbar(gtk.Toolbar):
+
     def __init__(self, browser):
         gtk.Toolbar.__init__(self)
 
@@ -34,20 +35,21 @@ class WebToolbar(gtk.Toolbar):
 
         # navigational buttons
         self._back = gtk.ToolButton(gtk.STOCK_GO_BACK)
-        self._back.set_tooltip(gtk.Tooltips(),_('Back'))
+        self._back.set_tooltip(gtk.Tooltips(), _('Back'))
         self._back.props.sensitive = False
         self._back.connect('clicked', self._go_back_cb)
         self.insert(self._back, -1)
 
         self._forward = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
-        self._forward.set_tooltip(gtk.Tooltips(),_('Forward'))
+        self._forward.set_tooltip(gtk.Tooltips(), _('Forward'))
         self._forward.props.sensitive = False
         self._forward.connect('clicked', self._go_forward_cb)
         self.insert(self._forward, -1)
         self._forward.show()
 
         self._stop_and_reload = gtk.ToolButton(gtk.STOCK_REFRESH)
-        self._stop_and_reload.set_tooltip(gtk.Tooltips(),_('Stop and reload current page'))
+        self._stop_and_reload.set_tooltip(gtk.Tooltips(),
+                                          _('Stop and reload current page'))
         self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
         self.insert(self._stop_and_reload, -1)
         self._stop_and_reload.show()
@@ -99,10 +101,10 @@ class WebToolbar(gtk.Toolbar):
 
         if self._loading:
             self._show_stop_icon()
-            self._stop_and_reload.set_tooltip(gtk.Tooltips(),_('Stop'))
+            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Stop'))
         else:
             self._show_reload_icon()
-            self._stop_and_reload.set_tooltip(gtk.Tooltips(),_('Reload'))
+            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Reload'))
         self._update_navigation_buttons()
 
     def _set_address(self, address):
@@ -140,28 +142,33 @@ class WebToolbar(gtk.Toolbar):
     def _show_reload_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
-    def _zoom_in_cb (self, widget):
+    def _zoom_in_cb(self, widget):
         """Zoom into the page"""
         self._browser.zoom_in()
 
-    def _zoom_out_cb (self, widget):
+    def _zoom_out_cb(self, widget):
         """Zoom out of the page"""
         self._browser.zoom_out()
 
-    def _zoom_hundred_cb (self, widget):
+    def _zoom_hundred_cb(self, widget):
         """Zoom 100%"""
         if not (self._browser.get_zoom_level() == 1.0):
-            self._browser.set_zoom_level(1.0);
+            self._browser.set_zoom_level(1.0)
+
 
 class BrowserPage(webkit.WebView):
+
     def __init__(self):
-	webkit.WebView.__init__(self)
+        webkit.WebView.__init__(self)
+
 
 class WebStatusBar(gtk.Statusbar):
+
     def __init__(self):
         gtk.Statusbar.__init__(self)
         self.iconbox = gtk.EventBox()
-        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO, gtk.ICON_SIZE_BUTTON))
+        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO,
+                                                  gtk.ICON_SIZE_BUTTON))
         self.pack_start(self.iconbox, False, False, 6)
         self.iconbox.hide_all()
 
@@ -177,6 +184,7 @@ class WebStatusBar(gtk.Statusbar):
 
 
 class WebBrowser(gtk.Window):
+
     def __init__(self):
         gtk.Window.__init__(self)
 
@@ -185,16 +193,18 @@ class WebBrowser(gtk.Window):
         self._loading = False
         self._browser= BrowserPage()
         self._browser.connect('load-started', self._loading_start_cb)
-        self._browser.connect('load-progress-changed', self._loading_progress_cb)
+        self._browser.connect('load-progress-changed',
+                              self._loading_progress_cb)
         self._browser.connect('load-finished', self._loading_stop_cb)
         self._browser.connect("title-changed", self._title_changed_cb)
         self._browser.connect("hovering-over-link", self._hover_link_cb)
-        self._browser.connect("status-bar-text-changed", self._statusbar_text_changed_cb)
+        self._browser.connect("status-bar-text-changed",
+                              self._statusbar_text_changed_cb)
         self._browser.connect("icon-loaded", self._icon_loaded_cb)
         self._browser.connect("selection-changed", self._selection_changed_cb)
-        self._browser.connect("set-scroll-adjustments", self._set_scroll_adjustments_cb)
+        self._browser.connect("set-scroll-adjustments",
+                              self._set_scroll_adjustments_cb)
         self._browser.connect("populate-popup", self._populate_popup)
-#        self._browser.connect("navigation-requested", self._navigation_requested_cb)
 
         self._browser.connect("console-message",
                               self._javascript_console_message_cb)
@@ -241,7 +251,8 @@ class WebBrowser(gtk.Window):
     def _loading_start_cb(self, view, frame):
         main_frame = self._browser.get_main_frame()
         if frame is main_frame:
-            self._set_title(_("Loading %s - %s") % (frame.get_title(),frame.get_uri()))
+            self._set_title(_("Loading %s - %s") % (frame.get_title(),
+                                                    frame.get_uri()))
         self._toolbar.set_loading(True)
 
     def _loading_stop_cb(self, view, frame):
@@ -258,10 +269,10 @@ class WebBrowser(gtk.Window):
         self._set_title(_("%s") % title)
 
     def _hover_link_cb(self, view, title, url):
-    	if view and url:
-	   self._statusbar.display(url)
-	else:
- 	   self._statusbar.display('')
+        if view and url:
+            self._statusbar.display(url)
+        else:
+            self._statusbar.display('')
 
     def _statusbar_text_changed_cb(self, view, text):
         #if text:
@@ -289,7 +300,8 @@ class WebBrowser(gtk.Window):
     def _javascript_script_confirm_cb(self, view, frame, message, isConfirmed):
         pass
 
-    def _javascript_script_prompt_cb(self, view, frame, message, default, text):
+    def _javascript_script_prompt_cb(self, view, frame,
+                                     message, default, text):
         pass
 
     def _populate_popup(self, view, menu):
@@ -302,8 +314,6 @@ class WebBrowser(gtk.Window):
         self._browser.open("http://live.gnome.org/PyWebKitGtk")
 
 
-
 if __name__ == "__main__":
     webbrowser = WebBrowser()
     gtk.main()
-
