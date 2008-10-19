@@ -24,7 +24,7 @@ webkit.c: webkit.defs webkit.override
 
 .defs.c:
 	(cd $(srcdir) \
-	 && $(PYGTK_CODEGEN) \
+	 && $(PYGOBJECT_CODEGEN) \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
 	    --override $*.override \

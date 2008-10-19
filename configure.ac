@@ -59,9 +59,9 @@ AC_SUBST(DEPS_LIBS)
 AC_SUBST(DEPS_CPPFLAGS)
 
 dnl python code gen
-AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
-if test "x$PYGTK_CODEGEN" = xno; then
-   AC_MSG_ERROR(could not find pygtk-codegen-2.0 script)
+AC_PATH_PROGS(PYGOBJECT_CODEGEN, pygobject-codegen-2.0 pygtk-codegen-2.0, no)
+if test "x$PYGOBJECT_CODEGEN" = xno; then
+   AC_MSG_ERROR(could not find pygobject-codegen-2.0 script)
 fi
 
 dnl check for pygtk defsdir

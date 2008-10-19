@@ -63,7 +63,7 @@
 )
 
 ;; Enumerations and flags ...
-(define-enum NavigationResponse
+(enum NavigationResponse
   (in-module "WebKit")
   (c-name "WebKitNavigationResponse")
   (gtype-id "WEBKIT_TYPE_NAVIGATION_RESPONSE")
@@ -74,7 +74,7 @@
    )
 )
 
-(define-enum WebViewTargetInfo
+(enum WebViewTargetInfo
   (in-module "WebKit")
   (c-name "WebKitWebViewTargetInfo")
   (gtype-id "WEBKIT_TYPE_WEB_VIEW_TARGET_INFO")
