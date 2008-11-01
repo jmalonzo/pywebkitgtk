@@ -1,3 +1,10 @@
+01 Nov 2008 - pywebkitgtk 1.0.2
+----
+ - .pc file cleanup when invoking make clean
+ - Build fix for PyGtk 2.13 - Patch by Jason Ribeiro
+ - demos/webbrowser.py style fix - Patch by Steve Milner
+
+
 15 Aug 2008 - pywebkitgtk 1.0.1
 ----
  - Release for WebKitGtk 1.0.1

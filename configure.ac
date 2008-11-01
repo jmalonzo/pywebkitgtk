@@ -1,17 +1,11 @@
 # configure script for pywebkitgtk
 
-# Version numbers. This follows the upstream WebKit versioning
-# If there is a discrepancy, please file a defect report against pywebkitgtk
 m4_define([pywebkitgtk_major_version], [1])
 m4_define([pywebkitgtk_minor_version], [0])
 m4_define([pywebkitgtk_micro_version], [2])
 
-# Set some build info. Right now it's a string and datetime
-# format: snapshot-yymmdd
-m4_define(pywebkitgtk_build_info, [080812])
-
 m4_define([pywebkitgtk_version],
-          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version.pywebkitgtk_build_info])
+          [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
 AC_INIT([pywebkitgtk],
         [pywebkitgtk_version],
