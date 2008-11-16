@@ -2,7 +2,7 @@
 
 m4_define([pywebkitgtk_major_version], [1])
 m4_define([pywebkitgtk_minor_version], [0])
-m4_define([pywebkitgtk_micro_version], [2])
+m4_define([pywebkitgtk_micro_version], [99])
 
 m4_define([pywebkitgtk_version],
           [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
