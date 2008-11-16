@@ -7,6 +7,8 @@ m4_define([pywebkitgtk_micro_version], [99])
 m4_define([pywebkitgtk_version],
           [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
+m4_define([webkit_stable_version], [1.0.2])
+
 AC_INIT([pywebkitgtk],
         [pywebkitgtk_version],
         [http://code.google.com/p/pywebkitgtk/issues])
@@ -63,6 +65,19 @@ AC_MSG_CHECKING(for pygtk defs)
 PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
+
+dnl check which .defs file we should use
+dnl 
+dnl webkit-stable.defs is for upstream webkit/gtk stable releases
+dnl webkit-dev.defs is for webkit/gtk ToT installations
+AC_MSG_CHECKING(which definitions file to use)
+PYWEBKIT_DEFS="webkit-stable.defs"
+webkit_installed_version=`$PKG_CONFIG --modversion webkit-1.0`
+if test $webkit_installed_version > $webkit_stable_version; then
+   PYWEBKIT_DEFS="webkit-dev.defs"
+fi
+AC_SUBST(PYWEBKIT_DEFS)
+AC_MSG_RESULT($PYWEBKIT_DEFS)
 
 dnl output
 AC_CONFIG_FILES([

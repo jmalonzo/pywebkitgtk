@@ -1,5 +1,5 @@
 defsdir = $(datadir)/pygtk/2.0/defs
-defs_DATA = webkit.defs
+defs_DATA = $(PYWEBKIT_DEFS)
 
 common_ldflags = -module -avoid-version
 
@@ -20,18 +20,19 @@ webkit_la_SOURCES = \
 	javascriptcore/javascriptcore_types.h
 nodist_webkit_la_SOURCES = webkit.c
 
-webkit.c: webkit.defs webkit.override
+webkit.c: .defs.c
 
-.defs.c:
+.defs.c: webkit.override webkit-stable.defs webkit-dev.defs
+	cp $(PYWEBKIT_DEFS) webkit.defs
 	(cd $(srcdir) \
 	 && $(PYGOBJECT_CODEGEN) \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-	    --override $*.override \
-	    --prefix py$* $*.defs) 2>&1 >gen-$*.c | tee $*.errors \
-	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $*.errors \
-	&& cp gen-$*.c $*.c \
-	&& rm -f gen-$*.c
+	    --override webkit.override \
+	    --prefix pywebkit webkit.defs) 2>&1 >gen-webkit.c | tee webkit.errors \
+	&& ! grep -q -v "^\*\*\*INFO\*\*\*" webkit.errors \
+	&& cp gen-webkit.c webkit.c \
+	&& rm -f gen-webkit.c
 
 dist-hook: ChangeLog
 
@@ -58,6 +59,7 @@ CLEANFILES = \
 	gen-webkit.c \
 	webkit.c \
 	Makefile.in \
+	webkit.defs \
 	webkit.errors \
 	pywebkitgtk-1.0.pc
 
@@ -70,4 +72,6 @@ EXTRA_DIST = \
 	README \
 	demos/webbrowser.py \
 	webkit.override \
-	webkit.defs
+	webkit-dev.defs \
+	webkit-stable.defs
+
