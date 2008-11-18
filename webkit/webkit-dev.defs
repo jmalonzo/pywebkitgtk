@@ -251,6 +251,12 @@
    )
 )
 
+(define-method unmark_text_matches
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_unmark_text_matches")
+  (return-type "none")
+)
+
 (define-method set_highlight_text_matches
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_set_highlight_text_matches")
