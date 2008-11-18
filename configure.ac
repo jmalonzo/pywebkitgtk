@@ -92,10 +92,10 @@ dnl
 dnl webkit-stable.defs is for upstream webkit/gtk stable releases
 dnl webkit-dev.defs is for webkit/gtk ToT installations
 AC_MSG_CHECKING(which definitions file to use)
-PYWEBKIT_DEFS="webkit-stable.defs"
+PYWEBKIT_DEFS="${srcdir}/webkit/webkit-stable.defs"
 webkit_installed_version=`$PKG_CONFIG --modversion webkit-1.0`
 if test $webkit_installed_version > $webkit_stable_version; then
-   PYWEBKIT_DEFS="webkit-dev.defs"
+   PYWEBKIT_DEFS="${srcdir}/webkit/webkit-dev.defs"
 fi
 AC_SUBST(PYWEBKIT_DEFS)
 AC_MSG_RESULT($PYWEBKIT_DEFS)

@@ -7,7 +7,7 @@ webkit_cflags :=
 
 CREATEDEFS = $(PYTHON) $(PYGTK_CODEGENDIR)/createdefs.py
 
-defsdir = $(datadir)/pygtk/2.0/defs
+defsdir = $(PYGTK_DEFSDIR)
 defs_DATA = $(webkit_defs)
 
 common_ldflags = -module -avoid-version
@@ -27,12 +27,12 @@ webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
 
 webkit_defs += $(PYWEBKIT_DEFS)
-webkit_override += $(srcdir)/webkit.override
+webkit_override += webkit/webkit.override
 webkit_sources += \
-	webkitmodule.c \
+	webkit/webkitmodule.c \
 	javascriptcore/javascriptcore_types.c \
 	javascriptcore/javascriptcore_types.h
-nodist_webkit_sources += webkit.c
+nodist_webkit_sources += webkit/webkit.c
 
 if HAVE_GJS
 webkit_defs += gjs.defs
@@ -42,12 +42,13 @@ webkit_sources += gjs/gjs.c
 nodist_webkit_sources += gjs.c
 
 gjs.c: gjs.defs gjs.override gjs.defs.c
+
 endif
 
 
-webkit.c: $(PYWEBKIT_DEFS) webkit.override webkit.defs webkit.defs.c
+webkit/webkit.c: $(PYWEBKIT_DEFS) webkit/webkit.override webkit/webkit.defs webkit/webkit.defs.c
 
-webkit.defs: $(PYWEBKIT_DEFS)
+webkit/webkit.defs: $(PYWEBKIT_DEFS)
 	$(CREATEDEFS) $@ $(PYWEBKIT_DEFS)
 
 %.defs.c:
@@ -55,11 +56,11 @@ webkit.defs: $(PYWEBKIT_DEFS)
 	 && $(PYGOBJECT_CODEGEN) \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-	    --override $(srcdir)/$(*F).override \
-	    --prefix py$(*F) $(*F).defs) 2>&1 >gen-$(*F).c | tee $(*F).errors \
-	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $(*F).errors \
-	&& cp gen-$(*F).c $(*F).c \
-	&& rm -f gen-$(*F).c
+	    --override $(*D)/$(*F).override \
+	    --prefix py$(*F) $(*D)/$(*F).defs) 2>&1 > $(*D)/gen-$(*F).c | tee $(*D)/$(*F).errors \
+	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $(*D)/$(*F).errors \
+	&& cp $(*D)/gen-$(*F).c $(*D)/$(*F).c \
+	&& rm -f $(*D)/gen-$(*F).c
 
 dist-hook: ChangeLog
 
@@ -83,13 +84,13 @@ MAINTAINERCLEANFILES = \
 	missing
 
 CLEANFILES = \
-	gen-webkit.c \
+	webkit/gen-webkit.c \
+	webkit/webkit.c \
+	webkit/webkit.defs \
+	webkit/webkit.errors \
 	gjs.c \
 	gen-gjs.c \
-	webkit.c \
 	Makefile.in \
-	webkit.defs \
-	webkit.errors \
 	gjs.errors \
 	dummy.0.2 \
 	pywebkitgtk-1.0.pc
@@ -104,6 +105,6 @@ EXTRA_DIST = \
 	demos/webbrowser.py \
 	gjs.defs \
 	gjs.override \
-	webkit.override \
-	webkit-dev.defs \
-	webkit-stable.defs
+	webkit/webkit.override \
+	webkit/webkit-dev.defs \
+	webkit/webkit-stable.defs
