@@ -30,6 +30,11 @@ extern PyMethodDef pywebkit_functions[];
 
 void pywebkit_register_classes (PyObject *d);
 
+#ifdef HAVE_GJS
+extern PyMethodDef pygjs_functions[];
+void pygjs_register_classes    (PyObject *d);
+#endif
+
 DL_EXPORT(void)
 initwebkit(void)
 {
@@ -42,13 +47,20 @@ initwebkit(void)
 
     init_pygtk();
 
+    /* webkit module */
     m = Py_InitModule ("webkit", pywebkit_functions);
     d = PyModule_GetDict (m);
-
     pywebkit_register_classes (d);
+
+#ifdef HAVE_GJS
+    /* webkit.gjs module */
+    m = Py_InitModule ("webkit.gjs", pygjs_functions);
+    d = PyModule_GetDict(m);
+    pygjs_register_classes (d);
+#endif
 
     if (PyErr_Occurred ()) {
         PyErr_Print();
-        Py_FatalError ("can't initialise module webkit");
+        Py_FatalError ("can't initialise module webkit.gjs");
     }
 }

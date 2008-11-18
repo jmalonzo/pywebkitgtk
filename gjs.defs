@@ -1,0 +1,120 @@
+;; -*- scheme -*-
+;; PyWebKitGtk - Python bindings to WebKit/GTK+
+;;
+;; Copyright (C) 2008 Luke Kenneth Carlson Leigh
+;; 
+;; This library is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU Library General Public
+;; License as published by the Free Software Foundation; either
+;; version 2 of the License, or (at your option) any later version.
+;; 
+;; This library is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; Library General Public License for more details.
+;; 
+;; You should have received a copy of the GNU Library General Public
+;; License along with this library; if not, write to the Free Software
+;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA  02110-1301 USA
+;;
+
+(define-object Value
+  (in-module "Gjs")
+  (parent "GObject")
+  (c-name "GjsValue")
+  (gtype-id "GJS_TYPE_VALUE")
+)
+
+;(define-method gjs_get_global_context
+;  (of-object "WebKitWebFrame")
+;  (c-name "gjs_get_global_context")
+;  (return-type "GjsValue*")
+;)
+
+;; From "gjs.h"
+
+(define-method has_attribute
+  (of-object "GjsValue")
+  (c-name "gjs_value_has_attribute")
+  (return-type "gboolean")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)
+
+(define-method get_attribute
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_attribute")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)
+
+(define-method get_string
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_string")
+  (caller-owns-return #t)
+  (return-type "const-gchar*")
+)
+
+(define-method get_attribute_string
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_attribute_string")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)
+
+(define-method get_nth_attribute
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_nth_attribute")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("gint" "n")
+   )
+)
+
+(define-method get_elements_by_tag_name
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_elements_by_tag_name")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)
+
+;(define-method eval
+;  (of-object "GjsValue")
+;  (c-name "gjs_value_eval")
+;  (caller-owns-return #t)
+;  (return-type "GjsValue*")
+;  (parameters
+;   '("const-gchar*" "script")
+;   )
+;)
+
+(define-method execute
+  (of-object "GjsValue")
+  (c-name "gjs_value_execute")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("const-gchar*" "script")
+   )
+)
+
+(define-method get_by_name
+  (of-object "GjsValue")
+  (c-name "gjs_value_get_by_name")
+  (caller-owns-return #t)
+  (return-type "GjsValue*")
+  (parameters
+   '("const-gchar*" "name")
+   )
+)

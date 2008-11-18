@@ -22,8 +22,25 @@
 
 #undef _POSIX_C_SOURCE
 #include <Python.h>
-
 #include <JavaScriptCore/JSContextRef.h>
+
+#ifdef HAVE_GJS
+#include "gjs/gjs.h"
+
+typedef struct {
+    PyObject_HEAD
+    GjsValue *obj;
+} GjsValueRef_object;
+
+#define GjsValue_get(v) (((v) == Py_None) ? NULL : (((GjsValue_object *)(PyObject_GetAttr(v,PyString_FromString("_o"))))->obj));
+
+PyObject* wrap_GjsValue(GjsValue *value);
+#endif /* End HAVE_GJS */
+
+typedef struct {
+    PyObject_HEAD
+    JSContextRef obj;
+} JSContextRef_object;
 
 typedef struct {
     PyObject_HEAD
@@ -31,8 +48,11 @@ typedef struct {
 } JSGlobalContextRef_object;
 
 /* Functions to wrap JavaScriptCore Python objects -> JavaScriptCore C objects */
+#define JSContextRef_get(v) (((v) == Py_None) ? NULL : (((JSContextRef_object *)(PyObject_GetAttr(v,PyString_FromString("_o"))))->obj));
+
 #define JSGlobalContextRef_get(v) (((v) == Py_None) ? NULL : (((JSGlobalContextRef_object *)(PyObject_GetAttr(v,PyString_FromString("_o"))))->obj));
 
+PyObject* wrap_JSContextRef(JSContextRef jscontextref);
 PyObject* wrap_JSGlobalContextRef(JSGlobalContextRef jsglobalref);
 
 #endif /* PYWEBKITGTK_WRAP_JSC_H */

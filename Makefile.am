@@ -1,5 +1,14 @@
+
+webkit_defs :=
+webkit_sources :=
+nodist_webkit_sources :=
+webkit_override :=
+webkit_cflags :=
+
+CREATEDEFS = $(PYTHON) $(PYGTK_CODEGENDIR)/createdefs.py
+
 defsdir = $(datadir)/pygtk/2.0/defs
-defs_DATA = $(PYWEBKIT_DEFS)
+defs_DATA = $(webkit_defs)
 
 common_ldflags = -module -avoid-version
 
@@ -10,29 +19,47 @@ webkitdir = $(pkgpyexecdir)/webkit
 
 pkgpyexec_LTLIBRARIES = webkit.la
 
-webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS)
+webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS) $(webkit_cflags)
 webkit_la_CFLAGS = $(DEPS_CFLAGS)
 webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
 webkit_la_LIBADD = $(DEPS_LIBS)
-webkit_la_SOURCES = \
+webkit_la_SOURCES = $(webkit_sources)
+nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
+
+webkit_defs += $(PYWEBKIT_DEFS)
+webkit_override += $(srcdir)/webkit.override
+webkit_sources += \
 	webkitmodule.c \
 	javascriptcore/javascriptcore_types.c \
 	javascriptcore/javascriptcore_types.h
-nodist_webkit_la_SOURCES = webkit.c
+nodist_webkit_sources += webkit.c
 
-webkit.c: .defs.c
+if HAVE_GJS
+webkit_defs += gjs.defs
+webkit_override += $(srcdir)/gjs.override
+webkit_cflags += -I$(srcdir)/gjs
+webkit_sources += gjs/gjs.c
+nodist_webkit_sources += gjs.c
 
-.defs.c: webkit.override webkit-stable.defs webkit-dev.defs
-	cp $(PYWEBKIT_DEFS) webkit.defs
+gjs.c: gjs.defs gjs.override gjs.defs.c
+endif
+
+
+webkit.c: $(PYWEBKIT_DEFS) webkit.override webkit.defs webkit.defs.c
+
+webkit.defs: $(PYWEBKIT_DEFS)
+	$(CREATEDEFS) $@ $(PYWEBKIT_DEFS)
+
+%.defs.c:
 	(cd $(srcdir) \
 	 && $(PYGOBJECT_CODEGEN) \
 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-	    --override webkit.override \
-	    --prefix pywebkit webkit.defs) 2>&1 >gen-webkit.c | tee webkit.errors \
-	&& ! grep -q -v "^\*\*\*INFO\*\*\*" webkit.errors \
-	&& cp gen-webkit.c webkit.c \
-	&& rm -f gen-webkit.c
+	    --override $(srcdir)/$(*F).override \
+	    --prefix py$(*F) $(*F).defs) 2>&1 >gen-$(*F).c | tee $(*F).errors \
+	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $(*F).errors \
+	&& cp gen-$(*F).c $(*F).c \
+	&& rm -f gen-$(*F).c
 
 dist-hook: ChangeLog
 
@@ -57,10 +84,14 @@ MAINTAINERCLEANFILES = \
 
 CLEANFILES = \
 	gen-webkit.c \
+	gjs.c \
+	gen-gjs.c \
 	webkit.c \
 	Makefile.in \
 	webkit.defs \
 	webkit.errors \
+	gjs.errors \
+	dummy.0.2 \
 	pywebkitgtk-1.0.pc
 
 EXTRA_DIST = \
@@ -71,7 +102,8 @@ EXTRA_DIST = \
 	NEWS \
 	README \
 	demos/webbrowser.py \
+	gjs.defs \
+	gjs.override \
 	webkit.override \
 	webkit-dev.defs \
 	webkit-stable.defs
-

@@ -34,3 +34,33 @@ PyObject* wrap_JSGlobalContextRef(JSGlobalContextRef jsglobalref)
                                         "JSGlobalContextRef", NULL);
     return (ret);
 }
+
+PyObject* wrap_JSContextRef(JSContextRef jsglobalref)
+{
+    PyObject *ret;
+
+    if (jsglobalref == NULL) {
+        Py_INCREF (Py_None);
+        return (Py_None);
+    }
+
+    ret = PyCObject_FromVoidPtrAndDesc ((void *) jsglobalref, (char *)
+                                        "JSContextRef", NULL);
+    return (ret);
+}
+
+#ifdef HAVE_GJS
+PyObject* wrap_GjsValue(GjsValue *value)
+{
+    PyObject *ret;
+
+    if (value == NULL) {
+        Py_INCREF (Py_None);
+        return (Py_None);
+    }
+
+    ret = PyCObject_FromVoidPtrAndDesc ((void *) value, (char *)
+                                        "GjsValue", NULL);
+    return (ret);
+}
+#endif

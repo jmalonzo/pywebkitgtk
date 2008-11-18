@@ -1,0 +1,68 @@
+/* -*- Mode: C; c-basic-offset: 4 -*- */
+/*
+ Copyright (C) 2008 Luke Kenneth Carlson Leigh
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+%%
+headers
+#include <Python.h>
+#define NO_IMPORT_PYGOBJECT
+#include <pygtk/pygtk.h>
+#include <pygobject.h>
+#include <glib.h>
+
+#include "gjs/gjs.h"
+%%
+body
+%%
+modulename webkit.gjs
+%%
+ignore-blob
+   *_get_type
+   _*
+%%
+import gobject.GObject as PyGObject_Type
+%%
+override gjs_value_execute
+static PyObject *
+_wrap_gjs_value_execute(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "script", NULL };
+    const char *script;
+    gchar *exception = NULL;
+    GjsValue *ret;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GjsValue.execute", kwlist, &script))
+        return NULL;
+
+    ret = gjs_value_execute(GJS_VALUE(self->obj), script, &exception);
+
+    if (exception)
+    {
+        PyErr_SetString(
+            PyExc_RuntimeError, /* TODO: better exception */
+            exception);
+        g_free(exception);
+        return NULL;
+    }
+
+    if (ret == NULL)
+        return NULL;
+
+    /* pygobject_new handles NULL checking */
+    return pygobject_new((GObject *)ret);
+}

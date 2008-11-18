@@ -66,6 +66,27 @@ PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 AC_SUBST(PYGTK_DEFSDIR)
 AC_MSG_RESULT($PYGTK_DEFSDIR)
 
+dnl check for pygtk codegen dir
+AC_MSG_CHECKING(for pygtk codegendir)
+PYGTK_CODEGENDIR=`$PKG_CONFIG --variable=codegendir pygtk-2.0`
+AC_SUBST(PYGTK_CODEGENDIR)
+AC_MSG_RESULT($PYGTK_CODEGENDIR)
+
+dnl check if Gjs is wanted
+AC_MSG_CHECKING([if Gjs will be included])
+AC_ARG_WITH(gjs,
+            AC_HELP_STRING([--with-gjs=@<:@yes/no@:>@],
+                           [Include GJS JavaScriptCore binding [default=no]]),
+            [with_gjs="yes"],[with_gjs="no"])
+case "$with_gjs" in
+     yes|no)     ;;
+     *) AC_MSG_ERROR([Invalid option. Should be 'yes' or 'no']) ;;
+esac
+if test $with_gjs = "yes"; then
+   AC_DEFINE([HAVE_GJS],[1],[Define to have GJS Support])
+fi
+AC_MSG_RESULT([$with_gjs])
+
 dnl check which .defs file we should use
 dnl 
 dnl webkit-stable.defs is for upstream webkit/gtk stable releases
@@ -78,6 +99,9 @@ if test $webkit_installed_version > $webkit_stable_version; then
 fi
 AC_SUBST(PYWEBKIT_DEFS)
 AC_MSG_RESULT($PYWEBKIT_DEFS)
+
+dnl conditionals
+AM_CONDITIONAL([HAVE_GJS],[test "$with_gjs" = "yes"])
 
 dnl output
 AC_CONFIG_FILES([

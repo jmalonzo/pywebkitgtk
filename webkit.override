@@ -22,7 +22,7 @@
 %%
 headers
 #include <Python.h>
-#define NO_IMPORT
+#define NO_IMPORT_PYGOBJECT
 #include <pygtk/pygtk.h>
 #include <pygobject.h>
 #include <webkit/webkit.h>
@@ -110,8 +110,8 @@ _wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self,
     int limit;
     
     if (! PyArg_ParseTupleAndKeywords (args, kwargs, "i:WebBackForwardList.get_forward_list_with_limit", kwlist, &limit))
-        return NULL;                                                                                                                         
-    
+        return NULL;
+
     list = webkit_web_back_forward_list_get_forward_list_with_limit(WEBKIT_WEB_BACK_FORWARD_LIST(self->obj),
                                                                     limit);
     return _helper_wrap_gobject_glist (list);
