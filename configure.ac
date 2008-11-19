@@ -7,8 +7,6 @@ m4_define([pywebkitgtk_micro_version], [99])
 m4_define([pywebkitgtk_version],
           [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
-m4_define([webkit_stable_version], [1.0.2])
-
 AC_INIT([pywebkitgtk],
         [pywebkitgtk_version],
         [http://code.google.com/p/pywebkitgtk/issues])
@@ -48,8 +46,7 @@ dnl Check for libxslt until upstream WebKit checks for it as this is a webkit
 dnl dep and not pywebkitgtk's.
 PKG_CHECK_MODULES(DEPS, 
                   [libxslt,
-                  pygtk-2.0,
-                  webkit-1.0])
+                  pygtk-2.0])
 AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LIBS)
 AC_SUBST(DEPS_CPPFLAGS)
@@ -87,20 +84,22 @@ if test $with_gjs = "yes"; then
 fi
 AC_MSG_RESULT([$with_gjs])
 
-dnl check which .defs file we should use
-dnl 
-dnl webkit-stable.defs is for upstream webkit/gtk stable releases
-dnl webkit-dev.defs is for webkit/gtk ToT installations
-AC_MSG_CHECKING(which definitions file to use)
-PYWEBKIT_DEFS="${srcdir}/webkit/webkit-stable.defs"
-webkit_installed_version=`$PKG_CONFIG --modversion webkit-1.0`
-if test $webkit_installed_version > $webkit_stable_version; then
-   PYWEBKIT_DEFS="${srcdir}/webkit/webkit-dev.defs"
+dnl check for webkit versions installed
+PKG_CHECK_MODULES(WEBKIT, webkit-1.0)
+AC_SUBST(WEBKIT_CFLAGS)
+AC_SUBST(WEBKIT_LIBS)
+AC_SUBST(WEBKIT_CPPFLAGS)
+
+have_webkit103=dnl
+PKG_CHECK_MODULES(WEBKIT103, webkit-1.0 >= 1.0.3,
+                             have_webkit103="yes",
+                             have_webkit103="no")
+if test "$have_webkit103" = "yes"; then
+   AC_DEFINE([HAVE_WEBKIT_1_0_3],[1],[Define if WebKit/Gtk 1.0.3 was found])
 fi
-AC_SUBST(PYWEBKIT_DEFS)
-AC_MSG_RESULT($PYWEBKIT_DEFS)
 
 dnl conditionals
+AM_CONDITIONAL([HAVE_WEBKIT_1_0_3],[test "$have_webkit103" = "yes"])
 AM_CONDITIONAL([HAVE_GJS],[test "$with_gjs" = "yes"])
 
 dnl output

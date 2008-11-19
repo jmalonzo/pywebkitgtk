@@ -19,14 +19,13 @@ webkitdir = $(pkgpyexecdir)/webkit
 
 pkgpyexec_LTLIBRARIES = webkit.la
 
-webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS) $(webkit_cflags)
-webkit_la_CFLAGS = $(DEPS_CFLAGS)
+webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS) $(WEBKIT_CPPFLAGS) $(webkit_cflags)
+webkit_la_CFLAGS = $(DEPS_CFLAGS) $(WEBKIT_CFLAGS)
 webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
-webkit_la_LIBADD = $(DEPS_LIBS)
+webkit_la_LIBADD = $(DEPS_LIBS) $(WEBKIT_LIBS)
 webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
 
-webkit_defs += $(PYWEBKIT_DEFS)
 webkit_override += webkit/webkit.override
 webkit_sources += \
 	webkit/webkitmodule.c \
@@ -34,6 +33,15 @@ webkit_sources += \
 	javascriptcore/javascriptcore_types.h
 nodist_webkit_sources += webkit/webkit.c
 
+# WebKit/Gtk versions
+webkit_defs += webkit/webkit-1.0.2.defs
+
+# todo: deal with this -dev mess later
+if HAVE_WEBKIT_1_0_3
+webkit_defs += webkit/webkit-dev.defs
+endif
+
+# GJS extension module
 if HAVE_GJS
 webkit_defs += gjs/gjs.defs
 webkit_override += gjs/gjs.override
@@ -45,10 +53,10 @@ gjs/gjs.c: gjs/gjs.defs gjs/gjs.override gjs/gjs.defs.c
 
 endif
 
-webkit/webkit.c: $(PYWEBKIT_DEFS) webkit/webkit.override webkit/webkit.defs webkit/webkit.defs.c
+webkit/webkit.c: webkit/webkit.override webkit/webkit.defs webkit/webkit.defs.c
 
-webkit/webkit.defs: $(PYWEBKIT_DEFS)
-	$(CREATEDEFS) $@ $(PYWEBKIT_DEFS)
+webkit/webkit.defs: $(webkit_defs)
+	$(CREATEDEFS) $@ $(webkit_defs)
 
 %.defs.c:
 	(cd $(srcdir) \
@@ -106,4 +114,4 @@ EXTRA_DIST = \
 	gjs/gjs.override \
 	webkit/webkit.override \
 	webkit/webkit-dev.defs \
-	webkit/webkit-stable.defs
+	webkit/webkit-1.0.2.defs
