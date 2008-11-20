@@ -1,4 +1,3 @@
-
 webkit_defs :=
 webkit_sources :=
 nodist_webkit_sources :=
