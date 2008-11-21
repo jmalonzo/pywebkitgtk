@@ -23,8 +23,8 @@ class Inspector (gtk.Window):
         gtk.Window.__init__(self)
         self._web_inspector = inspector
 
-        self._web_inspector.connect("prepare-window",
-                                    self._prepare_window_cb)
+        self._web_inspector.connect("inspect-web-view",
+                                    self._inspect_web_view_cb)
         self._web_inspector.connect("show-window",
                                     self._show_window_cb)
         self._web_inspector.connect("attach-window",
@@ -38,16 +38,17 @@ class Inspector (gtk.Window):
 
         self.connect("delete-event", self._close_window_cb)
 
-    def _prepare_window_cb (self, inspector, web_view):
+    def _inspect_web_view_cb (self, inspector, web_view):
         """Called when the 'inspect' menu item is activated"""
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
         scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
-        scrolled_window.add(web_view)
+        webview = webkit.WebView()
+        scrolled_window.add(webview)
         scrolled_window.show_all()
 
         self.add(scrolled_window)
-        return True
+        return webview
 
     def _show_window_cb (self, inspector):
         """Called when the inspector window should be displayed"""
