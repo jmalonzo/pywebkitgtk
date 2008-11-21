@@ -16,6 +16,7 @@ pkgpyexecdir = $(pyexecdir)/gtk-2.0
 
 webkitdir = $(pkgpyexecdir)/webkit
 
+# pywebkitgtk library
 pkgpyexec_LTLIBRARIES = webkit.la
 
 webkit_la_CPPFLAGS = $(PYTHON_INCLUDES) $(DEPS_CPPFLAGS) $(WEBKIT_CPPFLAGS) $(webkit_cflags)
@@ -25,6 +26,7 @@ webkit_la_LIBADD = $(DEPS_LIBS) $(WEBKIT_LIBS)
 webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
 
+# Build components
 webkit_override += webkit/webkit.override
 webkit_sources += \
 	webkit/webkitmodule.c \
@@ -32,11 +34,14 @@ webkit_sources += \
 	javascriptcore/javascriptcore_types.h
 nodist_webkit_sources += webkit/webkit.c
 
-# WebKit/Gtk versions
+# WebKit/Gtk definitions
+webkit_defs += webkit/webkit-base-types.defs
 webkit_defs += webkit/webkit-1.0.2.defs
 
 # todo: deal with this -dev mess later
+# once we have a clear picture of upstream roadmap
 if HAVE_WEBKIT_1_0_3
+webkit_defs += webkit/webkit-dev-types.defs
 webkit_defs += webkit/webkit-dev.defs
 endif
 
@@ -52,7 +57,12 @@ gjs/gjs.c: gjs/gjs.defs gjs/gjs.override gjs/gjs.defs.c
 
 endif
 
-webkit/webkit.c: webkit/webkit.override webkit/webkit.defs webkit/webkit.defs.c
+webkit_deps := \
+	webkit/webkit.override \
+	webkit/webkit.defs \
+	webkit/webkit.defs.c
+
+webkit/webkit.c: $(webkit_deps)
 
 webkit/webkit.defs: $(webkit_defs)
 	$(CREATEDEFS) $@ $(webkit_defs)
@@ -63,8 +73,8 @@ webkit/webkit.defs: $(webkit_defs)
 %.defs.c:
 	(cd $(srcdir) \
 	 && $(PYGOBJECT_CODEGEN) \
-	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
-	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
+            --register $(PYGTK_DEFSDIR)/gdk-types.defs \
+            --register $(PYGTK_DEFSDIR)/gtk-types.defs \
 	    --override $(*D)/$(*F).override \
 	    --prefix py$(*F) $(*D)/$(*F).defs) 2>&1 > $(*D)/gen-$(*F).c | tee $(*D)/$(*F).errors \
 	&& cp $(*D)/gen-$(*F).c $(*D)/$(*F).c \
@@ -98,6 +108,7 @@ CLEANFILES = \
 	webkit/gen-webkit.c \
 	webkit/webkit.c \
 	webkit/webkit.defs \
+	webkit/webkit-types.defs \
 	webkit/webkit.errors \
 	Makefile.in \
 	dummy.0.2 \
@@ -114,5 +125,5 @@ EXTRA_DIST = \
 	gjs/gjs.defs \
 	gjs/gjs.override \
 	webkit/webkit.override \
-	webkit/webkit-dev.defs \
-	webkit/webkit-1.0.2.defs
+	$(webkit_types_defs) \
+	$(webkit_defs)

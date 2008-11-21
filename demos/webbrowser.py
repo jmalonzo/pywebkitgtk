@@ -24,7 +24,7 @@ from gettext import gettext as _
 
 import gtk
 import webkit
-
+from inspector import Inspector
 
 class WebToolbar(gtk.Toolbar):
 
@@ -160,7 +160,9 @@ class BrowserPage(webkit.WebView):
 
     def __init__(self):
         webkit.WebView.__init__(self)
-
+        settings = self.get_settings()
+        settings.set_property("enable-developer-extras",
+                              True)
 
 class WebStatusBar(gtk.Statusbar):
 
@@ -181,7 +183,6 @@ class WebStatusBar(gtk.Statusbar):
 
     def hide_javascript_info(self):
         self.iconbox.hide()
-
 
 class WebBrowser(gtk.Window):
 
@@ -214,6 +215,8 @@ class WebBrowser(gtk.Window):
                               self._javascript_script_confirm_cb)
         self._browser.connect("script-prompt",
                               self._javascript_script_prompt_cb)
+
+        self._inspector = Inspector(self._browser.get_web_inspector())
 
         self._scrolled_window = gtk.ScrolledWindow()
         self._scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -285,8 +288,9 @@ class WebBrowser(gtk.Window):
         print "selection changed"
 
     def _set_scroll_adjustments_cb(self, view, hadjustment, vadjustment):
-        self._scrolled_window.props.hadjustment = hadjustment
-        self._scrolled_window.props.vadjustment = vadjustment
+        if hadjustment and vadjustment:
+            print "horizontal adjustment: %d", hadjustment.props.value
+            print "vertical adjustmnet: %d", vadjustment.props.value
 
     def _navigation_requested_cb(self, view, frame, networkRequest):
         return 1

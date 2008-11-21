@@ -18,23 +18,10 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA  02110-1301 USA
 ;;
 
-
-;; from webkit/webkitwebinspector.h
-(define-method get_web_view
-  (of-object "WebKitWebInspector")
-  (c-name "webkit_web_inspector_get_web_view")
-  (return-type "WebKitWebView*")
-)
-
-(define-method get_inspected_uri
-  (of-object "WebKitWebInspector")
-  (c-name "webkit_web_inspector_get_inspected_uri")
-  (return-type "const-gchar*")
-)
-
-;; from webkit/webkitwebview.h
-(define-method get_web_inspector
-  (of-object "WebKitWebView")
-  (c-name "webkit_web_view_get_inspector")
-  (return-type "WebKitWebInspector*")
+; object definitions ...
+(define-object WebInspector
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebInspector")
+  (gtype-id "WEBKIT_TYPE_WEB_INSPECTOR")
 )
