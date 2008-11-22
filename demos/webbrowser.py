@@ -37,106 +37,9 @@ href="http://live.gnome.org/PyWebKitGtk">http://live.gnome.org/PyWebKitGtk</a><b
 </p>
 </body></html>
 """
-
-
-class WebToolbar(gtk.Toolbar):
-
-    def __init__(self, browser):
-        gtk.Toolbar.__init__(self)
-
-        self._browser = browser
-
-        # navigational buttons
-        self._back = gtk.ToolButton(gtk.STOCK_GO_BACK)
-        self._back.set_tooltip(gtk.Tooltips(), _('Back'))
-        self._back.props.sensitive = False
-        self._back.connect('clicked', self._go_back_cb)
-        self.insert(self._back, -1)
-
-        self._forward = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
-        self._forward.set_tooltip(gtk.Tooltips(), _('Forward'))
-        self._forward.props.sensitive = False
-        self._forward.connect('clicked', self._go_forward_cb)
-        self.insert(self._forward, -1)
-        self._forward.show()
-
-        self._stop_and_reload = gtk.ToolButton(gtk.STOCK_REFRESH)
-        self._stop_and_reload.set_tooltip(gtk.Tooltips(),
-                                          _('Stop and reload current page'))
-        self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
-        self.insert(self._stop_and_reload, -1)
-        self._stop_and_reload.show()
-        self._loading = False
-
-        self.insert(gtk.SeparatorToolItem(), -1)
-
-        # location entry
-        self._entry = gtk.Entry()
-        self._entry.connect('activate', self._entry_activate_cb)
-        self._current_uri = None
-
-        entry_item = gtk.ToolItem()
-        entry_item.set_expand(True)
-        entry_item.add(self._entry)
-        self._entry.show()
-
-        self.insert(entry_item, -1)
-        entry_item.show()
-
-        # scale other content besides from text as well
-        self._browser.set_full_content_zoom(True)
-
-        self._browser.connect("title-changed", self._title_changed_cb)
-
-    def set_loading(self, loading):
-        self._loading = loading
-
-        if self._loading:
-            self._show_stop_icon()
-            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Stop'))
-        else:
-            self._show_reload_icon()
-            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Reload'))
-        self._update_navigation_buttons()
-
-    def location_set_text (self, text):
-        self._entry.set_text(text)
-
-    def _set_address(self, address):
-        self._entry.props.text = address
-        self._current_uri = address
-
-    def _update_navigation_buttons(self):
-        can_go_back = self._browser.can_go_back()
-        self._back.props.sensitive = can_go_back
-
-        can_go_forward = self._browser.can_go_forward()
-        self._forward.props.sensitive = can_go_forward
-
-    def _entry_activate_cb(self, entry):
-        self._browser.open(entry.props.text)
-
-    def _go_back_cb(self, button):
-        self._browser.go_back()
-
-    def _go_forward_cb(self, button):
-        self._browser.go_forward()
-
-    def _title_changed_cb(self, widget, frame, title):
-        self._set_address(frame.get_uri())
-
-    def _stop_and_reload_cb(self, button):
-        if self._loading:
-            self._browser.stop_loading()
-        else:
-            self._browser.reload()
-
-    def _show_stop_icon(self):
-        self._stop_and_reload.set_stock_id(gtk.STOCK_CANCEL)
-
-    def _show_reload_icon(self):
-        self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
-
+if __name__ == "__main__":
+    webbrowser = WebBrowser()
+    gtk.main()
 
 class BrowserPage(webkit.WebView):
 
@@ -169,28 +72,6 @@ class BrowserPage(webkit.WebView):
         aboutitem.connect('activate', about_pywebkitgtk_cb, self)
 
         menu.show_all()
-
-class WebStatusBar(gtk.Statusbar):
-
-    def __init__(self):
-        gtk.Statusbar.__init__(self)
-#        self.iconbox = gtk.EventBox()
-#        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO,
-#                                                  gtk.ICON_SIZE_BUTTON))
-#        self.pack_start(self.iconbox, False, False, 6)
-#        self.iconbox.hide_all()
-
-    def display(self, text, context=None):
-        cid = self.get_context_id("pywebkitgtk")
-        self.push(cid, str(text))
-
-    def show_javascript_info(self):
-        pass
-        #self.iconbox.show()
-
-    def hide_javascript_info(self):
-        pass
-#        self.iconbox.hide()
 
 class WebBrowser(gtk.Window):
 
@@ -298,6 +179,7 @@ class WebBrowser(gtk.Window):
             print "vertical adjustmnet: %d", vadjustment.props.value
 
     def _navigation_requested_cb(self, view, frame, networkRequest):
+        print "webkit: navigation requested callback"
         return 1
 
     def _javascript_console_message_cb(self, view, message, line, sourceid):
@@ -341,7 +223,109 @@ def zoom_hundred_cb(menu_item, web_view):
     if not (web_view.get_zoom_level() == 1.0):
         web_view.set_zoom_level(1.0)
 
+class WebStatusBar(gtk.Statusbar):
 
-if __name__ == "__main__":
-    webbrowser = WebBrowser()
-    gtk.main()
+    def __init__(self):
+        gtk.Statusbar.__init__(self)
+
+    def display(self, text, context=None):
+        cid = self.get_context_id("pywebkitgtk")
+        self.push(cid, str(text))
+
+class WebToolbar(gtk.Toolbar):
+
+    def __init__(self, browser):
+        gtk.Toolbar.__init__(self)
+
+        self._browser = browser
+
+        # navigational buttons
+        self._back = gtk.ToolButton(gtk.STOCK_GO_BACK)
+        self._back.set_tooltip(gtk.Tooltips(), _('Back'))
+        self._back.props.sensitive = False
+        self._back.connect('clicked', self._go_back_cb)
+        self.insert(self._back, -1)
+
+        self._forward = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
+        self._forward.set_tooltip(gtk.Tooltips(), _('Forward'))
+        self._forward.props.sensitive = False
+        self._forward.connect('clicked', self._go_forward_cb)
+        self.insert(self._forward, -1)
+        self._forward.show()
+
+        self._stop_and_reload = gtk.ToolButton(gtk.STOCK_REFRESH)
+        self._stop_and_reload.set_tooltip(gtk.Tooltips(),
+                                          _('Stop and reload current page'))
+        self._stop_and_reload.connect('clicked', self._stop_and_reload_cb)
+        self.insert(self._stop_and_reload, -1)
+        self._stop_and_reload.show()
+        self._loading = False
+
+        self.insert(gtk.SeparatorToolItem(), -1)
+
+        # location entry
+        self._entry = gtk.Entry()
+        self._entry.connect('activate', self._entry_activate_cb)
+        self._current_uri = None
+
+        entry_item = gtk.ToolItem()
+        entry_item.set_expand(True)
+        entry_item.add(self._entry)
+        self._entry.show()
+
+        self.insert(entry_item, -1)
+        entry_item.show()
+
+        # scale other content besides from text as well
+        self._browser.set_full_content_zoom(True)
+
+        self._browser.connect("title-changed", self._title_changed_cb)
+
+    def set_loading(self, loading):
+        self._loading = loading
+
+        if self._loading:
+            self._show_stop_icon()
+            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Stop'))
+        else:
+            self._show_reload_icon()
+            self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Reload'))
+        self._update_navigation_buttons()
+
+    def location_set_text (self, text):
+        self._entry.set_text(text)
+
+    def _set_address(self, address):
+        self._entry.props.text = address
+        self._current_uri = address
+
+    def _update_navigation_buttons(self):
+        can_go_back = self._browser.can_go_back()
+        self._back.props.sensitive = can_go_back
+
+        can_go_forward = self._browser.can_go_forward()
+        self._forward.props.sensitive = can_go_forward
+
+    def _entry_activate_cb(self, entry):
+        self._browser.open(entry.props.text)
+
+    def _go_back_cb(self, button):
+        self._browser.go_back()
+
+    def _go_forward_cb(self, button):
+        self._browser.go_forward()
+
+    def _title_changed_cb(self, widget, frame, title):
+        self._set_address(frame.get_uri())
+
+    def _stop_and_reload_cb(self, button):
+        if self._loading:
+            self._browser.stop_loading()
+        else:
+            self._browser.reload()
+
+    def _show_stop_icon(self):
+        self._stop_and_reload.set_stock_id(gtk.STOCK_CANCEL)
+
+    def _show_reload_icon(self):
+        self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
