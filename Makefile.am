@@ -102,6 +102,7 @@ MAINTAINERCLEANFILES = \
 	missing
 
 CLEANFILES = \
+	demos/inspector.pyc \
 	gjs/gen-gjs.c \
 	gjs/gjs.errors \
 	gjs/gjs.c \

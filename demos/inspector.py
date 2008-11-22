@@ -21,6 +21,8 @@ class Inspector (gtk.Window):
     def __init__ (self, inspector):
         """initialize the WebInspector class"""
         gtk.Window.__init__(self)
+        self.set_default_size(600, 480)
+
         self._web_inspector = inspector
 
         self._web_inspector.connect("inspect-web-view",

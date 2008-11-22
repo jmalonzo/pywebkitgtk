@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Copyright (C) 2006, Red Hat, Inc.
 # Copyright (C) 2007, One Laptop Per Child
-# Copyright (C) 2007 Jan Alonzo <jmalonzo@unpluggable.com>
+# Copyright (C) 2007-2008 Jan Alonzo <jmalonzo@unpluggable.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,19 @@ from gettext import gettext as _
 import gtk
 import webkit
 from inspector import Inspector
+
+ABOUT_PAGE = """
+<html><head><title>PyWebKitGtk - About</title></head><body>
+<h1>Welcome to <code>webbrowser.py</code></h1>
+<p>
+<strong>Home:</strong><a
+href="http://code.google.com/p/pywebkitgtk/">http://code.google.com/p/pywebkitgtk/</a><br/>
+<strong>Wiki:</strong><a
+href="http://live.gnome.org/PyWebKitGtk">http://live.gnome.org/PyWebKitGtk</a><br/>
+</p>
+</body></html>
+"""
+
 
 class WebToolbar(gtk.Toolbar):
 
@@ -57,27 +70,6 @@ class WebToolbar(gtk.Toolbar):
 
         self.insert(gtk.SeparatorToolItem(), -1)
 
-        # zoom buttons
-        self._zoom_in = gtk.ToolButton(gtk.STOCK_ZOOM_IN)
-        self._zoom_in.set_tooltip(gtk.Tooltips(), _('Zoom in'))
-        self._zoom_in.connect('clicked', self._zoom_in_cb)
-        self.insert(self._zoom_in, -1)
-        self._zoom_in.show()
-
-        self._zoom_out = gtk.ToolButton(gtk.STOCK_ZOOM_OUT)
-        self._zoom_out.set_tooltip(gtk.Tooltips(), _('Zoom out'))
-        self._zoom_out.connect('clicked', self._zoom_out_cb)
-        self.insert(self._zoom_out, -1)
-        self._zoom_out.show()
-
-        self._zoom_hundred = gtk.ToolButton(gtk.STOCK_ZOOM_100)
-        self._zoom_hundred.set_tooltip(gtk.Tooltips(), _('100% zoom'))
-        self._zoom_hundred.connect('clicked', self._zoom_hundred_cb)
-        self.insert(self._zoom_hundred, -1)
-        self._zoom_hundred.show()
-
-        self.insert(gtk.SeparatorToolItem(), -1)
-
         # location entry
         self._entry = gtk.Entry()
         self._entry.connect('activate', self._entry_activate_cb)
@@ -106,6 +98,9 @@ class WebToolbar(gtk.Toolbar):
             self._show_reload_icon()
             self._stop_and_reload.set_tooltip(gtk.Tooltips(), _('Reload'))
         self._update_navigation_buttons()
+
+    def location_set_text (self, text):
+        self._entry.set_text(text)
 
     def _set_address(self, address):
         self._entry.props.text = address
@@ -142,19 +137,6 @@ class WebToolbar(gtk.Toolbar):
     def _show_reload_icon(self):
         self._stop_and_reload.set_stock_id(gtk.STOCK_REFRESH)
 
-    def _zoom_in_cb(self, widget):
-        """Zoom into the page"""
-        self._browser.zoom_in()
-
-    def _zoom_out_cb(self, widget):
-        """Zoom out of the page"""
-        self._browser.zoom_out()
-
-    def _zoom_hundred_cb(self, widget):
-        """Zoom 100%"""
-        if not (self._browser.get_zoom_level() == 1.0):
-            self._browser.set_zoom_level(1.0)
-
 
 class BrowserPage(webkit.WebView):
 
@@ -164,25 +146,51 @@ class BrowserPage(webkit.WebView):
         settings.set_property("enable-developer-extras",
                               True)
 
+        self.connect("populate-popup", self.populate_popup)
+
+    def populate_popup(self, view, menu):
+        # zoom buttons
+        zoom_in = gtk.ImageMenuItem(gtk.STOCK_ZOOM_IN)
+        zoom_in.connect('activate', zoom_in_cb, self)
+        menu.append(zoom_in)
+
+        zoom_out = gtk.ImageMenuItem(gtk.STOCK_ZOOM_OUT)
+        zoom_out.connect('activate', zoom_out_cb, self)
+        menu.append(zoom_out)
+
+        zoom_hundred = gtk.ImageMenuItem(gtk.STOCK_ZOOM_100)
+        zoom_hundred.connect('activate', zoom_hundred_cb, self)
+        menu.append(zoom_hundred)
+
+        menu.append(gtk.SeparatorMenuItem())
+
+        aboutitem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
+        menu.append(aboutitem)
+        aboutitem.connect('activate', about_pywebkitgtk_cb, self)
+
+        menu.show_all()
+
 class WebStatusBar(gtk.Statusbar):
 
     def __init__(self):
         gtk.Statusbar.__init__(self)
-        self.iconbox = gtk.EventBox()
-        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO,
-                                                  gtk.ICON_SIZE_BUTTON))
-        self.pack_start(self.iconbox, False, False, 6)
-        self.iconbox.hide_all()
+#        self.iconbox = gtk.EventBox()
+#        self.iconbox.add(gtk.image_new_from_stock(gtk.STOCK_INFO,
+#                                                  gtk.ICON_SIZE_BUTTON))
+#        self.pack_start(self.iconbox, False, False, 6)
+#        self.iconbox.hide_all()
 
     def display(self, text, context=None):
         cid = self.get_context_id("pywebkitgtk")
         self.push(cid, str(text))
 
     def show_javascript_info(self):
-        self.iconbox.show()
+        pass
+        #self.iconbox.show()
 
     def hide_javascript_info(self):
-        self.iconbox.hide()
+        pass
+#        self.iconbox.hide()
 
 class WebBrowser(gtk.Window):
 
@@ -197,6 +205,7 @@ class WebBrowser(gtk.Window):
         self._browser.connect('load-progress-changed',
                               self._loading_progress_cb)
         self._browser.connect('load-finished', self._loading_stop_cb)
+        self._browser.connect('load-committed', self._loading_committed_cb)
         self._browser.connect("title-changed", self._title_changed_cb)
         self._browser.connect("hovering-over-link", self._hover_link_cb)
         self._browser.connect("status-bar-text-changed",
@@ -205,7 +214,6 @@ class WebBrowser(gtk.Window):
         self._browser.connect("selection-changed", self._selection_changed_cb)
         self._browser.connect("set-scroll-adjustments",
                               self._set_scroll_adjustments_cb)
-        self._browser.connect("populate-popup", self._populate_popup)
 
         self._browser.connect("console-message",
                               self._javascript_console_message_cb)
@@ -216,8 +224,6 @@ class WebBrowser(gtk.Window):
         self._browser.connect("script-prompt",
                               self._javascript_script_prompt_cb)
 
-        self._inspector = Inspector(self._browser.get_web_inspector())
-
         self._scrolled_window = gtk.ScrolledWindow()
         self._scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
         self._scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -225,8 +231,8 @@ class WebBrowser(gtk.Window):
         self._scrolled_window.show_all()
 
         self._toolbar = WebToolbar(self._browser)
-
         self._statusbar = WebStatusBar()
+        self._inspector = Inspector(self._browser.get_web_inspector())
 
         vbox = gtk.VBox(spacing=4)
         vbox.pack_start(self._toolbar, expand=False, fill=False)
@@ -234,17 +240,11 @@ class WebBrowser(gtk.Window):
         vbox.pack_end(self._statusbar, expand=False, fill=False)
 
         self.add(vbox)
-        self.set_default_size(600, 480)
+        self.set_default_size(800, 600)
 
-        self.connect('destroy', gtk.main_quit)
+        self.connect('destroy', destroy_cb, self._browser, self._inspector)
 
-        about = """
-<html><head><title>About</title></head><body>
-<h1>Welcome to <code>webbrowser.py</code></h1>
-<p><a href="http://live.gnome.org/PyWebKitGtk">Homepage</a></p>
-</body></html>
-"""
-        self._browser.load_string(about, "text/html", "iso-8859-15", "about:")
+        self._browser.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about:")
 
         self.show_all()
 
@@ -261,9 +261,15 @@ class WebBrowser(gtk.Window):
     def _loading_stop_cb(self, view, frame):
         # FIXME: another frame may still be loading?
         self._toolbar.set_loading(False)
+        self._statusbar.display('')
 
     def _loading_progress_cb(self, view, progress):
         self._set_progress(_("%s%s loaded") % (progress, '%'))
+
+    def _loading_committed_cb(self, view, frame):
+        uri = frame.get_uri()
+        if uri:
+            self._toolbar.location_set_text(uri)
 
     def _set_progress(self, progress):
         self._statusbar.display(progress)
@@ -278,7 +284,6 @@ class WebBrowser(gtk.Window):
             self._statusbar.display('')
 
     def _statusbar_text_changed_cb(self, view, text):
-        #if text:
         self._statusbar.display(text)
 
     def _icon_loaded_cb(self):
@@ -296,26 +301,45 @@ class WebBrowser(gtk.Window):
         return 1
 
     def _javascript_console_message_cb(self, view, message, line, sourceid):
-        self._statusbar.show_javascript_info()
+        print "javascript: console message callback"
 
     def _javascript_script_alert_cb(self, view, frame, message):
+        print "javascript: script alert callback"
         pass
 
     def _javascript_script_confirm_cb(self, view, frame, message, isConfirmed):
+        print "javascript: confirm callback"
         pass
 
     def _javascript_script_prompt_cb(self, view, frame,
                                      message, default, text):
+        print "javascript: script prompt callback"
         pass
 
-    def _populate_popup(self, view, menu):
-        aboutitem = gtk.MenuItem(label="About PyWebKit")
-        menu.append(aboutitem)
-        aboutitem.connect('activate', self._about_pywebkitgtk_cb)
-        menu.show_all()
 
-    def _about_pywebkitgtk_cb(self, widget):
-        self._browser.open("http://live.gnome.org/PyWebKitGtk")
+def destroy_cb (window, browser, inspector):
+    """destroy window resources"""
+    browser.destroy()
+    inspector.destroy()
+    window.destroy()
+    gtk.main_quit()
+
+# context menu item callbacks
+def about_pywebkitgtk_cb(menu_item, web_view):
+    web_view.open("http://live.gnome.org/PyWebKitGtk")
+
+def zoom_in_cb(menu_item, web_view):
+    """Zoom into the page"""
+    web_view.zoom_in()
+
+def zoom_out_cb(menu_item, web_view):
+    """Zoom out of the page"""
+    web_view.zoom_out()
+
+def zoom_hundred_cb(menu_item, web_view):
+    """Zoom 100%"""
+    if not (web_view.get_zoom_level() == 1.0):
+        web_view.set_zoom_level(1.0)
 
 
 if __name__ == "__main__":
