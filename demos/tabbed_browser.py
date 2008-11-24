@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# Copyright (C) 2006, Red Hat, Inc.
-# Copyright (C) 2007, One Laptop Per Child
 # Copyright (C) 2007-2008 Jan Alonzo <jmalonzo@unpluggable.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,6 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# TODO:
+#
+# * fix tab relabelling
+# * search page interface
+# * custom button - w/o margins/padding to make tabs thin
+#
 
 from gettext import gettext as _
 
@@ -74,6 +79,56 @@ class BrowserPage(webkit.WebView):
         menu.show_all()
         return False
 
+class TabLabel (gtk.HBox):
+    """A class for Tab labels"""
+
+    __gsignals__ = {
+        "close": (gobject.SIGNAL_RUN_FIRST,
+                  gobject.TYPE_NONE,
+                  (gobject.TYPE_OBJECT,))
+        }
+
+    def __init__ (self, title, child):
+        """initialize the tab label"""
+        gtk.HBox.__init__(self, False, 4)
+        self.title = title
+        self.child = child
+        self.label = gtk.Label(title)
+        self.label.props.max_width_chars = 30
+        self.label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
+        self.label.set_alignment(0.0, 0.5)
+
+        icon = gtk.image_new_from_stock(gtk.STOCK_ORIENTATION_PORTRAIT, gtk.ICON_SIZE_MENU)
+        close_image = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+        close_button = gtk.Button()
+        close_button.set_relief(gtk.RELIEF_NONE)
+        close_button.connect("clicked", self._close_tab, child)
+        close_button.add(close_image)
+        self.pack_start(icon, False, False, 0)
+        self.pack_start(self.label, True, True, 0)
+        self.pack_start(close_button, False, False, 0)
+
+        self.set_data("label", self.label)
+        self.set_data("close-button", close_button)
+        self.connect("style-set", tab_label_style_set_cb)
+
+    def set_label_text (self, text):
+        """sets the text of this label"""
+        self.label.set_label(text)
+
+    def _close_tab (self, widget, child):
+        self.emit("close", child)
+
+def tab_label_style_set_cb (tab_label, style):
+    context = tab_label.get_pango_context()
+    metrics = context.get_metrics(tab_label.style.font_desc, context.get_language())
+    char_width = metrics.get_approximate_digit_width()
+    (width, height) = gtk.icon_size_lookup_for_settings(tab_label.get_settings(), gtk.ICON_SIZE_MENU)
+    tab_label.set_size_request(20 * pango.PIXELS(char_width) + 2 * width, -1)
+    button = tab_label.get_data("close-button")
+    button.set_size_request(width + 4, height + 4)
+
+
 class ContentPane (gtk.Notebook):
 
     __gsignals__ = {
@@ -89,6 +144,7 @@ class ContentPane (gtk.Notebook):
         """initialize the content pane"""
         gtk.Notebook.__init__(self)
         self.props.scrollable = True
+        self.props.homogeneous = True
         self.connect("switch-page", self._switch_page)
 
         self.show_all()
@@ -107,6 +163,7 @@ class ContentPane (gtk.Notebook):
         browser.connect("hovering-over-link", self._hovering_over_link_cb)
         browser.connect("populate-popup", self._populate_page_popup_cb)
         browser.connect("load-committed", self._view_load_committed_cb)
+        browser.connect("load-finished", self._view_load_finished_cb)
         inspector = Inspector(browser.get_web_inspector())
 
         scrolled_window = gtk.ScrolledWindow()
@@ -124,7 +181,8 @@ class ContentPane (gtk.Notebook):
             browser.open(url)
 
         # create the tab
-        label = self.create_tab_label(url, scrolled_window)
+        label = TabLabel(url, scrolled_window)
+        label.connect("close", self._close_tab)
         label.show_all()
 
         new_tab_number = self.append_page(scrolled_window, label)
@@ -137,24 +195,6 @@ class ContentPane (gtk.Notebook):
         self.show_all()
         self.set_current_page(new_tab_number)
 
-    def create_tab_label (self, title, child):
-        """creates a new tab label"""
-        hbox = gtk.HBox()
-        icon = gtk.image_new_from_stock(gtk.STOCK_NEW, gtk.ICON_SIZE_MENU)
-        label = gtk.Label(title)
-        label.props.max_width_chars = 30
-        label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-
-        close_button = gtk.Button()
-        close_image = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
-        close_button.connect("clicked", self._close_tab, child)
-        close_button.set_image(close_image)
-        close_button.set_relief(gtk.RELIEF_NONE)
-        hbox.pack_start(icon, False, False, padding=0)
-        hbox.pack_start(label, False, False, padding=0)
-        hbox.pack_end(close_button, False, False, padding=0)
-        return hbox
-
     def _populate_page_popup_cb(self, view, menu):
         # misc
         if self._hovered_uri:
@@ -166,7 +206,7 @@ class ContentPane (gtk.Notebook):
     def _open_in_new_tab (self, menuitem, view):
         self.new_tab(self._hovered_uri)
 
-    def _close_tab (self, button, child):
+    def _close_tab (self, label, child):
         page_num = self.page_num(child)
         if page_num != -1:
             self.remove_page(page_num)
@@ -185,12 +225,23 @@ class ContentPane (gtk.Notebook):
     def _view_load_committed_cb (self, view, frame):
         self.emit("focus-view-load-committed", view, frame)
 
+    def _view_load_finished_cb(self, view, frame):
+        child = self.get_nth_page(self.get_current_page())
+        label = self.get_tab_label(child)
+        title = frame.get_title()
+        if not title:
+           title = frame.get_uri()
+        label.set_label_text(title)
+
+
 class WebToolbar(gtk.Toolbar):
 
     __gsignals__ = {
         "load-requested": (gobject.SIGNAL_RUN_FIRST,
                              gobject.TYPE_NONE,
-                             (gobject.TYPE_STRING,))
+                             (gobject.TYPE_STRING,)),
+        "new-tab-requested": (gobject.SIGNAL_RUN_FIRST,
+                             gobject.TYPE_NONE, ())
         }
 
     def __init__(self):
@@ -207,11 +258,20 @@ class WebToolbar(gtk.Toolbar):
         self.insert(entry_item, -1)
         entry_item.show()
 
+        # add tab button
+        button = gtk.ToolButton(gtk.STOCK_ADD)
+        button.connect("clicked", self._add_tab_cb)
+        self.insert(button, -1)
+        button.show()
+
     def location_set_text (self, text):
         self._entry.set_text(text)
 
     def _entry_activate_cb(self, entry):
         self.emit("load-requested", entry.props.text)
+
+    def _add_tab_cb (self, button):
+        self.emit("new-tab-requested")
 
 class WebBrowser(gtk.Window):
 
@@ -222,21 +282,11 @@ class WebBrowser(gtk.Window):
         content_tabs = ContentPane()
         content_tabs.connect("focus-view-load-committed", self._load_committed_cb, toolbar)
         toolbar.connect("load-requested", load_requested_cb, content_tabs)
-
-#        statusbar = WebStatusBar()
-
-#        content_tabs.connect("load-started", load_started_cb, toolbar)
-#        content_tabs.connect('load-progress-changed', load_progress_cb, statusbar)
-#        content_tabs.connect('load-finished', load_stop_cb)
-#        content_tabs.connect('load-committed', load_committed_cb)
-#        content_tabs.connect("title-changed", title_changed_cb, self)
-#        content_tabs.connect("hovering-over-link", hover_link_cb, statusbar)
-#        content_tabs.connect("status-bar-text-changed",statusbar_text_changed_cb, statusbar)
+        toolbar.connect("new-tab-requested", new_tab_requested_cb, content_tabs)
 
         vbox = gtk.VBox(spacing=1)
         vbox.pack_start(toolbar, expand=False, fill=False)
         vbox.pack_start(content_tabs)
-#        vbox.pack_end(statusbar, expand=False, fill=False)
 
         self.add(vbox)
         self.set_default_size(800, 600)
@@ -254,6 +304,9 @@ class WebBrowser(gtk.Window):
         load_committed_cb(tabbed_pane, view, frame, toolbar)
 
 # event handlers
+def new_tab_requested_cb (toolbar, content_pane):
+    content_pane.new_tab("about:blank")
+
 def load_requested_cb (widget, text, content_pane):
     if not text:
         return
@@ -285,16 +338,6 @@ def zoom_hundred_cb(menu_item, web_view):
     """Zoom 100%"""
     if not (web_view.get_zoom_level() == 1.0):
         web_view.set_zoom_level(1.0)
-
-class WebStatusBar(gtk.Statusbar):
-
-    def __init__(self):
-        gtk.Statusbar.__init__(self)
-
-    def display(self, text, context=None):
-        cid = self.get_context_id("pywebkitgtk")
-        self.push(cid, str(text))
-
 
 if __name__ == "__main__":
     webbrowser = WebBrowser()
