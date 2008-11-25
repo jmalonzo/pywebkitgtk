@@ -209,8 +209,9 @@ class ContentPane (gtk.Notebook):
     def _close_tab (self, label, child):
         page_num = self.page_num(child)
         if page_num != -1:
+            view = child.get_child()
+            view.destroy()
             self.remove_page(page_num)
-            child.destroy()
         self.set_show_tabs(self.get_n_pages() > 1)
 
     def _switch_page (self, notebook, page, page_num):
@@ -290,7 +291,7 @@ class WebBrowser(gtk.Window):
 
         self.add(vbox)
         self.set_default_size(800, 600)
-        self.connect('destroy', destroy_cb)
+        self.connect('destroy', destroy_cb, content_tabs)
 
         content_tabs.new_tab("http://www.google.com")
 
@@ -317,8 +318,15 @@ def load_committed_cb (tabbed_pane, view, frame, toolbar):
     if uri:
         toolbar.location_set_text(uri)
 
-def destroy_cb(window):
+def destroy_cb(window, content_pane):
     """destroy window resources"""
+    num_pages = content_pane.get_n_pages()
+    while num_pages != -1:
+        child = content_pane.get_nth_page(num_pages)
+        if child:
+            view = child.get_child()
+            view.destroy()
+        num_pages = num_pages - 1
     window.destroy()
     gtk.main_quit()
 
