@@ -38,3 +38,35 @@
   (c-name "webkit_web_view_get_inspector")
   (return-type "WebKitWebInspector*")
 )
+
+(define-method get_window_features
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_window_features")
+  (return-type "WebKitWebWindowFeatures*")
+)
+
+(define-method set_window_features
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_window_features")
+  (return-type "none")
+  (parameters
+   '("WebKitWebWindowFeatures*" "features")
+   )  
+)
+
+;; from webkit/webkitwebwindowfeatures.h
+(define-function webkit_web_window_features_new
+  (is-constructor-of "WebKitWebWindowFeatures")
+  (c-name "webkit_web_window_features_new")
+  (caller-owns-return #t)
+  (return-type "WebKitWebWindowFeatures*")
+)
+
+(define-method equal
+  (of-object "WebKitWebWindowFeatures")
+  (c-name "webkit_web_window_features_equal")
+  (return-type "gboolean")
+  (parameters
+   '("WebKitWebWindowFeatures*" "other_features")
+   )
+)

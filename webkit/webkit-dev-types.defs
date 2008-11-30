@@ -25,3 +25,10 @@
   (c-name "WebKitWebInspector")
   (gtype-id "WEBKIT_TYPE_WEB_INSPECTOR")
 )
+
+(define-object WindowFeatures
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebWindowFeatures")
+  (gtype-id "WEBKIT_TYPE_WEB_WINDOW_FEATURES")
+)

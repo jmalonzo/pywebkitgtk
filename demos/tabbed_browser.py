@@ -137,7 +137,10 @@ class ContentPane (gtk.Notebook):
                                      (gobject.TYPE_OBJECT, gobject.TYPE_STRING,)),
         "focus-view-load-committed": (gobject.SIGNAL_RUN_FIRST,
                                       gobject.TYPE_NONE,
-                                      (gobject.TYPE_OBJECT, gobject.TYPE_OBJECT,))
+                                      (gobject.TYPE_OBJECT, gobject.TYPE_OBJECT,)),
+        "new-window-requested": (gobject.SIGNAL_RUN_FIRST,
+                                 gobject.TYPE_NONE,
+                                 (gobject.TYPE_OBJECT,))
         }
 
     def __init__ (self):
@@ -156,29 +159,37 @@ class ContentPane (gtk.Notebook):
         view = child.get_child()
         view.open(text)
 
+    def new_tab_with_webview (self, webview):
+        """creates a new tab with the given webview as its child"""
+        self._construct_tab_view(webview)
+
     def new_tab (self, url=None):
         """creates a new page in a new tab"""
         # create the tab content
         browser = BrowserPage()
-        browser.connect("hovering-over-link", self._hovering_over_link_cb)
-        browser.connect("populate-popup", self._populate_page_popup_cb)
-        browser.connect("load-committed", self._view_load_committed_cb)
-        browser.connect("load-finished", self._view_load_finished_cb)
-        inspector = Inspector(browser.get_web_inspector())
+        self._construct_tab_view(browser, url)
 
-        scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
-        scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
-        scrolled_window.add(browser)
-        scrolled_window.show_all()
+    def _construct_tab_view (self, web_view, url=None):
+        web_view.connect("hovering-over-link", self._hovering_over_link_cb)
+        web_view.connect("populate-popup", self._populate_page_popup_cb)
+        web_view.connect("load-committed", self._view_load_committed_cb)
+        web_view.connect("load-finished", self._view_load_finished_cb)
+        web_view.connect("create-web-view", self._new_web_view_request_cb)
+        inspector = Inspector(web_view.get_web_inspector())
 
         # load the content
         self._hovered_uri = None
         if not url:
-            browser.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about")
+            web_view.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about")
             url = "about"
         else:
-            browser.open(url)
+            web_view.open(url)
+
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
+        scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
+        scrolled_window.add(web_view)
+        scrolled_window.show_all()
 
         # create the tab
         label = TabLabel(url, scrolled_window)
@@ -234,6 +245,25 @@ class ContentPane (gtk.Notebook):
            title = frame.get_uri()
         label.set_label_text(title)
 
+    def _new_web_view_request_cb (self, web_view, web_frame):
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
+        scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
+        view = BrowserPage()
+        scrolled_window.add(view)
+        scrolled_window.show_all()
+
+        vbox = gtk.VBox(spacing=1)
+        vbox.pack_start(scrolled_window, True, True)
+
+        window = gtk.Window()
+        window.add(vbox)
+        view.connect("web-view-ready", self._new_web_view_ready_cb)
+        return view
+
+    def _new_web_view_ready_cb (self, web_view):
+        self.emit("new-window-requested", web_view)
+
 
 class WebToolbar(gtk.Toolbar):
 
@@ -245,25 +275,26 @@ class WebToolbar(gtk.Toolbar):
                              gobject.TYPE_NONE, ())
         }
 
-    def __init__(self):
+    def __init__(self, location_enabled=True, toolbar_enabled=True):
         gtk.Toolbar.__init__(self)
 
         # location entry
-        self._entry = gtk.Entry()
-        self._entry.connect('activate', self._entry_activate_cb)
-        entry_item = gtk.ToolItem()
-        entry_item.set_expand(True)
-        entry_item.add(self._entry)
-        self._entry.show()
-
-        self.insert(entry_item, -1)
-        entry_item.show()
+        if location_enabled:
+            self._entry = gtk.Entry()
+            self._entry.connect('activate', self._entry_activate_cb)
+            entry_item = gtk.ToolItem()
+            entry_item.set_expand(True)
+            entry_item.add(self._entry)
+            self._entry.show()
+            self.insert(entry_item, -1)
+            entry_item.show()
 
         # add tab button
-        button = gtk.ToolButton(gtk.STOCK_ADD)
-        button.connect("clicked", self._add_tab_cb)
-        self.insert(button, -1)
-        button.show()
+        if toolbar_enabled:
+            button = gtk.ToolButton(gtk.STOCK_ADD)
+            button.connect("clicked", self._add_tab_cb)
+            self.insert(button, -1)
+            button.show()
 
     def location_set_text (self, text):
         self._entry.set_text(text)
@@ -282,6 +313,7 @@ class WebBrowser(gtk.Window):
         toolbar = WebToolbar()
         content_tabs = ContentPane()
         content_tabs.connect("focus-view-load-committed", self._load_committed_cb, toolbar)
+        content_tabs.connect("new-window-requested", self._new_window_requested_cb)
         toolbar.connect("load-requested", load_requested_cb, content_tabs)
         toolbar.connect("new-tab-requested", new_tab_requested_cb, content_tabs)
 
@@ -296,6 +328,27 @@ class WebBrowser(gtk.Window):
         content_tabs.new_tab("http://www.google.com")
 
         self.show_all()
+
+    def _new_window_requested_cb (self, content_pane, view):
+        features = view.get_window_features()
+        window = view.get_toplevel()
+
+        scrolled_window = view.get_parent()
+        if features.get_property("scrollbar-visible"):
+            scrolled_window.props.hscrollbar_policy = gtk.POLICY_NEVER
+            scrolled_window.props.vscrollbar_policy = gtk.POLICY_NEVER
+
+        isLocationbarVisible = features.get_property("locationbar-visible")
+        isToolbarVisible = features.get_property("toolbar-visible")
+        if isLocationbarVisible or isToolbarVisible:
+            toolbar = WebToolbar(isLocationbarVisible, isToolbarVisible)
+            scrolled_window.get_parent().pack_start(toolbar, False, False, 0)
+
+        window.set_default_size(features.props.width, features.props.height)
+        window.move(features.props.x, features.props.y)
+
+        window.show_all()
+        return True
 
     def _load_committed_cb (self, tabbed_pane, view, frame, toolbar):
         title = frame.get_title()
