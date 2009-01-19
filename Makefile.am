@@ -6,7 +6,7 @@ webkit_cflags :=
 
 CREATEDEFS = $(PYTHON) $(PYGTK_CODEGENDIR)/createdefs.py
 
-defsdir = $(PYGTK_DEFSDIR)
+defsdir = $(pkgdatadir)/defs
 defs_DATA = $(webkit_defs)
 
 common_ldflags = -module -avoid-version
