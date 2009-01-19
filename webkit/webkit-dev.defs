@@ -45,15 +45,6 @@
   (return-type "WebKitWebWindowFeatures*")
 )
 
-(define-method set_window_features
-  (of-object "WebKitWebView")
-  (c-name "webkit_web_view_set_window_features")
-  (return-type "none")
-  (parameters
-   '("WebKitWebWindowFeatures*" "features")
-   )  
-)
-
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new
   (is-constructor-of "WebKitWebWindowFeatures")
