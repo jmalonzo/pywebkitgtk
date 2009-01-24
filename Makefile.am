@@ -35,15 +35,8 @@ webkit_sources += \
 nodist_webkit_sources += webkit/webkit.c
 
 # WebKit/Gtk definitions
-webkit_defs += webkit/webkit-base-types.defs
-webkit_defs += webkit/webkit-1.0.2.defs
-
-# todo: deal with this -dev mess later
-# once we have a clear picture of upstream roadmap
-if HAVE_WEBKIT_1_0_3
-webkit_defs += webkit/webkit-dev-types.defs
-webkit_defs += webkit/webkit-dev.defs
-endif
+webkit_defs += webkit/webkit-base-types.defs webkit/webkit-1.1-types.defs
+webkit_defs += webkit/webkit-1.0.2.defs webkit/webkit-1.1.defs
 
 # GJS extension module
 if HAVE_GJS

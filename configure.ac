@@ -90,16 +90,7 @@ AC_SUBST(WEBKIT_CFLAGS)
 AC_SUBST(WEBKIT_LIBS)
 AC_SUBST(WEBKIT_CPPFLAGS)
 
-have_webkit103=dnl
-PKG_CHECK_MODULES(WEBKIT103, webkit-1.0 >= 1.0.3,
-                             have_webkit103="yes",
-                             have_webkit103="no")
-if test "$have_webkit103" = "yes"; then
-   AC_DEFINE([HAVE_WEBKIT_1_0_3],[1],[Define if WebKit/Gtk 1.0.3 was found])
-fi
-
 dnl conditionals
-AM_CONDITIONAL([HAVE_WEBKIT_1_0_3],[test "$have_webkit103" = "yes"])
 AM_CONDITIONAL([HAVE_GJS],[test "$with_gjs" = "yes"])
 
 dnl output
