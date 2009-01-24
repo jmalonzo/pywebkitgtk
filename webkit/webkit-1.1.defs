@@ -45,6 +45,21 @@
   (return-type "WebKitWebWindowFeatures*")
 )
 
+(define-method reload_bypass_cache
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_reload_bypass_cache")
+  (return-type "none")
+)
+
+(define-method can_show_mime_type
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_show_mime_type")
+  (return-type "gboolean")
+  (parameters
+   '("const gchar*" "mime_type")
+   )
+)
+
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new
   (is-constructor-of "WebKitWebWindowFeatures")
@@ -60,4 +75,68 @@
   (parameters
    '("WebKitWebWindowFeatures*" "other_features")
    )
+)
+
+;; from webkit/webkitwebnavigationaction.h
+
+(define-method get_reason
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_action_get_reason")
+  (return-type "WebKitWebNavigationReason")
+)
+
+(define-method set_reason
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_set_reason")
+  (return-type "none")
+  (parameters
+   '("reason" "WebKitWebNavigationReason")
+   )
+)
+
+(define-method get_original_uri
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_action_get_original_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method set_original_uri
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_action_set_original_uri")
+  (return-type "none")
+  (parameters
+   '("original_uri" "const-gchar*")
+   )
+)
+
+(define-method get_button
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_action_get_button")
+  (return-type "gint")
+)
+
+(define-method get_modifier_state
+  (of-object "WebKitWebNavigationAction")
+  (c-name "webkit_web_navigation_action_get_modifier_state")
+  (return-type "gint")
+)
+
+;; from webkit/webkitwebpolicydecision.h
+
+(define-method use
+  (of-object "WebKitWebPolicyDecision")
+  (c-name "webkit_web_policy_decision_use")
+  (return-type "none")
+)
+
+(define-method ignore
+  (of-object "WebKitWebPolicyDecision")
+  (c-name "webkit_web_policy_decision_ignore")
+  (return-type "none")
+)
+
+(define-method download
+  (of-object "WebKitWebPolicyDecision")
+  (c-name "webkit_web_policy_decision_download")
+  (return-type "none")
 )

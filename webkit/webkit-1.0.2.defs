@@ -333,30 +333,6 @@
    )
 )
 
-;(define-method set_background_color
-;  (of-object "WebKitWebView")
-;  (c-name "webkit_web_view_set_background_color")
-;  (return-type "none")
-;  (parameters
-;   '("const-GdkColor*" "color")
-;   )
-;)
-;
-;(define-method get_background_alpha
-;  (of-object "WebKitWebView")
-;  (c-name "webkit_web_view_get_background_alpha")
-;  (return-type "guint16")
-;)
-;
-;(define-method set_background_alpha
-;  (of-object "WebKitWebView")
-;  (c-name "webkit_web_view_set_background_alpha")
-;  (return-type "none")
-;  (parameters
-;   '("guint16" "alpha")
-;   )
-;)
-
 ;; From <webkit/webkitwebframe.h>
 
 (define-method get_web_view

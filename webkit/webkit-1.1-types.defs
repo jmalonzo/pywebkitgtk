@@ -32,3 +32,31 @@
   (c-name "WebKitWebWindowFeatures")
   (gtype-id "WEBKIT_TYPE_WEB_WINDOW_FEATURES")
 )
+
+(define-object WebNavigationAction
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebNavigationAction")
+  (gtype-id "WEBKIT_TYPE_WEB_NAVIGATION_ACTION")
+)
+
+(define-objet WebPolicyDecision
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebPolicyDecision")
+  (gtype-id "WEBKIT_TYPE_WEB_POLICY_DECISION")
+)
+
+(enum WebNavigationReason
+  (in-module "WebKit")
+  (c-name "WebKitWebNavigationReason")
+  (gtype-id "WEBKIT_TYPE_WEB_NAVIGATION_REASON")
+  (values
+   '("link_clicked" "WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED")
+   '("form_submitted" "WEBKIT_WEB_NAVIGATION_REASON_FORM_SUBMITTED")
+   '("back_forward" "WEBKIT_WEB_NAVIGATION_REASON_BACK_FORWARD")
+   '("reload" "WEBKIT_WEB_NAVIGATION_REASON_RELOAD")
+   '("form_resubmitted" "WEBKIT_WEB_NAVIGATION_REASON_FORM_RESUBMITTED")
+   '("other" "WEBKIT_WEB_NAVIGATION_REASON_OTHER")
+   )
+)
