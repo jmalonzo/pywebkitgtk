@@ -325,7 +325,7 @@ class WebBrowser(gtk.Window):
         self.set_default_size(800, 600)
         self.connect('destroy', destroy_cb, content_tabs)
 
-        content_tabs.new_tab("http://www.google.com")
+        content_tabs.new_tab("http://www.google.com/")
 
         self.show_all()
 
@@ -401,5 +401,6 @@ def zoom_hundred_cb(menu_item, web_view):
         web_view.set_zoom_level(1.0)
 
 if __name__ == "__main__":
+    gobject.threads_init()
     webbrowser = WebBrowser()
     gtk.main()
