@@ -117,3 +117,34 @@ _wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self,
                                                                     limit);
     return _helper_wrap_gobject_glist (list);
 }
+%%
+override webkit_web_navigation_action_set_reason kwargs
+static PyObject *
+_wrap_webkit_web_navigation_action_set_reason(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "reason", NULL };
+    PyObject *py_reason;
+    WebKitWebNavigationReason reason = 0;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:WebKitWebNavigationAction.set_reason",
+                                     kwlist, &py_reason))
+        return -1;
+
+    pyg_enum_get_value(WEBKIT_TYPE_WEB_NAVIGATION_REASON, py_reason, (gint*) &reason);
+
+    webkit_web_navigation_action_set_reason(WEBKIT_WEB_NAVIGATION_ACTION(self->obj), reason);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override webkit_web_navigation_action_get_reason noargs
+static PyObject *
+_wrap_webkit_web_navigation_action_get_reason(PyGObject *self)
+{
+    WebKitWebNavigationReason reason;
+
+    reason = webkit_web_navigation_action_get_reason(WEBKIT_WEB_NAVIGATION_ACTION(self->obj));
+
+    return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_WEB_NAVIGATION_REASON, reason));
+}

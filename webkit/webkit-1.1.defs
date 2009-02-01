@@ -56,7 +56,7 @@
   (c-name "webkit_web_view_can_show_mime_type")
   (return-type "gboolean")
   (parameters
-   '("const gchar*" "mime_type")
+   '("const-gchar*" "mime_type")
    )
 )
 
@@ -87,10 +87,10 @@
 
 (define-method set_reason
   (of-object "WebKitWebNavigationAction")
-  (c-name "webkit_web_navigation_set_reason")
+  (c-name "webkit_web_navigation_action_set_reason")
   (return-type "none")
   (parameters
-   '("reason" "WebKitWebNavigationReason")
+   '("WebKitWebNavigationReason" "reason")
    )
 )
 
@@ -105,7 +105,7 @@
   (c-name "webkit_web_navigation_action_set_original_uri")
   (return-type "none")
   (parameters
-   '("original_uri" "const-gchar*")
+   '("const-gchar*" "original_uri")
    )
 )
 
