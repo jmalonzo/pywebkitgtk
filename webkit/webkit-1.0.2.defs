@@ -408,9 +408,9 @@
   (is-constructor-of "WebKitNetworkRequest")
   (c-name "webkit_network_request_new")
   (caller-owns-return #t)
-  (return-type "WebKitNetworkRequest*")
-  (properties
-   '("uri" (argname "uri"))
+  (return-type "WebKitNetworkRequest*") 
+  (parameters
+   '("const-gchar*" "uri")
    )
 )
 
