@@ -128,7 +128,7 @@ _wrap_webkit_web_navigation_action_set_reason(PyGObject *self, PyObject *args, P
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:WebKitWebNavigationAction.set_reason",
                                      kwlist, &py_reason))
-        return -1;
+        return NULL;
 
     pyg_enum_get_value(WEBKIT_TYPE_WEB_NAVIGATION_REASON, py_reason, (gint*) &reason);
 
