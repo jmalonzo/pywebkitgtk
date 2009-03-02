@@ -69,29 +69,11 @@ PYGTK_CODEGENDIR=`$PKG_CONFIG --variable=codegendir pygtk-2.0`
 AC_SUBST(PYGTK_CODEGENDIR)
 AC_MSG_RESULT($PYGTK_CODEGENDIR)
 
-dnl check if Gjs is wanted
-AC_MSG_CHECKING([if Gjs will be included])
-AC_ARG_WITH(gjs,
-            AC_HELP_STRING([--with-gjs=@<:@yes/no@:>@],
-                           [Include GJS JavaScriptCore binding [default=no]]),
-            [with_gjs="yes"],[with_gjs="no"])
-case "$with_gjs" in
-     yes|no)     ;;
-     *) AC_MSG_ERROR([Invalid option. Should be 'yes' or 'no']) ;;
-esac
-if test $with_gjs = "yes"; then
-   AC_DEFINE([HAVE_GJS],[1],[Define to have GJS Support])
-fi
-AC_MSG_RESULT([$with_gjs])
-
 dnl check for webkit versions installed
 PKG_CHECK_MODULES(WEBKIT, webkit-1.0)
 AC_SUBST(WEBKIT_CFLAGS)
 AC_SUBST(WEBKIT_LIBS)
 AC_SUBST(WEBKIT_CPPFLAGS)
-
-dnl conditionals
-AM_CONDITIONAL([HAVE_GJS],[test "$with_gjs" = "yes"])
 
 dnl output
 AC_CONFIG_FILES([

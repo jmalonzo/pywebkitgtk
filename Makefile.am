@@ -38,18 +38,6 @@ nodist_webkit_sources += webkit/webkit.c
 webkit_defs += webkit/webkit-base-types.defs webkit/webkit-1.1-types.defs
 webkit_defs += webkit/webkit-1.0.2.defs webkit/webkit-1.1.defs
 
-# GJS extension module
-if HAVE_GJS
-webkit_defs += gjs/gjs.defs
-webkit_override += gjs/gjs.override
-webkit_cflags += -I$(srcdir)/gjs
-webkit_sources += gjs/gjs_internal.c
-nodist_webkit_sources += gjs/gjs.c
-
-gjs/gjs.c: gjs/gjs.defs gjs/gjs.override gjs/gjs.defs.c
-
-endif
-
 webkit_deps := \
 	webkit/webkit.override \
 	webkit/webkit.defs \
@@ -96,9 +84,6 @@ MAINTAINERCLEANFILES = \
 
 CLEANFILES = \
 	demos/inspector.pyc \
-	gjs/gen-gjs.c \
-	gjs/gjs.errors \
-	gjs/gjs.c \
 	webkit/gen-webkit.c \
 	webkit/webkit.c \
 	webkit/webkit.defs \
@@ -116,8 +101,6 @@ EXTRA_DIST = \
 	NEWS \
 	README \
 	demos/webbrowser.py \
-	gjs/gjs.defs \
-	gjs/gjs.override \
 	webkit/webkit.override \
 	$(webkit_types_defs) \
 	$(webkit_defs)
