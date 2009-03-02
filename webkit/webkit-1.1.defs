@@ -60,6 +60,27 @@
    )
 )
 
+(define-method get_encoding
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_encoding")
+  (return-type "const-gchar*")
+)
+
+(define-method set_custom_encoding
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_custom_encoding")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "encoding")
+   )
+)
+
+(define-method get_custom_encoding
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_custom_encoding")
+  (return-type "const-gchar*")
+)
+
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new
   (is-constructor-of "WebKitWebWindowFeatures")
@@ -139,4 +160,38 @@
   (of-object "WebKitWebPolicyDecision")
   (c-name "webkit_web_policy_decision_download")
   (return-type "none")
+)
+
+;; from webkit/webkitwebbackforwardlist.h
+
+(define-method add_item
+  (of-object "WebKitWebBackForwardList")
+  (c-name "webkit_web_back_forward_list_add_item")
+  (return-type "none")
+  (parameters
+   '("WebKitWebHistoryItem*" "history_item")
+   )
+)
+
+;; from webkit/webkitwebframe.h
+
+(define-method load_uri
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_load_uri")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "uri")
+   )
+)
+
+(define-method load_string
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_load_string")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "content")
+    ("const-gchar*" "mime_type")
+    ("const-gchar*" "encoding")
+    ("const-gchar*" "base_uri")
+   )
 )
