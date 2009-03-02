@@ -1,3 +1,12 @@
+02 Mar 2009 - pywebkitgtk 1.1
+----
+ - WebKitGtk 1.1 API 
+    * WebInspector
+    * WebNavigationDecision
+    * WebPolicyDecision
+    * Updates..
+ - tabbed_browser replaces webbrowser
+
 01 Nov 2008 - pywebkitgtk 1.0.2
 ----
  - .pc file cleanup when invoking make clean
