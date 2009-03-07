@@ -90,7 +90,6 @@ CLEANFILES = \
 	webkit/webkit-types.defs \
 	webkit/webkit.errors \
 	Makefile.in \
-	dummy.0.2 \
 	pywebkitgtk-1.0.pc
 
 EXTRA_DIST = \
@@ -100,7 +99,9 @@ EXTRA_DIST = \
 	MAINTAINERS \
 	NEWS \
 	README \
-	demos/webbrowser.py \
+	demos/inspector.py \
+	demos/tabbed_browser.py \
 	webkit/webkit.override \
+	tests/test_webnavigationaction.py \
 	$(webkit_types_defs) \
 	$(webkit_defs)

@@ -1,10 +1,11 @@
-02 Mar 2009 - pywebkitgtk 1.1
+07 Mar 2009 - pywebkitgtk 1.1
 ----
  - WebKitGtk 1.1 API 
     * WebInspector
     * WebNavigationDecision
     * WebPolicyDecision
-    * Updates..
+    * API updates
+    * Bug fixes
  - tabbed_browser replaces webbrowser
 
 01 Nov 2008 - pywebkitgtk 1.0.2
