@@ -1,6 +1,6 @@
 /* PyWebKitGtk - Python bindings to WebKit/GTK+
  *
- * Copyright (C) 2007-2008  Jan Michael Alonzo <jmalonzo@unpluggable.com>
+ * Copyright (C) 2009  Jan Michael Alonzo <jmalonzo@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
