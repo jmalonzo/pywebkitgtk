@@ -160,3 +160,32 @@ _wrap_webkit_download_get_status(PyGObject *self)
 
     return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_DOWNLOAD_STATUS, status));
 }
+%%
+new-constructor WEBKIT_TYPE_HISTORY_ITEM
+%%
+override webkit_web_history_item_new kwargs
+static int
+_wrap_webkit_web_history_item_new(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = {"uri", "title", NULL};
+    gchar *uri = NULL;
+    gchar *title = NULL;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|zz:WebHistoryItem.__init__",
+                                    kwlist, &uri, &title))
+        return -1;
+
+
+    if (uri)
+        self->obj = (GObject *)webkit_web_history_item_new_with_data(uri, title);
+    else
+        self->obj = (GObject *)webkit_web_history_item_new();
+
+    if (!self->obj) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "count not create WebHistoryItem object");
+        return -1;
+    }
+    pygobject_register_wrapper((PyObject *)self);
+    return 0;
+}

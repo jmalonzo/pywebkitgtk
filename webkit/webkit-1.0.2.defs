@@ -437,13 +437,6 @@
   (c-name "webkit_web_history_item_new")
   (caller-owns-return #t)
   (return-type "WebKitWebHistoryItem*")
-)
-
-(define-function webkit_web_history_item_new_with_data
-  (is-constructor-of "WebKitWebHistoryItem")
-  (c-name "webkit_web_history_item_new_with_data")
-  (caller-owns-return #t)
-  (return-type "WebKitWebHistoryItem*")
   (properties
    '("uri" (argname "uri"))
    '("title" (argname "title"))
