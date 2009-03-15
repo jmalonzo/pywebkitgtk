@@ -72,6 +72,7 @@ ignore
   webkit_web_inspector_get_type
   webkit_web_view_get_type
   webkit_web_settings_get_type
+  webkit_download_get_type
 %%
 override webkit_web_frame_get_global_context noargs
 static PyObject *
@@ -147,4 +148,15 @@ _wrap_webkit_web_navigation_action_get_reason(PyGObject *self)
     reason = webkit_web_navigation_action_get_reason(WEBKIT_WEB_NAVIGATION_ACTION(self->obj));
 
     return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_WEB_NAVIGATION_REASON, reason));
+}
+%%
+override webkit_download_get_status noargs
+static PyObject *
+_wrap_webkit_download_get_status(PyGObject *self)
+{
+    WebKitDownloadStatus status;
+
+    status = webkit_download_get_status(WEBKIT_DOWNLOAD(self->obj));
+
+    return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_DOWNLOAD_STATUS, status));
 }

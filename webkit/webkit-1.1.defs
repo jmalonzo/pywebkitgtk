@@ -195,3 +195,86 @@
     ("const-gchar*" "base_uri")
    )
 )
+
+;; from webkit/webkitdownload.h
+(define-function webkit_download_new
+  (is-constructor-of "WebKitDownload")
+  (c-name "webkit_download_new")
+  (caller-owns-return #t)
+  (return-type "WebKitDownload*")
+)
+
+(define-method start
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_start")
+  (return-type "none")
+)
+
+(define-method cancel
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_cancel")
+  (return-type "none")
+)
+
+(define-method get_uri
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method get_network_request
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_network_request")
+  (return-type "WebKitNetworkRequest*")
+)
+
+(define-method get_suggested_filename
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_suggested_filename")
+  (return-type "const-gchar*")
+)
+
+(define-method get_destination_uri
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_destination_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method set_destination_uri
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_set_destination_uri")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "destination_uri")
+   )
+)
+
+(define-method get_progress
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_progress")
+  (return-type "gdouble")
+)
+
+(define-method get_elapsed_time
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_elapsed_time")
+  (return-type "gdouble")
+)
+
+(define-method get_total_size
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_total_size")
+  (return-type "guint64")
+)
+
+(define-method get_current_size
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_current_size")
+  (return-type "guint64")
+)
+
+(define-method get_status
+  (of-object "WebKitDownload")
+  (c-name "webkit_download_get_status")
+  (return-type "WebKitDownloadStatus")
+)

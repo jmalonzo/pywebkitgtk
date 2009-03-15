@@ -47,6 +47,37 @@
   (gtype-id "WEBKIT_TYPE_WEB_POLICY_DECISION")
 )
 
+(define-object Download
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitDownload")
+  (gtype-id "WEBKIT_TYPE_DOWNLOAD")
+)
+
+(enum DownloadStatus
+  (in-module "WebKit")
+  (c-name "WebKitDownloadStatus")
+  (gtype-id "WEBKIT_TYPE_DOWNLOAD_STATUS")
+  (values
+   '("error" "WEBKIT_DOWNLOAD_STATUS_ERROR")
+   '("created" "WEBKIT_DOWNLOAD_STATUS_CREATED")
+   '("started" "WEBKIT_DOWNLOAD_STATUS_STARTED")
+   '("cancelled" "WEBKIT_DOWNLOAD_STATUS_CANCELLED")
+   '("finished" "WEBKIT_DOWNLOAD_STATUS_FINISHED")
+   )
+)
+
+(enum DownloadError
+  (in-module "WebKit")
+  (c-name "WebKitDownloadError")
+  (gtype-id "WEBKIT_TYPE_DOWNLOAD_ERROR")
+  (values
+   '("cancelled-by-user" "WEBKIT_DOWNLOAD_ERROR_CANCELLED_BY_USER")
+   '("destination" "WEBKIT_DOWNLOAD_ERROR_DESTINATION")
+   '("network" "WEBKIT_DOWNLOAD_ERROR_NETWORK")
+   )
+)
+
 (enum WebNavigationReason
   (in-module "WebKit")
   (c-name "WebKitWebNavigationReason")
