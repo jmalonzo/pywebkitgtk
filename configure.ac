@@ -4,9 +4,6 @@ m4_define([pywebkitgtk_major_version], [1])
 m4_define([pywebkitgtk_minor_version], [1])
 m4_define([pywebkitgtk_micro_version], [39999])
 
-# the minimum version of WebKitGtk required for this version of PyWebKitGtk to work
-m4_define([webkitgtk_version], [1.1.3])
-
 m4_define([pywebkitgtk_version],
           [pywebkitgtk_major_version.pywebkitgtk_minor_version.pywebkitgtk_micro_version])
 
@@ -74,8 +71,11 @@ PYGTK_CODEGENDIR=`$PKG_CONFIG --variable=codegendir pygtk-2.0`
 AC_SUBST(PYGTK_CODEGENDIR)
 AC_MSG_RESULT($PYGTK_CODEGENDIR)
 
+# the minimum version of WebKitGtk required for this version of PyWebKitGtk to work
+WEBKITGTK_REQUIRED_VERSION=1.1.3
+
 dnl check for webkit versions installed
-PKG_CHECK_MODULES(WEBKIT, webkit-1.0 >= $webkitgtk_version)
+PKG_CHECK_MODULES(WEBKIT, [webkit-1.0 >= $WEBKITGTK_REQUIRED_VERSION])
 AC_SUBST(WEBKIT_CFLAGS)
 AC_SUBST(WEBKIT_LIBS)
 AC_SUBST(WEBKIT_CPPFLAGS)
