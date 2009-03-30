@@ -34,6 +34,8 @@ AM_INIT_AUTOMAKE([foreign subdir-objects])
 
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
+dnl when using libtool 2.x create libtool early, because it's used in configure
+m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
 dnl check for python
 AM_PATH_PYTHON(2.4)
