@@ -40,7 +40,7 @@
   (gtype-id "WEBKIT_TYPE_WEB_NAVIGATION_ACTION")
 )
 
-(define-objet WebPolicyDecision
+(define-object WebPolicyDecision
   (in-module "WebKit")
   (parent "GObject")
   (c-name "WebKitWebPolicyDecision")
