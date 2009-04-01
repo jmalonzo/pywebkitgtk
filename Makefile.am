@@ -83,6 +83,7 @@ MAINTAINERCLEANFILES = \
 	missing
 
 CLEANFILES = \
+	config.lt \
 	demos/inspector.pyc \
 	webkit/gen-webkit.c \
 	webkit/webkit.c \
