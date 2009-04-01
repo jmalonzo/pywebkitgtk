@@ -103,6 +103,8 @@ EXTRA_DIST = \
 	demos/inspector.py \
 	demos/tabbed_browser.py \
 	webkit/webkit.override \
+	tests/test_webbackforwardlist.py \
+	tests/test_webframe.py \
 	tests/test_webnavigationaction.py \
 	$(webkit_types_defs) \
 	$(webkit_defs)

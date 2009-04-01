@@ -1,3 +1,8 @@
+1 Apr 2009  - pywebkitgtk 1.1.4
+----
+ - Libtool 2.2 compatibility
+ - WebPolicyDecision API
+
 18 Mar 2009 - pywebkitgtk 1.1.3
 ----
  - New API: WebDownload
@@ -5,7 +10,7 @@
    - now accepts 'uri' and 'title' properties
  - More unit tests
 
-07 Mar 2009 - pywebkitgtk 1.1
+7 Mar 2009 - pywebkitgtk 1.1
 ----
  - WebKitGtk 1.1 API 
     * WebInspector
@@ -15,7 +20,7 @@
     * Bug fixes
  - tabbed_browser replaces webbrowser
 
-01 Nov 2008 - pywebkitgtk 1.0.2
+1 Nov 2008 - pywebkitgtk 1.0.2
 ----
  - .pc file cleanup when invoking make clean
  - Build fix for PyGtk 2.13 - Patch by Jason Ribeiro
@@ -27,6 +32,6 @@
  - Release for WebKitGtk 1.0.1
 
 
-01 Oct 2007 - pywebkitgtk 0.2
+1 Oct 2007 - pywebkitgtk 0.2
 ----
  - Initial release
