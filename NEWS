@@ -1,3 +1,17 @@
+29 May 2009 - pywebkitgtk 1.1.5
+----
+ - New Printing API added to WebFrame.
+ - Covers improvements and changes from WebKitGtk 1.1.5 up to 1.1.8
+   Summary:
+     * Accessibility improvements
+     * Support for caret browsing
+     * Support for spell-checking
+     * WebKitGtk now displays an error page for load errors
+     * JIT support for X86_64
+     * Arbitrary widget embedding as if it was a plugin
+     * HTML5 database and localStorage Settings API
+   See http://trac.webkit.org/browser/trunk/WebKit/gtk/NEWS for more info.
+
 1 Apr 2009  - pywebkitgtk 1.1.4
 ----
  - Libtool 2.2 compatibility
