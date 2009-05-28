@@ -59,6 +59,7 @@ modulename webkit
 %%
 import gtk.Container as PyGtkContainer_Type
 import gobject.GObject as PyGObject_Type
+import gtk.PrintOperation as PyGtkPrintOperation_Type
 %%
 ignore-glob
   *_get_type

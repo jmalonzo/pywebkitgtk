@@ -196,6 +196,23 @@
    )
 )
 
+(define-method print_full
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_print_full")
+  (return-type "GtkPrintOperationResult")
+  (parameters
+   '("GtkPrintOperation*" "operation")
+    ("GtkPrintOperationAction" "action")
+    ("GError**" "error")
+   )
+)
+
+(define-method print
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_print")
+  (return-type "none")
+)
+
 ;; from webkit/webkitdownload.h
 (define-function webkit_download_new
   (is-constructor-of "WebKitDownload")
