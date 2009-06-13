@@ -204,19 +204,19 @@
 (define-method can_cut_clipboard
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_can_cut_clipboard")
-  (return-type "none")
+  (return-type "gboolean")
 )
 
 (define-method can_copy_clipboard
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_can_copy_clipboard")
-  (return-type "none")
+  (return-type "gboolean")
 )
 
 (define-method can_paste_clipboard
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_can_paste_clipboard")
-  (return-type "none")
+  (return-type "gboolean")
 )
 
 (define-method cut_clipboard
