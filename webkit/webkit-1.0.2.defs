@@ -219,8 +219,14 @@
   (return-type "gboolean")
 )
 
+(define-method copy_clipboard
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_copy_clipboard")
+  (return-type "none")
+)
+
 (define-method cut_clipboard
-  (of-object "WebkitWebView")
+  (of-object "WebKitWebView")
   (c-name "webkit_web_view_cut_clipboard")
   (return-type "none")
 )
