@@ -81,6 +81,16 @@
   (return-type "const-gchar*")
 )
 
+(define-method move_cursor
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_move_cursor")
+  (parameters
+   '("GtkMovementStep" "step")
+    ("gint" "count")
+  )
+  (return-type "none")
+)
+
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new
   (is-constructor-of "WebKitWebWindowFeatures")
