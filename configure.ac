@@ -37,9 +37,6 @@ m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 dnl check for python
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
-AC_MSG_CHECKING([for pythons include path])
-PYTHON_INCLUDES=`python-config --includes`
-AC_MSG_RESULT($PYTHON_INCLUDES)
 
 dnl from pygtk: get rid of -export-dynamic stuff from the configure flags...
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
