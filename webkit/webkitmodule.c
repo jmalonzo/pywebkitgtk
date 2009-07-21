@@ -22,6 +22,7 @@
 #include "config.h"
 #endif
 
+#include <glib.h>
 /* include this first, before NO_IMPORT_PYGOBJECT is defined */
 #include <pygobject.h>
 #include <pygtk/pygtk.h>
@@ -41,6 +42,9 @@ initwebkit(void)
     }
 
     init_pygtk();
+
+    if (!g_thread_supported())
+        g_thread_init (NULL);
 
     /* webkit module */
     m = Py_InitModule ("webkit", pywebkit_functions);

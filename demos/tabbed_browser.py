@@ -409,6 +409,5 @@ def print_cb(menu_item, web_view):
     mainframe.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG);
 
 if __name__ == "__main__":
-    gobject.threads_init()
     webbrowser = WebBrowser()
     gtk.main()
