@@ -11,8 +11,8 @@ defs_DATA = $(webkit_defs)
 
 common_ldflags = -module -avoid-version
 
-pkgpythondir = $(pyexecdir)/gtk-2.0
-pkgpyexecdir = $(pyexecdir)/gtk-2.0
+pkgpythondir = $(pyexecdir)/webkit-1.0
+pkgpyexecdir = $(pyexecdir)/webkit-1.0
 
 webkitdir = $(pkgpyexecdir)/webkit
 
