@@ -247,7 +247,8 @@ class ContentPane (gtk.Notebook):
         title = frame.get_title()
         if not title:
            title = frame.get_uri()
-        label.set_label_text(title)
+        if title:
+            label.set_label_text(title)
 
     def _new_web_view_request_cb (self, web_view, web_frame):
         scrolled_window = gtk.ScrolledWindow()

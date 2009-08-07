@@ -61,23 +61,19 @@ class Inspector (gtk.Window):
         """Called when the inspector should displayed in the same
         window as the WebView being inspected
         """
-        print "attach"
         return False
 
     def _detach_window_cb (self, inspector):
         """Called when the inspector should appear in a separate window"""
-        print "detach"
         return False
 
-    def _close_window_cb (self, inspector, web_view):
+    def _close_window_cb (self, inspector, view):
         """Called when the inspector window should be closed"""
-        print "close"
         self.hide()
         return True
 
     def _finished_cb (self, inspector):
         """Called when inspection is done"""
-        print "finished"
         self._web_inspector = 0
         self.destroy()
         return False
