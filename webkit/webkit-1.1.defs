@@ -60,6 +60,15 @@
    )
 )
 
+(define-method load_uri
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_load_uri")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "uri")
+   )
+)
+
 (define-method get_encoding
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_get_encoding")
