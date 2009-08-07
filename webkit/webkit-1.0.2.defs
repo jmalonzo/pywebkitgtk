@@ -415,8 +415,8 @@
   (c-name "webkit_network_request_new")
   (caller-owns-return #t)
   (return-type "WebKitNetworkRequest*") 
-  (parameters
-   '("const-gchar*" "uri")
+  (properties
+   '("uri" (argname "uri"))
    )
 )
 
