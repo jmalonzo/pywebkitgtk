@@ -33,11 +33,8 @@ from inspector import Inspector
 ABOUT_PAGE = """
 <html><head><title>PyWebKitGtk - About</title></head><body>
 <h1>Welcome to <code>webbrowser.py</code></h1>
-<p>
-<strong>Home:</strong><a
+<p><a
 href="http://code.google.com/p/pywebkitgtk/">http://code.google.com/p/pywebkitgtk/</a><br/>
-<strong>Wiki:</strong><a
-href="http://live.gnome.org/PyWebKitGtk">http://live.gnome.org/PyWebKitGtk</a><br/>
 </p>
 </body></html>
 """
@@ -139,9 +136,6 @@ class ContentPane (gtk.Notebook):
         "focus-view-title-changed": (gobject.SIGNAL_RUN_FIRST,
                                      gobject.TYPE_NONE,
                                      (gobject.TYPE_OBJECT, gobject.TYPE_STRING,)),
-        "focus-view-load-committed": (gobject.SIGNAL_RUN_FIRST,
-                                      gobject.TYPE_NONE,
-                                      (gobject.TYPE_OBJECT, gobject.TYPE_OBJECT,)),
         "new-window-requested": (gobject.SIGNAL_RUN_FIRST,
                                  gobject.TYPE_NONE,
                                  (gobject.TYPE_OBJECT,))
@@ -176,18 +170,10 @@ class ContentPane (gtk.Notebook):
     def _construct_tab_view (self, web_view, url=None):
         web_view.connect("hovering-over-link", self._hovering_over_link_cb)
         web_view.connect("populate-popup", self._populate_page_popup_cb)
-        web_view.connect("load-committed", self._view_load_committed_cb)
         web_view.connect("load-finished", self._view_load_finished_cb)
         web_view.connect("create-web-view", self._new_web_view_request_cb)
+        web_view.connect("title-changed", self._title_changed_cb)
         inspector = Inspector(web_view.get_web_inspector())
-
-        # load the content
-        self._hovered_uri = None
-        if not url:
-            web_view.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about")
-            url = "about"
-        else:
-            web_view.open(url)
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -209,6 +195,14 @@ class ContentPane (gtk.Notebook):
 
         self.show_all()
         self.set_current_page(new_tab_number)
+
+        # load the content
+        self._hovered_uri = None
+        if not url:
+            web_view.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about")
+            url = "about:blank"
+        else:
+            web_view.load_uri(url)
 
     def _populate_page_popup_cb(self, view, menu):
         # misc
@@ -233,13 +227,13 @@ class ContentPane (gtk.Notebook):
         child = self.get_nth_page(page_num)
         view = child.get_child()
         frame = view.get_main_frame()
-        self.emit("focus-view-load-committed", view, frame)
+        self.emit("focus-view-title-changed", frame, frame.props.title)
 
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 
-    def _view_load_committed_cb (self, view, frame):
-        self.emit("focus-view-load-committed", view, frame)
+    def _title_changed_cb (self, view, frame, title):
+        self.emit("focus-view-title-changed", frame, title)
 
     def _view_load_finished_cb(self, view, frame):
         child = self.get_nth_page(self.get_current_page())
@@ -317,7 +311,7 @@ class WebBrowser(gtk.Window):
 
         toolbar = WebToolbar()
         content_tabs = ContentPane()
-        content_tabs.connect("focus-view-load-committed", self._load_committed_cb, toolbar)
+        content_tabs.connect("focus-view-title-changed", self._title_changed_cb, toolbar)
         content_tabs.connect("new-window-requested", self._new_window_requested_cb)
         toolbar.connect("load-requested", load_requested_cb, content_tabs)
         toolbar.connect("new-tab-requested", new_tab_requested_cb, content_tabs)
@@ -330,9 +324,9 @@ class WebBrowser(gtk.Window):
         self.set_default_size(800, 600)
         self.connect('destroy', destroy_cb, content_tabs)
 
-        content_tabs.new_tab("http://www.google.com/")
-
         self.show_all()
+
+        content_tabs.new_tab("http://www.google.com")
 
     def _new_window_requested_cb (self, content_pane, view):
         features = view.get_window_features()
@@ -355,12 +349,11 @@ class WebBrowser(gtk.Window):
         window.show_all()
         return True
 
-    def _load_committed_cb (self, tabbed_pane, view, frame, toolbar):
-        title = frame.get_title()
+    def _title_changed_cb (self, tabbed_pane, frame, title, toolbar):
         if not title:
            title = frame.get_uri()
         self.set_title(_("PyWebKitGtk - %s") % title)
-        load_committed_cb(tabbed_pane, view, frame, toolbar)
+        load_committed_cb(tabbed_pane, frame, toolbar)
 
 # event handlers
 def new_tab_requested_cb (toolbar, content_pane):
@@ -371,7 +364,7 @@ def load_requested_cb (widget, text, content_pane):
         return
     content_pane.load(text)
 
-def load_committed_cb (tabbed_pane, view, frame, toolbar):
+def load_committed_cb (tabbed_pane, frame, toolbar):
     uri = frame.get_uri()
     if uri:
         toolbar.location_set_text(uri)
