@@ -1,3 +1,11 @@
+08 August 2009 - pywebkitgtk 1.1.6
+----
+ - WebView wrapper fixes (mostly by Sayamindu):
+     * load_uri, move_cursor, copy_clipboard (NEW)
+     * cut_clipboard, can_copy_clipboard and can_paste_clipboard
+ - GObject threads are now initialized by the PyWebKitGtk
+ - OS X build fix
+
 29 May 2009 - pywebkitgtk 1.1.5
 ----
  - New Printing API added to WebFrame.
