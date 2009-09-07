@@ -100,6 +100,56 @@
   (return-type "none")
 )
 
+(define-method get_load_status
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_load_status")
+  (return-type "WebKitLoadStatus")
+)
+
+(define-method get_progress
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_progress")
+  (return-type "gdouble")
+)
+
+(define-method undo
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_undo")
+  (return-type "none")
+)
+
+(define-method can_undo
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_undo")
+  (return-type "none")
+)
+
+(define-method redo
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_redo")
+  (return-type "none")
+)
+
+(define-method can_redo
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_can_redo")
+  (return-type "none")
+)
+
+(define-method set_view_source_mode
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_set_view_source_mode")
+  (parameters
+   '("gboolean" "view_source_mode")
+   )
+)
+
+(define-method get_view_source_mode
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_view_source_mode")
+  (return-type "gboolean")
+)
+
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new
   (is-constructor-of "WebKitWebWindowFeatures")
