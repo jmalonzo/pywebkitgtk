@@ -364,3 +364,31 @@
   (c-name "webkit_download_get_status")
   (return-type "WebKitDownloadStatus")
 )
+
+;; From <webkit/webkitnetworkresponse.h>
+
+(define-function webkit_network_response_new
+  (is-constructor-of "WebKitNetworkResponse")
+  (c-name "webkit_network_response_new")
+  (caller-owns-return #t)
+  (return-type "WebKitNetworkResponse*")
+  (properties
+   '("uri" (argname "uri"))
+   )
+)
+
+(define-method set_uri
+  (of-object "WebKitNetworkResponse")
+  (c-name "webkit_network_response_set_uri")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "uri")
+   )
+)
+
+(define-method get_uri
+  (of-object "WebKitNetworkResponse")
+  (c-name "webkit_network_response_get_uri")
+  (return-type "const-gchar*")
+)
+

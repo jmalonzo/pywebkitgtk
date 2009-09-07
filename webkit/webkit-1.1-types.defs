@@ -54,6 +54,13 @@
   (gtype-id "WEBKIT_TYPE_DOWNLOAD")
 )
 
+(define-object NetworkResponse
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitNetworkResponse")
+  (gtype-id "WEBKIT_TYPE_NETWORK_RESPONSE")
+)
+
 (enum DownloadStatus
   (in-module "WebKit")
   (c-name "WebKitDownloadStatus")
