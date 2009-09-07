@@ -219,3 +219,30 @@ _wrap_webkit_network_response_new(PyGObject *self, PyObject* args, PyObject *kwa
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
+%%
+new-constructor WEBKIT_TYPE_NETWORK_REQUEST
+%%
+override webkit_network_request_new kwargs
+static int
+_wrap_webkit_network_request_new(PyGObject *self, PyObject* args, PyObject *kwargs)
+{
+    static char *kwlist[] = {"uri", NULL };
+    gchar* uri = NULL;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|z:NetworkRequest.__init__",
+                                     kwlist, &uri))
+        return -1;
+
+    if (uri)
+        self->obj = G_OBJECT(webkit_network_request_new(uri));
+    else
+        self->obj = G_OBJECT(webkit_network_request_new("about:blank"));
+
+    if (!self->obj) {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "cannot create NetworkRequest object");
+        return -1;
+    }
+    pygobject_register_wrapper((PyObject *)self);
+    return 0;
+}
