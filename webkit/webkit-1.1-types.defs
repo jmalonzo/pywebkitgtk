@@ -91,3 +91,89 @@
    '("other" "WEBKIT_WEB_NAVIGATION_REASON_OTHER")
    )
 )
+
+(enum NetworkError
+  (in-module "WebKit")
+  (c-name "WebKitNetworkError")
+  (gtype-id "WEBKIT_TYPE_NETWORK_ERROR")
+  (values
+   '("failed" "WEBKIT_NETWORK_ERROR_FAILED")
+   '("transport" "WEBKIT_NETWORK_ERROR_TRANSPORT")
+   '("unknown-protocol" "WEBKIT_NETWORK_ERROR_UNKNOWN_PROTOCOL")
+   '("cancelled" "WEBKIT_NETWORK_ERROR_CANCELLED")
+   '("file-does-not-exist" "WEBKIT_NETWORK_ERROR_FILE_DOES_NOT_EXIST")
+   )
+)
+
+(enum PolicyError
+  (in-module "WebKit")
+  (c-name "WebKitPolicyError")
+  (gtype-id "WEBKIT_TYPE_POLICY_ERROR")
+  (values
+   '("failed" "WEBKIT_POLICY_ERROR_FAILED")
+   '("cannot-show-mime-type" "WEBKIT_POLICY_ERROR_CANNOT_SHOW_MIME_TYPE")
+   '("cannot-show-url" "WEBKIT_POLICY_ERROR_CANNOT_SHOW_URL")
+   '("frame-load-interrupted-by-policy-change" "WEBKIT_POLICY_ERROR_FRAME_LOAD_INTERRUPTED_BY_POLICY_CHANGE")
+   '("cannot-use-restricted-port" "WEBKIT_POLICY_ERROR_CANNOT_USE_RESTRICTED_PORT")
+   )
+)
+
+(enum PluginError
+  (in-module "WebKit")
+  (c-name "WebKitPluginError")
+  (gtype-id "WEBKIT_TYPE_PLUGIN_ERROR")
+  (values
+   '("failed" "WEBKIT_PLUGIN_ERROR_FAILED")
+   '("cannot-find-plugin" "WEBKIT_PLUGIN_ERROR_CANNOT_FIND_PLUGIN")
+   '("cannot-load-plugin" "WEBKIT_PLUGIN_ERROR_CANNOT_LOAD_PLUGIN")
+   '("java-unavailable" "WEBKIT_PLUGIN_ERROR_JAVA_UNAVAILABLE")
+   '("connection-cancelled" "WEBKIT_PLUGIN_ERROR_CONNECTION_CANCELLED")
+   '("will-handle-load" "WEBKIT_PLUGIN_ERROR_WILL_HANDLE_LOAD")
+   )
+)
+
+(enum LoadStatus
+  (in-module "WebKit")
+  (c-name "WebKitLoadStatus")
+  (gtype-id "WEBKIT_TYPE_LOAD_STATUS")
+  (values
+   '("provisional" "WEBKIT_LOAD_PROVISIONAL")
+   '("committed" "WEBKIT_LOAD_COMMITTED")
+   '("finished" "WEBKIT_LOAD_FINISHED")
+   '("first-visually-non-empty-layout" "WEBKIT_LOAD_FIRST_VISUALLY_NON_EMPTY_LAYOUT")
+   )
+)
+
+(enum EditingBehavior
+  (in-module "WebKit")
+  (c-name "WebKitEditingBehavior")
+  (gtype-id "WEBKIT_TYPE_EDITING_BEHAVIOR")
+  (values
+   '("mac" "WEBKIT_EDITING_BEHAVIOR_MAC")
+   '("windows" "WEBKIT_EDITING_BEHAVIOR_WINDOWS")
+   )
+)
+
+(enum NavigationResponse
+  (in-module "WebKit")
+  (c-name "WebKitNavigationResponse")
+  (gtype-id "WEBKIT_TYPE_NAVIGATION_RESPONSE")
+  (values
+   '("accept" "WEBKIT_NAVIGATION_RESPONSE_ACCEPT")
+   '("ignore" "WEBKIT_NAVIGATION_RESPONSE_IGNORE")
+   '("download" "WEBKIT_NAVIGATION_RESPONSE_DOWNLOAD")
+   )
+)
+
+(enum WebViewTargetInfo
+  (in-module "WebKit")
+  (c-name "WebKitWebViewTargetInfo")
+  (gtype-id "WEBKIT_TYPE_WEB_VIEW_TARGET_INFO")
+  (values
+   '("html" "WEBKIT_WEB_VIEW_TARGET_INFO_HTML")
+   '("text" "WEBKIT_WEB_VIEW_TARGET_INFO_TEXT")
+   '("image" "WEBKIT_WEB_VIEW_TARGET_INFO_IMAGE")
+   '("uri-list" "WEBKIT_WEB_VIEW_TARGET_INFO_URI_LIST")
+   '("netscape-url" "WEBKIT_WEB_VIEW_TARGET_INFO_NETSCAPE_URL")
+   )
+)
