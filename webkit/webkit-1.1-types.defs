@@ -75,6 +75,20 @@
   (gtype-id "WEBKIT_TYPE_WEB_DATABASE")
 )
 
+(define-object WebResource
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebResource")
+  (gtype-id "WEBKIT_TYPE_WEB_RESOURCE")
+)
+
+(define-object WebDataSource
+  (in-module "WebKit")
+  (parent "GObject")
+  (c-name "WebKitWebDataSource")
+  (gtype-id "WEBKIT_TYPE_WEB_DATA_SOURCE")
+)
+
 (enum DownloadStatus
   (in-module "WebKit")
   (c-name "WebKitDownloadStatus")

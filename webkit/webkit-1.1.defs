@@ -520,3 +520,106 @@
    )
 )
                
+;; From <webkit/webkitwebdatasource.h>
+
+(define-function webkit_web_data_source_new
+  (is-constructor-of "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_new")
+  (caller-owns-return #t)
+  (return-type "WebKitWebDataSource*")
+)
+
+(define-method get_web_frame
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_web_frame")
+  (return-type "WebKitWebFrame*")
+)
+
+(define-method get_initial_request
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_initial_request")
+  (return-type "WebKitNetworkRequest*")
+)
+
+(define-method get_request
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_request")
+  (return-type "WebKitNetworkRequest*")
+)
+
+(define-method get_encoding
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_encoding")
+  (return-type "const-gchar*")
+)
+
+(define-method is_loading
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_is_loading")
+  (return-type "gboolean")
+)
+
+(define-method get_data
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_data")
+  (return-type "GString*")
+)
+
+(define-method get_main_resource
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_main_resource")
+  (return-type "WebKitWebResource*")
+)
+
+(define-method get_unreachable_uri
+  (of-object "WebKitWebDataSource")
+  (c-name "webkit_web_data_source_get_unreachable_uri")
+  (return-type "const-gchar*")
+)
+
+;; From <webkit/webkitwebresource.h>
+
+(define-function webkit_web_resource_new
+  (is-constructor-of "WebKitWebResource")
+  (c-name "webkit_web_resource_new")
+  (caller-owns-return #t)
+  (return-type "WebKitWebResource*")
+  (properties
+   '("data" (argname "data"))
+   '("size" (argname "size"))
+   '("uri" (argname "uri"))
+   '("mime_type" (argname "mime_type"))
+   '("encoding" (argname "encoding"))
+   '("frame_name" (argname "frame_name"))
+   )
+)
+
+(define-method get_data
+  (of-object "WebKitWebResource")
+  (c-name "webkit_web_resource_get_data")
+  (return-type "GString*")
+)
+
+(define-method get_uri
+  (of-object "WebKitWebResource")
+  (c-name "webkit_web_resource_get_uri")
+  (return-type "const-gchar*")
+)
+
+(define-method get_mime_type
+  (of-object "WebKitWebResource")
+  (c-name "webkit_web_resource_get_mime_type")
+  (return-type "const-gchar*")
+)
+
+(define-method get_encoding
+  (of-object "WebKitWebResource")
+  (c-name "webkit_web_resource_get_encoding")
+  (return-type "const-gchar*")
+)
+
+(define-method get_frame_name
+  (of-object "WebKitWebResource")
+  (c-name "webkit_web_resource_get_frame_name")
+  (return-type "const-gchar*")
+)
