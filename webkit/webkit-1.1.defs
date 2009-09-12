@@ -282,6 +282,12 @@
   (return-type "none")
 )
 
+(define-method get_security_origin
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_get_security_origin")
+  (return-type "WebKitSecurityOrigin*")
+)
+
 ;; from webkit/webkitdownload.h
 (define-function webkit_download_new
   (is-constructor-of "WebKitDownload")
@@ -392,3 +398,125 @@
   (return-type "const-gchar*")
 )
 
+;; From <webkit/webkitsecurityorigin.h>
+
+(define-method get_host
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_host")
+  (return-type "const-gchar*")
+)
+
+(define-method get_protocol
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_protocol")
+  (return-type "const-gchar*")
+)
+
+(define-method get_port
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_port")
+  (return-type "guint")
+)
+
+(define-method get_web_database_usage
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_web_database_usage")
+  (return-type "guint64")
+)
+
+(define-method get_web_database_quota
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_web_database_quota")
+  (return-type "guint64")
+)
+
+(define-method set_web_database_quota
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_set_web_database_quota")
+  (return-type "none")
+  (parameters
+   '("guint64" "quota")
+   )
+)
+
+(define-method get_all_web_databases
+  (of-object "WebKitSecurityOrigin")
+  (c-name "webkit_security_origin_get_all_web_databases")
+  (return-type "GList*")
+)
+
+;; From <webkit/webkitwebdatabase.h>
+
+(define-method get_security_origin
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_security_origin")
+  (return-type "WebKitSecurityOrigin*")
+)
+
+(define-method get_name
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_name")
+  (return-type "const-gchar*")
+)
+
+(define-method get_display_name
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_display_name")
+  (return-type "const-gchar*")
+)
+
+(define-method get_expected_size
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_expected_size")
+  (return-type "guint64")
+)
+
+(define-method get_size
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_size")
+  (return-type "guint64")
+)
+
+(define-method get_filename
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_get_filename")
+  (return-type "const-gchar*")
+)
+
+(define-method remove
+  (of-object "WebKitWebDatabase")
+  (c-name "webkit_web_database_remove")
+  (return-type "none")
+)
+
+(define-function remove_all_web_databases
+  (c-name "webkit_remove_all_web_databases")
+  (return-type "none")
+)
+
+(define-function get_web_database_directory_path
+  (c-name "webkit_get_web_database_directory_path")
+  (return-type "const-gchar*")
+)
+
+(define-function set_web_database_directory_path
+  (c-name "webkit_set_web_database_directory_path")
+  (return-type "none")
+  (parameters
+   '("const-gchar*" "path")
+   )
+)
+
+(define-function get_default_web_database_quota
+  (c-name "webkit_get_default_web_database_quota")
+  (return-type "guint64")
+)
+
+(define-function set_default_web_database_quota
+  (c-name "webkit_set_default_web_database_quota")
+  (return-type "none")
+  (parameters
+   '("guint64" "default_quota")
+   )
+)
+               

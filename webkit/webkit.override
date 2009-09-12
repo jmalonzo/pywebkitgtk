@@ -76,6 +76,8 @@ ignore
   webkit_web_settings_get_type
   webkit_download_get_type
   webkit_network_response_get_type
+  webkit_security_origin_get_type
+  webkit_web_database_get_type
 %%
 override webkit_web_frame_get_global_context noargs
 static PyObject *
