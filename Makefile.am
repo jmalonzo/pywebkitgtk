@@ -1,7 +1,10 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
 webkit_defs :=
 webkit_sources :=
 nodist_webkit_sources :=
-webkit_override :=
 webkit_cflags :=
 
 CREATEDEFS = $(PYTHON) $(PYGTK_CODEGENDIR)/createdefs.py
@@ -27,7 +30,6 @@ webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
 
 # Build components
-webkit_override += webkit/webkit.override
 webkit_sources += \
 	webkit/webkitmodule.c \
 	javascriptcore/javascriptcore_types.c \
@@ -35,11 +37,11 @@ webkit_sources += \
 nodist_webkit_sources += webkit/webkit.c
 
 # WebKit/Gtk definitions
-webkit_defs += webkit/webkit-base-types.defs webkit/webkit-1.1-types.defs
-webkit_defs += webkit/webkit-1.0.2.defs webkit/webkit-1.1.defs
+webkit_defs += $(srcdir)/webkit/webkit-base-types.defs $(srcdir)/webkit/webkit-1.1-types.defs
+webkit_defs += $(srcdir)/webkit/webkit-1.0.2.defs $(srcdir)/webkit/webkit-1.1.defs
 
 webkit_deps := \
-	webkit/webkit.override \
+	$(srcdir)/webkit/webkit.override \
 	webkit/webkit.defs \
 	webkit/webkit.defs.c
 
@@ -52,11 +54,10 @@ webkit/webkit.defs: $(webkit_defs)
 # disable for now since line is not really critical.
 # 	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $(*D)/$(*F).errors
 %.defs.c:
-	(cd $(srcdir) \
-	 && $(PYGOBJECT_CODEGEN) \
+	($(PYGOBJECT_CODEGEN) \
             --register $(PYGTK_DEFSDIR)/gdk-types.defs \
             --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-	    --override $(*D)/$(*F).override \
+	    --override $(srcdir)/$(*D)/$(*F).override \
 	    --prefix py$(*F) $(*D)/$(*F).defs) 2>&1 > $(*D)/gen-$(*F).c | tee $(*D)/$(*F).errors \
 	&& cp $(*D)/gen-$(*F).c $(*D)/$(*F).c \
 	&& rm -f $(*D)/gen-$(*F).c
@@ -71,25 +72,25 @@ uninstall-hook:
 
 MAINTAINERCLEANFILES = \
 	ChangeLog \
-	aclocal.m4 \
-	config.h.in \
-	compile \
-	config.guess \
-	config.sub \
-	configure \
-	depcomp \
-	install-sh \
-	ltmain.sh \
-	missing
+	$(srcdir)/aclocal.m4 \
+	$(srcdir)/config.h.in \
+	$(srcdir)/compile \
+	$(srcdir)/config.guess \
+	$(srcdir)/config.sub \
+	$(srcdir)/configure \
+	$(srcdir)/depcomp \
+	$(srcdir)/install-sh \
+	$(srcdir)/ltmain.sh \
+	$(srcdir)/missing
 
 CLEANFILES = \
 	config.lt \
 	demos/inspector.pyc \
-	webkit/gen-webkit.c \
-	webkit/webkit.c \
+	$(srcdir)/webkit/gen-webkit.c \
+	$(srcdir)/webkit/webkit.c \
 	webkit/webkit.defs \
 	webkit/webkit-types.defs \
-	webkit/webkit.errors \
+	$(srcdir)/webkit/webkit.errors \
 	Makefile.in \
 	pywebkitgtk-1.0.pc
 
