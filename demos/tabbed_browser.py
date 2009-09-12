@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (C) 2007-2008 Jan Alonzo <jmalonzo@unpluggable.com>
+# Copyright (C) 2007, 2008, 2009 Jan Michael Alonzo <jmalonzo@gmai.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -99,12 +99,12 @@ class TabLabel (gtk.HBox):
         self.label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self.label.set_alignment(0.0, 0.5)
 
-        icon = gtk.image_new_from_stock(gtk.STOCK_ORIENTATION_PORTRAIT, gtk.ICON_SIZE_MENU)
+        icon = gtk.image_new_from_stock(gtk.STOCK_ORIENTATION_PORTRAIT, gtk.ICON_SIZE_BUTTON)
         close_image = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
         close_button = gtk.Button()
         close_button.set_relief(gtk.RELIEF_NONE)
         close_button.connect("clicked", self._close_tab, child)
-        close_button.add(close_image)
+        close_button.set_image(close_image)
         self.pack_start(icon, False, False, 0)
         self.pack_start(self.label, True, True, 0)
         self.pack_start(close_button, False, False, 0)
@@ -113,7 +113,7 @@ class TabLabel (gtk.HBox):
         self.set_data("close-button", close_button)
         self.connect("style-set", tab_label_style_set_cb)
 
-    def set_label_text (self, text):
+    def set_label (self, text):
         """sets the text of this label"""
         self.label.set_label(text)
 
@@ -124,10 +124,10 @@ def tab_label_style_set_cb (tab_label, style):
     context = tab_label.get_pango_context()
     metrics = context.get_metrics(tab_label.style.font_desc, context.get_language())
     char_width = metrics.get_approximate_digit_width()
-    (width, height) = gtk.icon_size_lookup_for_settings(tab_label.get_settings(), gtk.ICON_SIZE_MENU)
-    tab_label.set_size_request(20 * pango.PIXELS(char_width) + 2 * width, -1)
-    button = tab_label.get_data("close-button")
-    button.set_size_request(width + 4, height + 4)
+    (width, height) = gtk.icon_size_lookup(gtk.ICON_SIZE_MENU)
+    tab_label.set_size_request(20 * pango.PIXELS(char_width) + 2 * width,
+                               pango.PIXELS(metrics.get_ascent() +
+    metrics.get_descent()) + 8)
 
 
 class ContentPane (gtk.Notebook):
@@ -200,7 +200,6 @@ class ContentPane (gtk.Notebook):
         self._hovered_uri = None
         if not url:
             web_view.load_string(ABOUT_PAGE, "text/html", "iso-8859-15", "about")
-            url = "about:blank"
         else:
             web_view.load_uri(url)
 
@@ -233,6 +232,9 @@ class ContentPane (gtk.Notebook):
         self._hovered_uri = uri
 
     def _title_changed_cb (self, view, frame, title):
+        child = self.get_nth_page(self.get_current_page())
+        label = self.get_tab_label(child)
+        label.set_label(title)
         self.emit("focus-view-title-changed", frame, title)
 
     def _view_load_finished_cb(self, view, frame):
@@ -240,9 +242,9 @@ class ContentPane (gtk.Notebook):
         label = self.get_tab_label(child)
         title = frame.get_title()
         if not title:
-           title = frame.get_uri()
+            title = frame.get_uri()
         if title:
-            label.set_label_text(title)
+            label.set_label(title)
 
     def _new_web_view_request_cb (self, web_view, web_frame):
         scrolled_window = gtk.ScrolledWindow()
@@ -268,10 +270,13 @@ class WebToolbar(gtk.Toolbar):
 
     __gsignals__ = {
         "load-requested": (gobject.SIGNAL_RUN_FIRST,
-                             gobject.TYPE_NONE,
-                             (gobject.TYPE_STRING,)),
+                           gobject.TYPE_NONE,
+                           (gobject.TYPE_STRING,)),
         "new-tab-requested": (gobject.SIGNAL_RUN_FIRST,
-                             gobject.TYPE_NONE, ())
+                              gobject.TYPE_NONE, ()),
+        "view-source-mode-requested": (gobject.SIGNAL_RUN_FIRST,
+                                       gobject.TYPE_NONE,
+                                       (gobject.TYPE_BOOLEAN, ))
         }
 
     def __init__(self, location_enabled=True, toolbar_enabled=True):
@@ -290,10 +295,16 @@ class WebToolbar(gtk.Toolbar):
 
         # add tab button
         if toolbar_enabled:
-            button = gtk.ToolButton(gtk.STOCK_ADD)
-            button.connect("clicked", self._add_tab_cb)
-            self.insert(button, -1)
-            button.show()
+            addTabButton = gtk.ToolButton(gtk.STOCK_ADD)
+            addTabButton.connect("clicked", self._add_tab_cb)
+            self.insert(addTabButton, -1)
+            addTabButton.show()
+
+            viewSourceItem = gtk.ToggleToolButton(gtk.STOCK_PROPERTIES)
+            viewSourceItem.set_label("View Source Mode")
+            viewSourceItem.connect('toggled', self._view_source_mode_cb)
+            self.insert(viewSourceItem, -1)
+            viewSourceItem.show()
 
     def location_set_text (self, text):
         self._entry.set_text(text)
@@ -301,8 +312,11 @@ class WebToolbar(gtk.Toolbar):
     def _entry_activate_cb(self, entry):
         self.emit("load-requested", entry.props.text)
 
-    def _add_tab_cb (self, button):
+    def _add_tab_cb(self, button):
         self.emit("new-tab-requested")
+
+    def _view_source_mode_cb(self, button):
+        self.emit("view-source-mode-requested", button.get_active())
 
 class WebBrowser(gtk.Window):
 
@@ -315,6 +329,7 @@ class WebBrowser(gtk.Window):
         content_tabs.connect("new-window-requested", self._new_window_requested_cb)
         toolbar.connect("load-requested", load_requested_cb, content_tabs)
         toolbar.connect("new-tab-requested", new_tab_requested_cb, content_tabs)
+        toolbar.connect("view-source-mode-requested", view_source_mode_requested_cb, content_tabs)
 
         vbox = gtk.VBox(spacing=1)
         vbox.pack_start(toolbar, expand=False, fill=False)
@@ -376,7 +391,6 @@ def destroy_cb(window, content_pane):
         child = content_pane.get_nth_page(num_pages)
         if child:
             view = child.get_child()
-            view.destroy()
         num_pages = num_pages - 1
     window.destroy()
     gtk.main_quit()
@@ -401,6 +415,12 @@ def zoom_hundred_cb(menu_item, web_view):
 def print_cb(menu_item, web_view):
     mainframe = web_view.get_main_frame()
     mainframe.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG);
+
+def view_source_mode_requested_cb(widget, is_active, content_pane):
+    currentTab = content_pane.get_nth_page(content_pane.get_current_page())
+    childView = currentTab.get_child()
+    childView.set_view_source_mode(is_active)
+    childView.reload()
 
 if __name__ == "__main__":
     webbrowser = WebBrowser()
