@@ -45,7 +45,8 @@ dnl check for dependencies
 dnl Check for libxslt until upstream WebKit checks for it as this is a webkit
 dnl dep and not pywebkitgtk's.
 PKG_CHECK_MODULES(DEPS, 
-                  [libxslt,
+                  [libxslt
+                  gthread-2.0
                   pygtk-2.0])
 AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LIBS)
