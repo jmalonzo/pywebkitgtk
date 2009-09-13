@@ -4,6 +4,7 @@ VPATH = @srcdir@
 
 webkit_defs :=
 webkit_sources :=
+webkit_py_sources :=
 nodist_webkit_sources :=
 webkit_cflags :=
 
@@ -14,8 +15,8 @@ defs_DATA = $(webkit_defs)
 
 common_ldflags = -module -avoid-version
 
-pkgpythondir = $(pyexecdir)/webkit-1.0
-pkgpyexecdir = $(pyexecdir)/webkit-1.0
+pkgpythondir = $(pyexecdir)/webkit
+pkgpyexecdir = $(pyexecdir)/webkit
 
 webkitdir = $(pkgpyexecdir)/webkit
 
@@ -28,6 +29,11 @@ webkit_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initwebkit
 webkit_la_LIBADD = $(DEPS_LIBS) $(WEBKIT_LIBS)
 webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
+
+# Python sources
+webkit_py_sources += \
+	webkit/__init__.py
+pkgpython_DATA = $(webkit_py_sources)
 
 # Build components
 webkit_sources += \
@@ -109,3 +115,4 @@ EXTRA_DIST = \
 	tests/test_webnavigationaction.py \
 	$(webkit_types_defs) \
 	$(webkit_defs)
+	$(webkit_py_sources)
