@@ -288,6 +288,18 @@
   (return-type "WebKitSecurityOrigin*")
 )
 
+(define-method get_data_source
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_get_data_source")
+  (return-type "WebKitWebDataSource*")
+)
+
+(define-method get_provisional_data_source
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_get_provisional_data_source")
+  (return-type "WebKitWebDataSource*")
+)
+
 ;; from webkit/webkitdownload.h
 (define-function webkit_download_new
   (is-constructor-of "WebKitDownload")
