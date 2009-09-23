@@ -48,7 +48,7 @@ _helper_wrap_gobject_glist (GList *list)
             Py_DECREF(py_list);
             return NULL;
         }
-        
+
         PyList_Append(py_list, py_obj);
         Py_DECREF(py_obj);
     }
@@ -78,6 +78,7 @@ ignore
   webkit_network_response_get_type
   webkit_security_origin_get_type
   webkit_web_database_get_type
+  webkit_web_resource_new
 %%
 override webkit_web_frame_get_global_context noargs
 static PyObject *
@@ -107,9 +108,11 @@ _wrap_webkit_web_back_forward_list_get_back_list_with_limit (PyGObject *self, Py
     return _helper_wrap_gobject_glist (list);
 }
 %%
-override webkit_web_back_forward_list_get_forward_list_with_limit
+override webkit_web_back_forward_list_get_forward_list_with_limit kwargs
 static PyObject *
-_wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self, PyObject *args, PyObject *kwargs)
+_wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self,
+                                                                PyObject *args,
+                                                                PyObject *kwargs)
 {
     static char *kwlist[] = { "limit", NULL };
 
@@ -121,6 +124,17 @@ _wrap_webkit_web_back_forward_list_get_forward_list_with_limit (PyGObject *self,
 
     list = webkit_web_back_forward_list_get_forward_list_with_limit(WEBKIT_WEB_BACK_FORWARD_LIST(self->obj),
                                                                     limit);
+    return _helper_wrap_gobject_glist (list);
+}
+%%
+override webkit_security_origin_get_all_web_databases noargs
+static PyObject *
+_wrap_webkit_security_origin_get_all_web_databases (PyGObject *self)
+{
+    GList *list;
+
+    list = webkit_security_origin_get_all_web_databases(WEBKIT_SECURITY_ORIGIN(self->obj));
+
     return _helper_wrap_gobject_glist (list);
 }
 %%
@@ -164,6 +178,18 @@ _wrap_webkit_download_get_status(PyGObject *self)
     status = webkit_download_get_status(WEBKIT_DOWNLOAD(self->obj));
 
     return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_DOWNLOAD_STATUS, status));
+}
+%%
+override webkit_web_view_get_load_status noargs
+static PyObject *
+_wrap_webkit_web_view_get_load_status(PyGObject *self)
+{
+    WebKitLoadStatus status;
+
+    status = webkit_web_view_get_load_status(WEBKIT_WEB_VIEW(self->obj));
+
+    return Py_BuildValue("N", pyg_enum_from_gtype(WEBKIT_TYPE_LOAD_STATUS, status));
+    
 }
 %%
 new-constructor WEBKIT_TYPE_HISTORY_ITEM
@@ -248,3 +274,39 @@ _wrap_webkit_network_request_new(PyGObject *self, PyObject* args, PyObject *kwar
     pygobject_register_wrapper((PyObject *)self);
     return 0;
 }
+%%
+override webkit_web_resource_get_data noargs
+static PyObject *
+_wrap_webkit_web_resource_get_data(PyGObject *self)
+{
+    PyObject *ret;
+    GString *data;
+
+    data = webkit_web_resource_get_data(WEBKIT_WEB_RESOURCE(self->obj));
+
+    if (data == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+
+    return Py_BuildValue("s#", data->str, data->len);
+}
+%%
+override webkit_web_data_source_get_data noargs
+static PyObject *
+_wrap_webkit_web_data_source_get_data(PyGObject *self)
+{
+    PyObject *ret;
+    GString *data;
+
+    data = webkit_web_data_source_get_data(WEBKIT_WEB_DATA_SOURCE(self->obj));
+
+    if (data == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+
+    return Py_BuildValue("s#", data->str, data->len);
+}
+
+
