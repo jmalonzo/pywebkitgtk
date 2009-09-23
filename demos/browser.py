@@ -71,6 +71,10 @@ class BrowserPage(webkit.WebView):
         menu.append(printitem)
         printitem.connect('activate', print_cb, view)
 
+        page_properties = gtk.ImageMenuItem(gtk.STOCK_PROPERTIES)
+        menu.append(page_properties)
+        page_properties.connect('activate', page_properties_cb, view)
+
         menu.append(gtk.SeparatorMenuItem())
 
         aboutitem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
@@ -415,6 +419,30 @@ def zoom_hundred_cb(menu_item, web_view):
 def print_cb(menu_item, web_view):
     mainframe = web_view.get_main_frame()
     mainframe.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG);
+
+def page_properties_cb(menu_item, web_view):
+    mainframe = web_view.get_main_frame()
+    datasource = mainframe.get_data_source()
+    main_resource = datasource.get_main_resource()
+    window = gtk.Window()
+    window.set_default_size(100, 60)
+    vbox = gtk.VBox()
+    hbox = gtk.HBox()
+    hbox.pack_start(gtk.Label("MIME Type :"), False, False)
+    hbox.pack_end(gtk.Label(main_resource.get_mime_type()), False, False)
+    vbox.pack_start(hbox, False, False)
+    hbox2 = gtk.HBox()
+    hbox2.pack_start(gtk.Label("URI : "), False, False)
+    hbox2.pack_end(gtk.Label(main_resource.get_uri()), False, False)
+    vbox.pack_start(hbox2, False, False)
+    hbox3 = gtk.HBox()
+    hbox3.pack_start(gtk.Label("Encoding : "), False, False)
+    hbox3.pack_end(gtk.Label(main_resource.get_encoding()), False, False)
+    vbox.pack_start(hbox3, False, False)
+    window.add(vbox)
+    window.show_all()
+    window.present()
+
 
 def view_source_mode_requested_cb(widget, is_active, content_pane):
     currentTab = content_pane.get_nth_page(content_pane.get_current_page())
