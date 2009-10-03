@@ -1,3 +1,8 @@
+03 October 2010 - pywebkitgtk 1.1.7
+---
+ - WebDataSource and WebDatabase bindings
+ - Miscellaneous bug fixes
+
 08 August 2009 - pywebkitgtk 1.1.6
 ----
  - WebView wrapper fixes (mostly by Sayamindu):
