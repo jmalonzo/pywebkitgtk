@@ -93,10 +93,10 @@ CLEANFILES = \
 	config.lt \
 	demos/inspector.pyc \
 	$(srcdir)/webkit/gen-webkit.c \
-	$(srcdir)/webkit/webkit.c \
+	$(builddir)/webkit/webkit.c \
 	webkit/webkit.defs \
 	webkit/webkit-types.defs \
-	$(srcdir)/webkit/webkit.errors \
+	$(builddir)/webkit/webkit.errors \
 	Makefile.in \
 	pywebkitgtk-1.0.pc
 
@@ -108,11 +108,11 @@ EXTRA_DIST = \
 	NEWS \
 	README \
 	demos/inspector.py \
-	demos/tabbed_browser.py \
+	demos/browser.py \
 	webkit/webkit.override \
 	tests/test_webbackforwardlist.py \
 	tests/test_webframe.py \
 	tests/test_webnavigationaction.py \
 	$(webkit_types_defs) \
-	$(webkit_defs)
+	$(webkit_defs) \
 	$(webkit_py_sources)
