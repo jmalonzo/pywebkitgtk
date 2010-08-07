@@ -48,8 +48,7 @@ webkit_defs += $(srcdir)/webkit/webkit-1.0.2.defs $(srcdir)/webkit/webkit-1.1.de
 
 webkit_deps := \
 	$(srcdir)/webkit/webkit.override \
-	webkit/webkit.defs \
-	webkit/webkit.defs.c
+	webkit/webkit.defs
 
 webkit/webkit.c: $(webkit_deps)
 
@@ -59,7 +58,7 @@ webkit/webkit.defs: $(webkit_defs)
 # FIXME: this is causing a build issue in ArchLinux. Figure out why
 # disable for now since line is not really critical.
 # 	&& ! grep -q -v "^\*\*\*INFO\*\*\*" $(*D)/$(*F).errors
-%.defs.c:
+.defs.c:
 	($(PYGOBJECT_CODEGEN) \
             --register $(PYGTK_DEFSDIR)/gdk-types.defs \
             --register $(PYGTK_DEFSDIR)/gtk-types.defs \
