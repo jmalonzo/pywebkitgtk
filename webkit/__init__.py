@@ -16,6 +16,8 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gobject
+gobject.threads_init()
 import webkit
 
 # fine-tune this when necessary.

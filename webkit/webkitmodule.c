@@ -42,19 +42,16 @@ initwebkit(void)
         Py_FatalError ("can't initialise module gobject");
     }
 
-    init_pygtk();
-
-    if (!g_thread_supported())
-        g_thread_init (NULL);
+    init_pygobject();
 
     /* webkit module */
     m = Py_InitModule ("webkit", pywebkit_functions);
     d = PyModule_GetDict (m);
     pywebkit_register_classes (d);
-    pywebkit_add_constants(m, "WEBKIT_");
+    pywebkit_add_constants (m, "WEBKIT_");
 
     if (PyErr_Occurred ()) {
         PyErr_Print();
-        Py_FatalError ("can't initialise module webkit.gjs");
+        Py_FatalError ("can't initialise module webkit");
     }
 }
