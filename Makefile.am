@@ -30,6 +30,9 @@ webkit_la_LIBADD = $(DEPS_LIBS) $(WEBKIT_LIBS)
 webkit_la_SOURCES = $(webkit_sources)
 nodist_webkit_la_SOURCES = $(nodist_webkit_sources)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = pywebkitgtk-1.0.pc
+
 # Python sources
 webkit_py_sources += \
 	webkit/__init__.py
