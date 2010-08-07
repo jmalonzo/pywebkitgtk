@@ -66,7 +66,7 @@ AC_MSG_RESULT($PYGTK_DEFSDIR)
 
 dnl check for pygtk codegen dir
 AC_MSG_CHECKING(for pygtk codegendir)
-PYGTK_CODEGENDIR=`$PKG_CONFIG --variable=codegendir pygtk-2.0`
+PYGTK_CODEGENDIR=`$PKG_CONFIG --variable=codegendir pygobject-2.0`
 AC_SUBST(PYGTK_CODEGENDIR)
 AC_MSG_RESULT($PYGTK_CODEGENDIR)
 
