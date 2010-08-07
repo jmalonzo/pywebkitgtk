@@ -91,7 +91,7 @@ _wrap_webkit_web_frame_get_global_context (PyGObject *self)
     return wrap_JSGlobalContextRef (ref);
 }
 %%
-override webkit_web_back_forward_list_get_back_list_with_limit
+override webkit_web_back_forward_list_get_back_list_with_limit kwargs
 static PyObject *
 _wrap_webkit_web_back_forward_list_get_back_list_with_limit (PyGObject *self, PyObject *args, PyObject *kwargs)
 {
