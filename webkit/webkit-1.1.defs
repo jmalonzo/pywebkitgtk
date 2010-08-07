@@ -294,6 +294,12 @@
   (return-type "WebKitWebDataSource*")
 )
 
+(define-method get_network_response
+  (of-object "WebKitWebFrame")
+  (c-name "webkit_web_frame_get_network_response")
+  (return-type "WebKitNetworkResponse*")
+)
+
 (define-method get_provisional_data_source
   (of-object "WebKitWebFrame")
   (c-name "webkit_web_frame_get_provisional_data_source")
