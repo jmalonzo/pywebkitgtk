@@ -1,3 +1,14 @@
+07 August 2010 - pywebkitgtk 1.1.8
+---
+ - Fixes for he following defects
+   * Issue 36: Compiled code is recompiled during 'make install' 
+   * Issue 40:  Segmentation fault on destroy 
+   * Issue 44:  Expose the enums 
+   * Issue 46:  Install the pkgconfig file on make install 
+   * Issue 47: pkg-config variable 'codegendir' should be taken from pygobject-2.0 
+   * Issue 48: segfault when calling WebBackForwardList.get_back_list_with_limit() 
+   * Issue 51: Add support for getting a NetworkResponse from a WebFrame 
+
 03 October 2010 - pywebkitgtk 1.1.7
 ---
  - WebDataSource and WebDatabase bindings
