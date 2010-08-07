@@ -89,7 +89,7 @@
   (gtype-id "WEBKIT_TYPE_WEB_DATA_SOURCE")
 )
 
-(enum DownloadStatus
+(define-enum DownloadStatus
   (in-module "WebKit")
   (c-name "WebKitDownloadStatus")
   (gtype-id "WEBKIT_TYPE_DOWNLOAD_STATUS")
@@ -102,7 +102,7 @@
    )
 )
 
-(enum DownloadError
+(define-enum DownloadError
   (in-module "WebKit")
   (c-name "WebKitDownloadError")
   (gtype-id "WEBKIT_TYPE_DOWNLOAD_ERROR")
@@ -113,7 +113,7 @@
    )
 )
 
-(enum WebNavigationReason
+(define-enum WebNavigationReason
   (in-module "WebKit")
   (c-name "WebKitWebNavigationReason")
   (gtype-id "WEBKIT_TYPE_WEB_NAVIGATION_REASON")
@@ -127,7 +127,7 @@
    )
 )
 
-(enum NetworkError
+(define-enum NetworkError
   (in-module "WebKit")
   (c-name "WebKitNetworkError")
   (gtype-id "WEBKIT_TYPE_NETWORK_ERROR")
@@ -140,7 +140,7 @@
    )
 )
 
-(enum PolicyError
+(define-enum PolicyError
   (in-module "WebKit")
   (c-name "WebKitPolicyError")
   (gtype-id "WEBKIT_TYPE_POLICY_ERROR")
@@ -153,7 +153,7 @@
    )
 )
 
-(enum PluginError
+(define-enum PluginError
   (in-module "WebKit")
   (c-name "WebKitPluginError")
   (gtype-id "WEBKIT_TYPE_PLUGIN_ERROR")
@@ -167,7 +167,7 @@
    )
 )
 
-(enum LoadStatus
+(define-enum LoadStatus
   (in-module "WebKit")
   (c-name "WebKitLoadStatus")
   (gtype-id "WEBKIT_TYPE_LOAD_STATUS")
@@ -179,7 +179,7 @@
    )
 )
 
-(enum EditingBehavior
+(define-enum EditingBehavior
   (in-module "WebKit")
   (c-name "WebKitEditingBehavior")
   (gtype-id "WEBKIT_TYPE_EDITING_BEHAVIOR")
@@ -189,7 +189,7 @@
    )
 )
 
-(enum NavigationResponse
+(define-enum NavigationResponse
   (in-module "WebKit")
   (c-name "WebKitNavigationResponse")
   (gtype-id "WEBKIT_TYPE_NAVIGATION_RESPONSE")
@@ -200,7 +200,7 @@
    )
 )
 
-(enum WebViewTargetInfo
+(define-enum WebViewTargetInfo
   (in-module "WebKit")
   (c-name "WebKitWebViewTargetInfo")
   (gtype-id "WEBKIT_TYPE_WEB_VIEW_TARGET_INFO")
