@@ -121,7 +121,7 @@
 (define-method can_undo
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_can_undo")
-  (return-type "none")
+  (return-type "gboolean")
 )
 
 (define-method redo
@@ -133,7 +133,7 @@
 (define-method can_redo
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_can_redo")
-  (return-type "none")
+  (return-type "gboolean")
 )
 
 (define-method set_view_source_mode
