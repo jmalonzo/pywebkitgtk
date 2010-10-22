@@ -5,7 +5,7 @@ from webkit import NetworkRequest
 import gobject
 import unittest
 
-class TestWebView(unittest.TestCase):
+class TestNetworkRequest(unittest.TestCase):
 
     def setUp(self):
         self.request = webkit.NetworkRequest()
@@ -16,6 +16,11 @@ class TestWebView(unittest.TestCase):
 
     def testdefaultinitvalue(self):
         self.assertEqual("about:blank", self.request.get_uri())
+
+    def testsetproxy(self):
+        webkit.set_proxy("http://localhost:8080")
+        # we're still OK.
+        self.assertTrue(True)
 
     def tearDown(self):
         del self.request
