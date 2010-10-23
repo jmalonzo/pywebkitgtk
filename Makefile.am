@@ -96,6 +96,7 @@ CLEANFILES = \
 	demos/inspector.pyc \
 	$(srcdir)/webkit/gen-webkit.c \
 	$(builddir)/webkit/webkit.c \
+	webkit/__init__.pyc \
 	webkit/webkit.defs \
 	webkit/webkit-types.defs \
 	$(builddir)/webkit/webkit.errors \
