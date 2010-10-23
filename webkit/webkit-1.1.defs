@@ -148,7 +148,14 @@
   (of-object "WebKitWebView")
   (c-name "webkit_web_view_get_view_source_mode")
   (return-type "gboolean")
-)
+  )
+
+(define-method get_dom_document
+  (of-object "WebKitWebView")
+  (c-name "webkit_web_view_get_dom_document")
+  (return-type "WebKitDOMDocument*")
+  )
+
 
 ;; from webkit/webkitwebwindowfeatures.h
 (define-function webkit_web_window_features_new

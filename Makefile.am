@@ -46,6 +46,7 @@ webkit_sources += \
 nodist_webkit_sources += webkit/webkit.c
 
 # WebKit/Gtk definitions
+webkit_defs += $(srcdir)/webkit/webkitdom.defs
 webkit_defs += $(srcdir)/webkit/webkit-base-types.defs $(srcdir)/webkit/webkit-1.1-types.defs
 webkit_defs += $(srcdir)/webkit/webkit-1.0.2.defs $(srcdir)/webkit/webkit-1.1.defs
 
