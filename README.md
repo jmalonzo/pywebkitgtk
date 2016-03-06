@@ -1,6 +1,6 @@
 # NEWS
 
-*This project is currently unmaintaned.* I currently have no time to work on this project so feel free to volunteer.
+*This project is currently unmaintaned. I currently have no time to work on this project so feel free to volunteer.*
 
 # Python WebKit GTK+
 
